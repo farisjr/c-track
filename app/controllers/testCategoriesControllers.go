@@ -56,18 +56,9 @@ func GetTestCategoriesIdController(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	//custom data for body response
-	output := map[string]interface{}{
-		"CreatedAt":            testCategories.CreatedAt,
-		"UpdatedAt":            testCategories.UpdatedAt,
-		"DeletedAt":            testCategories.DeletedAt,
-		"id":                   testCategories.ID,
-		"test_categories_name": testCategories.Test_categories_Name,
-	}
-
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message":         "success get test categories by id",
-		"test categories": output,
+		"test categories": testCategories,
 	})
 }
 
@@ -102,7 +93,7 @@ func UpdateTestCategoriesController(c echo.Context) error {
 	}
 	testCategories := database.GetUpdateTestCategories(id)
 	c.Bind(&testCategories)
-	productUpdateCategories, err1 := database.UpdateTestCategories(testCategories)
+	testUpdateCategories, err1 := database.UpdateTestCategories(testCategories)
 	if err1 != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "cannot post data",
@@ -111,15 +102,15 @@ func UpdateTestCategoriesController(c echo.Context) error {
 
 	//custom data for body response
 	output := map[string]interface{}{
-		"CreatedAt":            productUpdateCategories.CreatedAt,
-		"UpdatedAt":            productUpdateCategories.UpdatedAt,
-		"DeletedAt":            productUpdateCategories.DeletedAt,
-		"id":                   productUpdateCategories.ID,
-		"test_categories_name": productUpdateCategories.Test_categories_Name,
+		"CreatedAt":            testUpdateCategories.CreatedAt,
+		"UpdatedAt":            testUpdateCategories.UpdatedAt,
+		"DeletedAt":            testUpdateCategories.DeletedAt,
+		"id":                   testUpdateCategories.ID,
+		"test_categories_name": testUpdateCategories.Test_categories_Name,
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message":     "success update test categories",
+		"message":                "success update test categories",
 		"update test categories": output,
 	})
 }
