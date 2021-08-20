@@ -20,6 +20,6 @@ func New(e *echo.Echo) {
 	e.GET("/tests/:id", controllers.GetTestsIdController)
 	e.POST("/tests", controllers.CreateTestsController)
 	e.PUT("/tests/:id", controllers.UpdateTestsController)
-	e.DELETE("/tests/:id", controllers.DeleteTestsByIdController)
+	e.DELETE("/tests/:id", controllers.DeleteTestsController)
 
 }

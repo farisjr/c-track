@@ -5,14 +5,14 @@ import (
 	"app/models"
 )
 
-func CreateTestCategories(testCategories models.TestCategories) (models.TestCategories, error) {
+func CreateTestCategories(testCategories models.TestCategories) (interface{}, error) {
 	if err := config.DB.Save(&testCategories).Error; err != nil {
 		return testCategories, err
 	}
 	return testCategories, nil
 }
 
-func GetAllTestCategories() (interface{}, error) {
+func GetTestCategories() (interface{}, error) {
 	var testCategories []models.TestCategories
 	if err := config.DB.Find(&testCategories).Error; err != nil {
 		return nil, err
@@ -20,28 +20,23 @@ func GetAllTestCategories() (interface{}, error) {
 	return testCategories, nil
 }
 
-func GetTestCategoriesId(id int) (interface{}, error) {
+func GetTestCategoriesId(id int) (models.TestCategories, error) {
 	var testCategories models.TestCategories
-	var count int64
-	if err1 := config.DB.Model(&testCategories).Where("id=?", id).Count(&count).Error; count == 0 {
-		return testCategories, err1
-	}
 	if err := config.DB.Find(&testCategories, "id=?", id).Error; err != nil {
 		return testCategories, err
 	}
 	return testCategories, nil
 }
 
-func DeleteTestCategoriesById(id int) (interface{}, error) {
-	var testCategories models.TestCategories
-	if err := config.DB.Where("id=?", id).Delete(&testCategories).Error; err != nil {
+func DeleteTestCategoriesById(testCategories models.TestCategories) (interface{}, error) {
+	if err := config.DB.Delete(&testCategories).Error; err != nil {
 		return nil, err
 	}
 	return testCategories, nil
 }
 
 //update test categories info from database
-func UpdateTestCategories(testCategories models.TestCategories) (models.TestCategories, error) {
+func UpdateTestCategories(testCategories models.TestCategories) (interface{}, error) {
 	if tx := config.DB.Save(&testCategories).Error; tx != nil {
 		return testCategories, tx
 	}
