@@ -15,4 +15,11 @@ func New(e *echo.Echo) {
 	e.PUT("/testCategories/:id", controllers.UpdateTestCategoriesController)
 	e.DELETE("/testCategories/:id", controllers.DeleteTestCategoriesByIdController)
 
+	//------------------Non Authorized Test ----------------------//
+	e.GET("/tests", controllers.GetTestsController)
+	e.GET("/tests/:id", controllers.GetTestsIdController)
+	e.POST("/tests", controllers.CreateTestsController)
+	e.PUT("/tests/:id", controllers.UpdateTestsController)
+	e.DELETE("/tests/:id", controllers.DeleteTestsByIdController)
+
 }

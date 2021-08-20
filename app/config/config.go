@@ -39,6 +39,6 @@ func InitMigrate() {
 	DB.AutoMigrate(&models.DoctorTestDetails{})
 	// DB.AutoMigrate(&models.CheckerTestDetails{})
 	DB.AutoMigrate(&models.TestCategories{})
-	DB.AutoMigrate(&models.Test{})
+	DB.AutoMigrate(&models.Tests{})
 	// DB.AutoMigrate(&models.User{})
 }
