@@ -1,13 +1,17 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"time"
 
-type Citizen struct {
+	"gorm.io/gorm"
+)
+
+type Patient struct {
 	gorm.Model
-	NIK            int            `gorm:"primerykey;not null" json:"nik"`
-	Name           string         `gorm:"type:varchar(100);not null" json:"email"`
-	Dob_date       string         `gorm:"type:varchar(30);not null" json:"borndate"`
-	Dob_place      string         `gorm:"type:varchar(30);not null" json:"bornplace"`
+	Patient_ID     int            `gorm:"primarykey;unique;not null" json:"id"`
+	User_ID        int            `gorm:"primerykey;unique;not null" json:"userid"`
+	Dob            time.Time      `gorm:";not null" json:"borndate"`
+	Pob            string         `gorm:"type:varchar(30);not null" json:"bornplace"`
 	Address        string         `gorm:"type:varchar(100);not null" json:"address"`
 	City           string         `gorm:"type:varchar(100);not null" json:"city"`
 	Province       string         `gorm:"type:varchar(100);not null" json:"province"`
@@ -15,6 +19,7 @@ type Citizen struct {
 	Blood_type     Blood_type     `gorm:"not null" json:"blood type"`
 	Religion       Religion       `gorm:"not null" json:"religion"`
 	Mariage_status Mariage_Status `gorm:"not null" json:"mariage status"`
+	User           User           `gorm:"foreignkey:ID"`
 }
 
 type Gender string

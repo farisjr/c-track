@@ -5,31 +5,37 @@ import (
 	"app/models"
 )
 
-func CreateCitizen(citizen models.Citizen) (interface{}, error) {
-	if err := config.DB.Save(&citizen).Error; err != nil {
+func CreatePatient(patient models.Patient) (interface{}, error) {
+	if err := config.DB.Save(&patient).Error; err != nil {
 		return nil, err
 	}
-	return citizen, nil
+	return patient, nil
 }
 
-func GetCitizenByNIK(NIK string) (models.Citizen, error) {
-	var citizen models.Citizen
-	var empty models.Citizen
+func GetPatientByNIK(NIK string) (models.Patient, error) {
+	var patient models.Patient
+	var empty models.Patient
 
-	if err := config.DB.Where("NIK = ?", NIK).First(&citizen).Error; err != nil {
+	if err := config.DB.Where("Patient_ID = ?", NIK).First(&patient).Error; err != nil {
 		return empty, err
 	}
-	if err := config.DB.Find(&citizen, NIK).Error; err != nil {
+	if err := config.DB.Find(&patient, NIK).Error; err != nil {
 		return empty, err
 	}
-	return citizen, nil
+	return patient, nil
 }
 
-func GetCitizenByName(name string) (models.Citizen, error) {
-	var citizen models.Citizen
-	if e := config.DB.Where("Name = ?", name).Find(&citizen).Error; e != nil {
-		return citizen, e
+func UpdatePatient(Patient_ID int, patient interface{}) (interface{}, error) {
+	if err := config.DB.Find(&patient, "Patient_ID=?", Patient_ID).Save(&patient).Error; err != nil {
+		return nil, err
 	}
+	return patient, nil
+}
 
-	return citizen, nil
+func DeleteCitizen(Patient_ID int) (interface{}, error) {
+	var patient models.Patient
+	if err := config.DB.Find(&patient, "Patient_ID=?", Patient_ID).Delete(&patient).Error; err != nil {
+		return nil, err
+	}
+	return patient, nil
 }

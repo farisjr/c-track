@@ -32,14 +32,12 @@ func InitPort() {
 }
 
 func InitMigrate() {
-	DB.AutoMigrate(&models.Users{})
+	DB.AutoMigrate(&models.User{})
 	DB.AutoMigrate(&models.Checker{})
 	DB.AutoMigrate(&models.Citizen{})
 	DB.AutoMigrate(&models.Doctor{})
-	DB.AutoMigrate(&models.Medical_Facility_Employee{})
-	DB.AutoMigrate(&models.Medical_Facility{})
-	DB.AutoMigrate(&models.Organization{})
-	DB.AutoMigrate(&models.Organization_Employee{})
+	DB.AutoMigrate(&models.DoctorTestDetails{})
+	DB.AutoMigrate(&models.CheckerTestDetails{})
 	DB.AutoMigrate(&models.Test_Category{})
 	DB.AutoMigrate(&models.Test{})
 	DB.AutoMigrate(&models.User{})

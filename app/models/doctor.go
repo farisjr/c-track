@@ -4,11 +4,10 @@ import "gorm.io/gorm"
 
 type Doctor struct {
 	gorm.Model
-	Str_ID       string           `gorm:"primerykey;type:char(16);unique;not null" json:"strid"`
-	NIK          string           `gorm:"type:char(16);not null" json:"nik"`
-	Faskes_ID    string           `gorm:"type:char(16);not null" json:"faskesid"`
-	Email        string           `gorm:"type:char(16);not null" json:"email"`
-	Password     string           `gorm:"type:char(30);not null" json:"password"`
-	Phone_Number string           `gorm:"type:char(16);not null" json:"phonenumber"`
-	Faskes       Medical_Facility `gorm:"foreignkey:ID"`
+	Practice_License_ID      int    `gorm:"primerykey;unique;not null" json:"strid"`
+	Name                     string `gorm:"type:varchar(45);not null" json:"nik"`
+	Medical_Facility_Name    string `gorm:"type:varchar(45);not null" json:"faskesid"`
+	Medical_Facility_Address string `gorm:"type:varchar(45);not null" json:"email"`
+	User_ID                  string `gorm:"type:char(30);not null" json:"password"`
+	User                     User   `gorm:"foreignkey:ID"`
 }
