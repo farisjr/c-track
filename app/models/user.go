@@ -4,7 +4,7 @@ import "gorm.io/gorm"
 
 type User struct {
 	gorm.Model
-	User_ID  int    `gorm:"primerykey;unique;not null" json:"userid"`
+	User_ID  int    `gorm:"primarykey;unique;not null" json:"userid"`
 	Username string `gorm:"type:char(16);not null" json:"username"`
 	Password string `gorm:"type:varchar(100);not null" json:"password"`
 	Role     Role   `gorm:"not null" json:"role"`

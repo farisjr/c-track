@@ -13,8 +13,8 @@ var DB *gorm.DB
 var HTTP_PORT int
 
 func InitDb() {
-	//connectionString := "usrnm:pwd@tcp(localhost:3306)/c-track?charset=utf8&parseTime=True&loc=Local"
-	connectionString := os.Getenv("CONNECTION_STRING")
+	connectionString := "root:toor@tcp(localhost:3306)/c-track?charset=utf8&parseTime=True&loc=Local"
+	//connectionString := os.Getenv("CONNECTION_STRING")
 	var err error
 	DB, err = gorm.Open(mysql.Open(connectionString), &gorm.Config{})
 	if err != nil {
