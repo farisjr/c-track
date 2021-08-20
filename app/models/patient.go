@@ -9,7 +9,7 @@ import (
 type Patient struct {
 	gorm.Model
 	Patient_ID     int            `gorm:"primarykey;unique;not null" json:"id"`
-	User_ID        int            `gorm:"primerykey;unique;not null" json:"userid"`
+	User_ID        int            `gorm:"primarykey;unique;not null" json:"userid"`
 	Dob            time.Time      `gorm:";not null" json:"borndate"`
 	Pob            string         `gorm:"type:varchar(30);not null" json:"bornplace"`
 	Address        string         `gorm:"type:varchar(100);not null" json:"address"`
@@ -18,15 +18,15 @@ type Patient struct {
 	Gender         Gender         `gorm:"not null" json:"gender"`
 	Blood_type     Blood_type     `gorm:"not null" json:"blood type"`
 	Religion       Religion       `gorm:"not null" json:"religion"`
-	Mariage_status Mariage_Status `gorm:"not null" json:"mariage status"`
-	User           User           `gorm:"foreignkey:ID"`
+	Marital_Status Marital_Status `gorm:"not null" json:"marital status"`
+	User           User           `gorm:"foreignkey:User_ID"`
 }
 
 type Gender string
 
 const (
-	Pria   Gender = "Pria"
-	Wanita Gender = "Wanita"
+	Male   Gender = "Male"
+	Female Gender = "Female"
 )
 
 type Blood_type string
@@ -48,9 +48,9 @@ const (
 	Katholik Religion = "katholik"
 )
 
-type Mariage_Status string
+type Marital_Status string
 
 const (
-	Kawin      Mariage_Status = "Kawin"
-	TidakKawin Mariage_Status = "Tidak Kawin"
+	Mariage Marital_Status = "Mariage"
+	Single  Marital_Status = "Single"
 )
