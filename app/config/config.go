@@ -34,7 +34,7 @@ func InitPort() {
 func InitMigrate() {
 	DB.AutoMigrate(&models.User{})
 	DB.AutoMigrate(&models.Checker{})
-	DB.AutoMigrate(&models.Citizen{})
+	DB.AutoMigrate(&models.Patient{})
 	DB.AutoMigrate(&models.Doctor{})
 	DB.AutoMigrate(&models.DoctorTestDetails{})
 	DB.AutoMigrate(&models.CheckerTestDetails{})
