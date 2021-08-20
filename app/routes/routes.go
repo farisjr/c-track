@@ -22,4 +22,11 @@ func New(e *echo.Echo) {
 	e.PUT("/tests/:id", controllers.UpdateTestsController)
 	e.DELETE("/tests/:id", controllers.DeleteTestsController)
 
+	//------------------Non Authorized Doctor ----------------------//
+	e.GET("/doctors", controllers.GetDoctorsController)
+	e.GET("/doctors/:id", controllers.GetDoctorsIdController)
+	e.POST("/doctors", controllers.CreateDoctorsController)
+	e.PUT("/doctors/:id", controllers.UpdateDoctorsController)
+	e.DELETE("/doctors/:id", controllers.DeleteDoctorsController)
+
 }
