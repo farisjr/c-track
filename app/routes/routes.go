@@ -3,20 +3,12 @@ package routes
 import (
 
 	"app/constants"
+	"app/controllers"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
 
-func New(e *echo.Echo) {
-	//AUTHORIZATION JWT
-	eJwt := e.Group("")
-	eJwt.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
-
-	"app/controllers"
-
-	"github.com/labstack/echo"
-)
 
 func New(e *echo.Echo) {
 
@@ -47,6 +39,10 @@ func New(e *echo.Echo) {
 	e.POST("/patients", controllers.CreatePatientsController)
 	e.PUT("/patients/:id", controllers.UpdatePatientsController)
 	e.DELETE("/patients/:id", controllers.DeletePatientsController)
+
+	//AUTHORIZATION JWT
+	eJwt := e.Group("")
+	eJwt.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
 
 
 }
