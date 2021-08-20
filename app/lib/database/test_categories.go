@@ -20,7 +20,7 @@ func GetAllTestCategories() (interface{}, error) {
 	return testCategories, nil
 }
 
-func GetTestCategoriesId(id int) (models.TestCategories, error) {
+func GetTestCategoriesId(id int) (interface{}, error) {
 	var testCategories models.TestCategories
 	var count int64
 	if err1 := config.DB.Model(&testCategories).Where("id=?", id).Count(&count).Error; count == 0 {
