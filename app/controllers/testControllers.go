@@ -25,7 +25,7 @@ func CreateTestsController(c echo.Context) error {
 }
 
 func GetTestsController(c echo.Context) error {
-	tests, err := database.GetAllTests()
+	tests, err := database.GetTests()
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
@@ -42,9 +42,11 @@ func GetTestsIdController(c echo.Context) error {
 			"message": "invalid id",
 		})
 	}
-	tests, err := database.GetTestsId(id)
+	tests, err := database.GetTestsById(id)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot fetch data",
+		})
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
@@ -53,25 +55,24 @@ func GetTestsIdController(c echo.Context) error {
 	})
 }
 
-func DeleteTestsByIdController(c echo.Context) error {
+func DeleteTestsController(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"message": "invalid id",
 		})
 	}
-	tests, err := database.GetTestsId(id)
+	tests, _ := database.GetTestsById(id)
+	c.Bind(&tests)
+	testsDeleted, err := database.DeleteTestsById(tests)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-	testsDeleted, err := database.DeleteTestsById(id)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot delete data",
+		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message":            "success delete selected test",
-		"test before delete": tests,
-		"test after delete":  testsDeleted,
+		"message": "success delete selected test",
+		"data":    testsDeleted,
 	})
 }
 
@@ -82,26 +83,17 @@ func UpdateTestsController(c echo.Context) error {
 			"message": "invalid id",
 		})
 	}
-	tests := database.GetUpdateTests(id)
-	c.Bind(&tests)
-	testsUpdateCategories, err1 := database.UpdateTests(tests)
+	updateTests := database.GetUpdateTests(id)
+	c.Bind(&updateTests)
+	testsId, err1 := database.UpdateTests(updateTests)
 	if err1 != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "cannot post data",
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "invalid id",
 		})
-	}
-
-	//custom data for body response
-	output := map[string]interface{}{
-		"CreatedAt":    testsUpdateCategories.CreatedAt,
-		"UpdatedAt":    testsUpdateCategories.UpdatedAt,
-		"ResultStatus": tests.Result_Status,
-		"DeletedAt":    testsUpdateCategories.DeletedAt,
-		"id":           testsUpdateCategories.ID,
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message":          "success update test ",
-		"update test data": output,
+		"update test data": testsId,
 	})
 }

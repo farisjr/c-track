@@ -18,23 +18,14 @@ func CreateTestCategoriesController(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	//custom data for body response
-	output := map[string]interface{}{
-		"CreatedAt":            testCategoriesAdd.CreatedAt,
-		"UpdatedAt":            testCategoriesAdd.UpdatedAt,
-		"DeletedAt":            testCategoriesAdd.DeletedAt,
-		"id":                   testCategoriesAdd.ID,
-		"test_categories_name": testCategoriesAdd.Test_categories_Name,
-	}
-
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "success add new test categories",
-		"data":    output,
+		"data":    testCategoriesAdd,
 	})
 }
 
 func GetTestCategoriesController(c echo.Context) error {
-	testCategories, err := database.GetAllTestCategories()
+	testCategories, err := database.GetTestCategories()
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
@@ -53,7 +44,9 @@ func GetTestCategoriesIdController(c echo.Context) error {
 	}
 	testCategories, err := database.GetTestCategoriesId(id)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot fetch data",
+		})
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
@@ -70,17 +63,16 @@ func DeleteTestCategoriesByIdController(c echo.Context) error {
 		})
 	}
 	testCategories, err := database.GetTestCategoriesId(id)
+	c.Bind(&testCategories)
+	testCategoriesDeleted, err := database.DeleteTestCategoriesById(testCategories)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-	testCategoriesDeleted, err := database.DeleteTestCategoriesById(id)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot delete data",
+		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message":                       "success delete selected test categories",
-		"test categories before delete": testCategories,
-		"test categories after delete":  testCategoriesDeleted,
+		"message": "delete success ",
+		"data":    testCategoriesDeleted,
 	})
 }
 
@@ -100,17 +92,8 @@ func UpdateTestCategoriesController(c echo.Context) error {
 		})
 	}
 
-	//custom data for body response
-	output := map[string]interface{}{
-		"CreatedAt":            testUpdateCategories.CreatedAt,
-		"UpdatedAt":            testUpdateCategories.UpdatedAt,
-		"DeletedAt":            testUpdateCategories.DeletedAt,
-		"id":                   testUpdateCategories.ID,
-		"test_categories_name": testUpdateCategories.Test_categories_Name,
-	}
-
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message":                "success update test categories",
-		"update test categories": output,
+		"update test categories": testUpdateCategories,
 	})
 }

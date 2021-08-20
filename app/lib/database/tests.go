@@ -5,14 +5,14 @@ import (
 	"app/models"
 )
 
-func CreateTests(tests models.Tests) (models.Tests, error) {
-	if err := config.DB.Save(&tests).Error; err != nil {
-		return tests, err
+func CreateTests(createTests models.Tests) (interface{}, error) {
+	if err := config.DB.Save(&createTests).Error; err != nil {
+		return nil, err
 	}
-	return tests, nil
+	return createTests, nil
 }
 
-func GetAllTests() (interface{}, error) {
+func GetTests() (interface{}, error) {
 	var tests []models.Tests
 	if err := config.DB.Find(&tests).Error; err != nil {
 		return nil, err
@@ -20,32 +20,28 @@ func GetAllTests() (interface{}, error) {
 	return tests, nil
 }
 
-func GetTestsId(id int) (interface{}, error) {
+func GetTestsById(id int) (models.Tests, error) {
 	var tests models.Tests
-	var count int64
-	if err1 := config.DB.Model(&tests).Where("id=?", id).Count(&count).Error; count == 0 {
-		return tests, err1
-	}
 	if err := config.DB.Find(&tests, "id=?", id).Error; err != nil {
 		return tests, err
 	}
 	return tests, nil
 }
 
-func DeleteTestsById(id int) (interface{}, error) {
-	var tests models.Tests
-	if err := config.DB.Where("id=?", id).Delete(&tests).Error; err != nil {
+func DeleteTestsById(deleteTest models.Tests) (interface{}, error) {
+
+	if err := config.DB.Delete(&deleteTest).Error; err != nil {
 		return nil, err
 	}
-	return tests, nil
+	return deleteTest, nil
 }
 
 //update test info from database
-func UpdateTests(tests models.Tests) (models.Tests, error) {
-	if tx := config.DB.Save(&tests).Error; tx != nil {
-		return tests, tx
+func UpdateTests(updateTests models.Tests) (interface{}, error) {
+	if tx := config.DB.Save(&updateTests).Error; tx != nil {
+		return updateTests, tx
 	}
-	return tests, nil
+	return updateTests, nil
 }
 
 //get 1 specified test with test struct output
