@@ -50,3 +50,16 @@ func GetUpdateDoctor(id int) models.Doctor {
 	config.DB.Find(&doctors, "id=?", id)
 	return doctors
 }
+
+//Login for doctor with matching username and password
+func LoginDoctorDB(username, password string) (models.Doctor, error) {
+	var doctor models.Doctor
+	var err error
+	if err = config.DB.Where("username=? AND password=?", username, password).First(&doctor).Error; err != nil {
+		return doctor, err
+	}
+	if err := config.DB.Save(doctor).Error; err != nil {
+		return doctor, err
+	}
+	return doctor, err
+}

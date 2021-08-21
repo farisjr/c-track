@@ -55,3 +55,16 @@ func CheckDuplicatePatient(patient models.Patient) error {
 	err = errors.New("id Already Exist")
 	return err
 }
+
+//Login for patient with matching username and password
+func PatientLoginDB(username, password string) (models.Patient, error) {
+	var patient models.Patient
+	var err error
+	if err = config.DB.Where("username=? AND password=?", username, password).First(&patient).Error; err != nil {
+		return patient, err
+	}
+	if err := config.DB.Save(patient).Error; err != nil {
+		return patient, err
+	}
+	return patient, err
+}
