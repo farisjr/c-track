@@ -19,7 +19,7 @@ func LoginUserController(c echo.Context) error {
 		})
 	}
 	mapUserLogin := map[string]interface{}{
-		"ID":    user.User_ID,
+		"ID":    user.UserID,
 		"Name":  user.Username,
 		"Token": user.Token,
 	}
