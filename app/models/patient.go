@@ -8,8 +8,8 @@ import (
 
 type Patient struct {
 	gorm.Model
-	Patient_ID     int            `gorm:"primarykey;unique;not null" json:"id"`
-	User_ID        int            `gorm:"primarykey;unique;not null" json:"userid"`
+	PatientID     int            `gorm:"primarykey;unique;not null" json:"petient_id"`
+	UserID        int            `gorm:"primarykey;unique;not null" json:"user_id"`
 	Dob            time.Time      `gorm:";not null" json:"borndate"`
 	Pob            string         `gorm:"type:varchar(30);not null" json:"bornplace"`
 	Address        string         `gorm:"type:varchar(100);not null" json:"address"`
@@ -19,7 +19,7 @@ type Patient struct {
 	Blood_type     Blood_type     `gorm:"not null" json:"blood type"`
 	Religion       Religion       `gorm:"not null" json:"religion"`
 	Marital_Status Marital_Status `gorm:"not null" json:"marital status"`
-	User           User           `gorm:"foreignkey:User_ID"`
+	User           User           `gorm:"foreignkey:UserID"`
 }
 
 type Gender string

@@ -48,7 +48,7 @@ func DeletePatient(id int) (interface{}, error) {
 
 func CheckDuplicatePatient(patient models.Patient) error {
 	var patients models.Patient
-	err := config.DB.Where("id = ?", patients.Patient_ID).First(&patient).Error
+	err := config.DB.Where("id = ?", patients.PatientID).First(&patient).Error
 	if err != nil {
 		return nil
 	}
