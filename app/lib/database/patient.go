@@ -3,7 +3,6 @@ package database
 import (
 	"app/config"
 	"app/models"
-	"errors"
 )
 
 func CreatePatient(patient models.Patient) (interface{}, error) {
@@ -44,16 +43,6 @@ func DeletePatient(id int) (interface{}, error) {
 		return nil, err
 	}
 	return patient, nil
-}
-
-func CheckDuplicatePatient(patient models.Patient) error {
-	var patients models.Patient
-	err := config.DB.Where("id = ?", patients.ID).First(&patient).Error
-	if err != nil {
-		return nil
-	}
-	err = errors.New("id Already Exist")
-	return err
 }
 
 //Login for patient with matching username and password
