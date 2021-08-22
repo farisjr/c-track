@@ -2,8 +2,6 @@ package config
 
 import (
 	"app/models"
-	"os"
-	"strconv"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -13,7 +11,7 @@ var DB *gorm.DB
 var HTTP_PORT int
 
 func InitDb() {
-	connectionString := "root:toor@tcp(localhost:3306)/baru?charset=utf8&parseTime=True&loc=Local"
+	connectionString := "root:02021996Doni*@tcp(localhost:3306)/baru?charset=utf8&parseTime=True&loc=Local"
 	//connectionString := os.Getenv("CONNECTION_STRING")
 	var err error
 	DB, err = gorm.Open(mysql.Open(connectionString), &gorm.Config{})
@@ -24,11 +22,12 @@ func InitDb() {
 }
 
 func InitPort() {
-	var err error
+	/*var err error
 	HTTP_PORT, err = strconv.Atoi(os.Getenv("HTTP_PORT"))
 	if err != nil {
 		panic(err)
-	}
+	}*/
+	HTTP_PORT = 80
 }
 
 func InitMigrate() {
