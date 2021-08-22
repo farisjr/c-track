@@ -1,14 +1,12 @@
 package routes
 
 import (
-
 	"app/constants"
 	"app/controllers"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
-
 
 func New(e *echo.Echo) {
 
@@ -40,9 +38,25 @@ func New(e *echo.Echo) {
 	e.PUT("/patients/:id", controllers.UpdatePatientsController)
 	e.DELETE("/patients/:id", controllers.DeletePatientsController)
 
+	//------------------ Login Controllers ----------------------//
+	e.POST("/checkers/login", controllers.LoginChecker)
+	e.POST("/doctors/login", controllers.LoginDoctor)
+	e.POST("/patients/login", controllers.LoginPatient)
+	e.POST("/users/login", controllers.LoginUserController)
+
 	//AUTHORIZATION JWT
 	eJwt := e.Group("")
 	eJwt.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
 
+	//------------------ Login Controllers ----------------------//
+	eJwt.POST("/checkers/login", controllers.LoginChecker)
+	eJwt.POST("/doctors/login", controllers.LoginDoctor)
+	eJwt.POST("/patients/login", controllers.LoginPatient)
+	eJwt.POST("/users/login", controllers.LoginUserController)
 
+	//------------------ Adding, Updating and Deleting Covid Test for Doctors ----------------------//
+	eJwt.POST("/tests", controllers.CreateTestsController)
+
+	//------------------ Getting Covid Test for Checkers ----------------------//
+	eJwt.GET("/tests/:id", controllers.GetTestsIdController)
 }
