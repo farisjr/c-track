@@ -13,19 +13,19 @@ func CreateDoctor(addDoctor models.Doctor) (interface{}, error) {
 }
 
 func GetDoctor() (interface{}, error) {
-	var doctors []models.Doctor
-	if err := config.DB.Find(&doctors).Error; err != nil {
+	var doctor []models.Doctor
+	if err := config.DB.Find(&doctor).Error; err != nil {
 		return nil, err
 	}
-	return doctors, nil
+	return doctor, nil
 }
 
 func GetDoctorById(id int) (models.Doctor, error) {
-	var doctors models.Doctor
-	if err := config.DB.Find(&doctors, "id=?", id).Error; err != nil {
-		return doctors, err
+	var doctor models.Doctor
+	if err := config.DB.Find(&doctor, "id=?", id).Error; err != nil {
+		return doctor, err
 	}
-	return doctors, nil
+	return doctor, nil
 }
 
 func DeleteDoctorById(deleteDoctor models.Doctor) (interface{}, error) {
@@ -46,7 +46,7 @@ func UpdateDoctor(updateDoctors models.Doctor) (interface{}, error) {
 
 //get 1 specified test with test struct output
 func GetUpdateDoctor(id int) models.Doctor {
-	var doctors models.Doctor
-	config.DB.Find(&doctors, "id=?", id)
-	return doctors
+	var doctor models.Doctor
+	config.DB.Find(&doctor, "id=?", id)
+	return doctor
 }

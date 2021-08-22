@@ -1,12 +1,25 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type Doctor struct {
 	gorm.Model
-	UserID                 int    `gorm:"primaryKey; unique; not null" json:"user_id"`
-	Name                   string `gorm:"type:varchar(45); not null" json:"name"`
-	MedicalFacilityName    string `gorm:"type:varchar(45); not null" json:"medical_facility_name"`
-	MedicalFacilityAddress string `gorm:"type:varchar(45); not null" json:"medical_facility_address"`
-	User                   User   `gorm:"foreignKey:ID"`
+	Name                   string `json:"name"`
+	MedicalFacilityName    string `json:"medical_facility_name"`
+	MedicalFacilityAddress string `json:"medical_facility_address"`
+	User                   User   `gorm:"foreignKey:ID" json:"user_id"`
+}
+
+type DoctorResponse struct {
+	Status  bool     `json:"status"`
+	Message string   `json:"message"`
+	Data    []Doctor `json:"data"`
+}
+
+type DoctorResponseSingle struct {
+	Status  bool   `json:"status"`
+	Message string `json:"message"`
+	Data    Doctor `json:"data"`
 }

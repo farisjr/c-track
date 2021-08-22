@@ -5,14 +5,14 @@ import (
 	"app/models"
 )
 
-func CreateTests(createTests models.Tests) (interface{}, error) {
+func CreateTest(createTests models.Tests) (models.Tests, error) {
 	if err := config.DB.Save(&createTests).Error; err != nil {
-		return nil, err
+		return createTests, err
 	}
 	return createTests, nil
 }
 
-func GetTests() (interface{}, error) {
+func GetAllTests() (interface{}, error) {
 	var tests []models.Tests
 	if err := config.DB.Find(&tests).Error; err != nil {
 		return nil, err
@@ -20,7 +20,7 @@ func GetTests() (interface{}, error) {
 	return tests, nil
 }
 
-func GetTestsById(id int) (models.Tests, error) {
+func GetOneTest(id int) (models.Tests, error) {
 	var tests models.Tests
 	if err := config.DB.Find(&tests, "id=?", id).Error; err != nil {
 		return tests, err
@@ -28,7 +28,7 @@ func GetTestsById(id int) (models.Tests, error) {
 	return tests, nil
 }
 
-func DeleteTestsById(deleteTest models.Tests) (interface{}, error) {
+func DeleteTest(deleteTest models.Tests) (interface{}, error) {
 
 	if err := config.DB.Delete(&deleteTest).Error; err != nil {
 		return nil, err
@@ -37,7 +37,7 @@ func DeleteTestsById(deleteTest models.Tests) (interface{}, error) {
 }
 
 //update test info from database
-func UpdateTests(updateTests models.Tests) (interface{}, error) {
+func UpdateTests(updateTests models.Tests) (models.Tests, error) {
 	if tx := config.DB.Save(&updateTests).Error; tx != nil {
 		return updateTests, tx
 	}
