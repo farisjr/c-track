@@ -42,4 +42,15 @@ func New(e *echo.Echo) {
 	eJwt := e.Group("")
 	eJwt.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
 
+	//------------------ Login Controllers ----------------------//
+	eJwt.POST("/checkers/login", controllers.LoginChecker)
+	eJwt.POST("/doctors/login", controllers.LoginDoctor)
+	eJwt.POST("/patients/login", controllers.LoginPatient)
+	eJwt.POST("/users/login", controllers.LoginUserController)
+
+	//------------------ Adding, Updating and Deleting Covid Test for Doctors ----------------------//
+	eJwt.POST("/tests", controllers.CreateTestsController)
+
+	//------------------ Getting Covid Test for Checkers ----------------------//
+	eJwt.GET("/tests/:id", controllers.GetTestsIdController)
 }
