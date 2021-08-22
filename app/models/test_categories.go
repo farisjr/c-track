@@ -1,8 +1,22 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type TestCategories struct {
 	gorm.Model
-	TestCategoriesName string `json:"test_categories_name" form:"test_categories_name"`
+	Name string `json:"name" form:"name"`
+}
+
+type TestCategoriesResponse struct {
+	Status  bool             `json:"status"`
+	Message string           `json:"message"`
+	Data    []TestCategories `json:"data"`
+}
+
+type TestCategoriesResponseSingle struct {
+	Status  bool           `json:"status"`
+	Message string         `json:"message"`
+	Data    TestCategories `json:"data"`
 }

@@ -13,7 +13,7 @@ func CreateTestsController(c echo.Context) error {
 	tests := models.Tests{}
 	c.Bind(&tests)
 
-	testsAdd, err := database.CreateTests(tests)
+	testsAdd, err := database.CreateTest(tests)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
@@ -25,7 +25,7 @@ func CreateTestsController(c echo.Context) error {
 }
 
 func GetTestsController(c echo.Context) error {
-	tests, err := database.GetTests()
+	tests, err := database.GetAllTests()
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
@@ -42,7 +42,7 @@ func GetTestsIdController(c echo.Context) error {
 			"message": "invalid id",
 		})
 	}
-	tests, err := database.GetTestsById(id)
+	tests, err := database.GetOneTest(id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "cannot fetch data",
@@ -62,9 +62,9 @@ func DeleteTestsController(c echo.Context) error {
 			"message": "invalid id",
 		})
 	}
-	tests, _ := database.GetTestsById(id)
+	tests, _ := database.GetOneTest(id)
 	c.Bind(&tests)
-	testsDeleted, err := database.DeleteTestsById(tests)
+	testsDeleted, err := database.DeleteTest(tests)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "cannot delete data",
