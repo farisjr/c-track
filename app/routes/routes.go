@@ -24,6 +24,11 @@ func New(e *echo.Echo) {
 	e.PUT("/tests/:id", controllers.UpdateTestsController)
 	e.DELETE("/tests/:id", controllers.DeleteTestsController)
 
+	//------------------Non Authorized Checker ----------------------//
+	e.GET("/checkers", controllers.GetCheckerController)
+	e.GET("/checkers/:id", controllers.GetCheckerController)
+	e.POST("/checkers", controllers.CreateCheckersController)
+
 	//------------------Non Authorized Doctor ----------------------//
 	e.GET("/doctors", controllers.GetDoctorsController)
 	e.GET("/doctors/:id", controllers.GetDoctorsIdController)
@@ -38,11 +43,11 @@ func New(e *echo.Echo) {
 	e.PUT("/patients/:id", controllers.UpdatePatientsController)
 	e.DELETE("/patients/:id", controllers.DeletePatientsController)
 
-	//------------------ Login Controllers ----------------------//
-	e.POST("/checkers/login", controllers.LoginChecker)
-	e.POST("/doctors/login", controllers.LoginDoctor)
-	e.POST("/patients/login", controllers.LoginPatient)
-	e.POST("/users/login", controllers.LoginUserController)
+	//------------------ Logout Controllers ----------------------//
+	e.POST("/checkers/logout/:id", controllers.LogoutChecker)
+	e.POST("/doctors/logout/:id", controllers.LogoutDoctor)
+	e.POST("/patients/logout/:id", controllers.LogoutPatient)
+	e.POST("/users/logout/:id", controllers.LogoutUserController)
 
 	//AUTHORIZATION JWT
 	eJwt := e.Group("")
@@ -54,9 +59,10 @@ func New(e *echo.Echo) {
 	eJwt.POST("/patients/login", controllers.LoginPatient)
 	eJwt.POST("/users/login", controllers.LoginUserController)
 
-	//------------------ Adding, Updating and Deleting Covid Test for Doctors ----------------------//
+	//------------------ Creating Covid Test for Doctors ----------------------//
 	eJwt.POST("/tests", controllers.CreateTestsController)
 
 	//------------------ Getting Covid Test for Checkers ----------------------//
 	eJwt.GET("/tests/:id", controllers.GetTestsIdController)
+
 }
