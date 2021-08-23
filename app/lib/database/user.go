@@ -62,3 +62,10 @@ func GetDetailUser(userId int) (interface{}, error) {
 	}
 	return user, nil
 }
+
+func EditUser(user models.User) (models.User, error) {
+	if err := config.DB.Save(&user).Error; err != nil {
+		return user, err
+	}
+	return user, nil
+}
