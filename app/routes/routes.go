@@ -11,11 +11,11 @@ import (
 func New(e *echo.Echo) {
 
 	//------------------Non Authorized Test Categories----------------------//
-	e.GET("/testCategories", controllers.GetTestCategoriesController)
-	e.GET("/testCategories/:id", controllers.GetTestCategoriesIdController)
-	e.POST("/testCategories", controllers.CreateTestCategoriesController)
-	e.PUT("/testCategories/:id", controllers.UpdateTestCategoriesController)
-	e.DELETE("/testCategories/:id", controllers.DeleteTestCategoriesByIdController)
+	// e.GET("/testCategories", controllers.GetTestCategoriesController)
+	// e.GET("/testCategories/:id", controllers.GetTestCategoriesIdController)
+	// e.POST("/testCategories", controllers.CreateTestCategoriesController)
+	// e.PUT("/testCategories/:id", controllers.UpdateTestCategoriesController)
+	// e.DELETE("/testCategories/:id", controllers.DeleteTestCategoriesByIdController)
 
 	//------------------Non Authorized Test ----------------------//
 	e.GET("/tests", controllers.GetTestsController)
@@ -43,15 +43,34 @@ func New(e *echo.Echo) {
 	e.PUT("/patients/:id", controllers.UpdatePatientsController)
 	e.DELETE("/patients/:id", controllers.DeletePatientsController)
 
+
+	///------------------Non Authorized users ----------------------//
+	// e.GET("/users", controllers.GetPatientsController)
+	// e.GET("/users/:id", controllers.GetPatientsIdController)
+	// e.POST("/users", controllers.CreatePatientsController)
+	// e.PUT("/users/:id", controllers.UpdatePatientsController)
+	// e.DELETE("/users/:id", controllers.DeletePatientsController)
+
+	//------------------ Login Controllers ----------------------//
+	e.POST("/checkers/login", controllers.LoginChecker)
+	e.POST("/doctors/login", controllers.LoginDoctor)
+	e.POST("/patients/login", controllers.LoginPatient)
+	e.POST("/users/login", controllers.LoginUserController)
+	e.POST("/register", controllers.RegisterUserController)
+
 	//------------------ Logout Controllers ----------------------//
 	e.POST("/checkers/logout/:id", controllers.LogoutChecker)
 	e.POST("/doctors/logout/:id", controllers.LogoutDoctor)
 	e.POST("/patients/logout/:id", controllers.LogoutPatient)
 	e.POST("/users/logout/:id", controllers.LogoutUserController)
 
+
 	//AUTHORIZATION JWT
 	eJwt := e.Group("")
 	eJwt.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
+
+
+	//------------------ Adding, Updating and Deleting Covid Test for Doctors ----------------------//
 
 	//------------------ Login Controllers ----------------------//
 	eJwt.POST("/checkers/login", controllers.LoginChecker)
@@ -60,6 +79,7 @@ func New(e *echo.Echo) {
 	eJwt.POST("/users/login", controllers.LoginUserController)
 
 	//------------------ Creating Covid Test for Doctors ----------------------//
+
 	eJwt.POST("/tests", controllers.CreateTestsController)
 
 	//------------------ Getting Covid Test for Checkers ----------------------//

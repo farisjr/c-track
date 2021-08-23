@@ -38,8 +38,9 @@ func LoginUserController(c echo.Context) error {
 		})
 	}
 	mapUserLogin := map[string]interface{}{
-		"ID":    user.UserID,
+		"ID":    user.ID,
 		"Name":  user.Username,
+		"Role":  user.Role,
 		"Token": user.Token,
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
