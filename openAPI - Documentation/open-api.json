@@ -1,0 +1,1300 @@
+{
+	"openapi":"3.0.3",
+	"info": {
+		"title": "C-Track App RESTful API",
+		"version": "1.0",
+		"description": "OpenAPI for C-Track App RESTful API",
+		"contact": {
+			"name": "C-Track App Team",
+			"email": "pebruwantoro.doni@gmail.com",
+			"url": "https://www.linkedin.com/in/doni-pebruwantoro-7bb145136/"
+		},
+		"license": {
+			"name": "APACHE 2.0",
+			"url": "https://www.apache.org/licenses/LICENSE-2.0"
+		}
+	},
+	"externalDocs": {
+		"description":"Github C-Track App",
+		"url": "https://github.com/pebruwantoro"
+	},
+	"servers": [
+		{
+			"description": "C-Track App List API Server",
+			"url": "https://{environment}.menyesuaikan ya",
+			"variables": {
+				"environment": {
+					"default": "dev",
+					"enum": [
+						"dev",
+						"qa",
+						"prod"
+					]
+				}
+			}
+		}
+	],
+	"paths": {
+		"/login/users": {
+			"post": {
+				"tags": ["C-Track App - Login"],
+				"summary": "Login When You Have User Account",
+				"description": "Login into C-Track App When You Have User Account",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateOrUpdateUser"
+							},
+							"examples": {
+								"Doni Pebruwantoro": {
+									"description": "Login into C-Track App When You Have User Account Doni Pebruwantoro",
+									"value": {
+										"id": "351210010120090008",
+										"password": "012345"
+									}
+								},
+								"David Beckham": {
+									"description": "Login into C-Track App When You Have User Account David Beckham",
+									"value": {
+										"id": "351910010120090001",
+										"password": "123456"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Success Login into C-Track App",
+						"content": {
+							"application/json" : {
+								"schema": {
+									"$ref": "#/components/schemas/CreateOrUpdateUser"
+								},
+								"examples": {
+									"Doni Pebruwantoro": {
+										"description": "Success Login into C-Track App as Doni Pebruwantoro",
+										"value": "Success Login into C-Track App as Doni Pebruwantoro"
+									},
+									"David Beckham": {
+										"description": "Success Login into C-Track App as David Beckham",
+										"value": "Success Login into C-Track App as David Beckham"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users": {
+			"post": {
+				"tags": ["C-Track App - User"],
+				"summary": "Create New User",
+				"description": "Create New User Account",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateOrUpdateUser"
+							},
+							"examples": {
+								"Doni Pebruwantoro": {
+									"description": "Example Create New User Account Doni Pebruwantoro",
+									"value": {
+										"id": "351210010120090008",
+										"name": "Doni Pebruwantoro",
+										"email": "painakatsuki@gmail.com",
+										"password": "012345",
+										"phone number": "081927818989"
+									}
+								},
+								"David Beckham": {
+									"description": "Example Create New User Account David Beckham",
+									"value": {
+										"id": "351910010120090001",
+										"name": "David Beckham",
+										"email": "beckham@gmail.com",
+										"password": "123456",
+										"phone number": "081111111111"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Success Create New User Account",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"Doni Pebruwantoro": {
+										"description": "Example Create New User Account Doni Pebruwantoro",
+										"value": {
+											"id": "351210010120090008",
+											"name": "Doni Pebruwantoro",
+											"email": "painakatsuki@gmail.com",
+											"password": "012345",
+											"phone number": "081927818989"
+										}
+									},
+									"David Beckham": {
+										"description": "Example Create New User Account David Beckham",
+										"value": {
+											"id": "351910010120090001",
+											"name": "David Beckham",
+											"email": "beckham@gmail.com",
+											"password": "123456",
+											"phone number": "081111111111"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			} 
+		},
+		"/users/{userId}": {
+			"get" : {
+				"tags": ["C-Track App - User"],
+				"summary": "Get Data User by id",
+				"description": "Get Data User by id",
+				"parameters": [
+					{
+						"name": "userId",
+						"in": "path",
+						"required": true,
+						"description": "Filter Get Data User by id",
+						"schema": {
+							"type": "string",
+							"nullable": false,
+							"minLength": 1,
+							"maxLength": 16
+						},
+						"examples": {
+							"351210010120090008": {
+								"value": "351210010120090008"
+							},
+							"351910010120090001": {
+								"value": "351910010120090001"
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success Get Data User by id",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ArrayUsers"
+								},
+								"examples": {
+									"success": {
+										"description": "Example Success Get Data User by id",
+										"value": [
+											{
+												"id": "351210010120090008",
+												"name": "Doni Pebruwantoro",
+												"email": "painakatsuki@gmail.com",
+												"phone number": "081927818989"
+											},
+											{
+												"id": "351910010120090001",
+												"name": "David Beckham",
+												"email": "beckham@gmail.com",
+												"phone number": "081111111111"
+											}
+										]
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": ["C-Track App - User"],
+				"summary": "Update Data User by id",
+				"description": "Update Data User by id",
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/userId"
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateOrUpdateUser"
+							},
+							"examples": {
+								"Doni Pebruwantoro": {
+									"description": "Example Update User Account Doni Pebruwantoro",
+									"value": {
+										"id": "351210010120090008",
+										"name": "Doni Pebruwantoro",
+										"email": "painakatsuki@gmail.com",
+										"password" : "012345",
+										"phone number": "089978799897"
+									}
+								},
+								"David Beckham": {
+									"description": "Example Update User Account David Beckham",
+									"value": {
+										"id": "351910010120090001",
+										"name": "David Beckham",
+										"email": "beckham@gmail.com",
+										"password" : "123456",
+										"phone number": "082211111111"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Success Update Data User",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"Doni Pebruwantoro": {
+										"description": "Example Update User Account Doni Pebruwantoro",
+										"value": {
+											"id": "351210010120090008",
+											"name": "Doni Pebruwantoro",
+											"email": "painakatsuki@gmail.com",
+											"password" : "012345",
+											"phone number": "089978799897"
+										}
+									},
+									"David Beckham": {
+										"description": "Example Update User Account David Beckham",
+										"value": {
+											"id": "351910010120090001",
+											"name": "David Beckham",
+											"email": "beckham@gmail.com",
+											"password" : "123456",
+											"phone number": "082211111111"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["C-Track App - User"],
+				"summary": "Delete Data User by id",
+				"description": "Delete Data User by id",
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/userId"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success Delete User Account",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean"
+										}
+									}
+								},
+								"examples": {
+									"success": {
+										"description": "Success Delete User Account",
+										"value": {
+											"success": true
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Failed Delete User",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean"
+										}
+									}
+								},
+								"examples": {
+									"failed": {
+										"description": "Failed Delete User",
+										"value": {
+											"success": false
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/nakes": {
+			"post": {
+				"tags": ["C-Track App - Nakes"],
+			  	"summary": "Create New Nakes",
+				"description": "Create New Nakes Account",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateOrUpdateUser"
+							},
+							"examples": {
+								"dr. Boyke Santoso": {
+									"description": "Example Create New Nakes Account dr. Boyke Santoso",
+									"value": {
+										"id": "3030303030303030",
+										"name": "dr. Boyke Santoso",
+										"email": "smartdoctor@gmail.com",
+										"password": "012345",
+										"phone number": "085789101112"
+									}
+								},
+								"dr. Felix Harahap": {
+									"description": "Example Create New Nakes Account dr. Felix Harahap",
+									"value": {
+										"id": "3131313131313131",
+										"name": "dr. Felix Harahap",
+										"email": "cleverdoctor@gmail.com",
+										"password": "123456",
+										"phone number": "081717171717"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Success Create New Nakes Account",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"dr. Boyke Santoso": {
+										"description": "Example Create New Nakes Account dr. Boyke Santoso",
+										"value": {
+											"id": "3030303030303030",
+											"name": "dr. Boyke Santoso",
+											"email": "smartdoctor@gmail.com",
+											"password": "012345",
+											"phone number": "085789101112"
+										}
+									},
+									"dr. Felix Harahap": {
+										"description": "Example Create New User Account dr. Felix Harahap",
+										"value": {
+											"id": "3131313131313131",
+											"name": "dr. Felix Harahap",
+											"email": "cleverdoctor@gmail.com",
+											"password": "123456",
+											"phone number": "081717171717"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			} 
+		},
+		  "/nakes/{nakesId}": {
+			"get" : {
+				"tags": ["C-Track App - Nakes"],
+			  	"summary": "Get Data Nakes by id",
+				"description": "Get Data Nakes by id",
+				"parameters": [
+					{
+						"name": "nakesId",
+						"in": "path",
+						"required": true,
+						"description": "Filter Get Data Nakes by id",
+						"schema": {
+							"type": "string",
+							"nullable": false,
+							"minLength": 1,
+							"maxLength": 16
+						},
+						"examples": {
+							"3030303030303030": {
+								"value": "3030303030303030"
+							},
+							"3131313131313131": {
+								"value": "3131313131313131"
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success Get Data Nakes by id",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ArrayUsers"
+								},
+								"examples": {
+									"success": {
+										"description": "Example Success Get Data Nakes by id",
+										"value": [
+											{
+												"id": "3030303030303030",
+												"name": "dr. Boyke Santoso",
+												"email": "smartdoctor@gmail.com",
+												"phone number": "085789101112"
+											},
+											{
+												"id": "3131313131313131",
+												"name": "dr. Felix Harahap",
+												"email": "cleverdoctor@gmail.com",
+												"phone number": "081717171717"
+											}
+										]
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": ["C-Track App - Nakes"],
+			  	"summary": "Update Data Nakes by id",
+				"description": "Update Data Nakes by id",
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/nakesId"
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateOrUpdateUser"
+							},
+							"examples": {
+								"dr. Boyke Santoso": {
+									"description": "Example Update Nakes Account dr. Boyke Santoso",
+									"value": {
+										"id": "3030303030303030",
+										"name": "dr. Boyke Santoso",
+										"email": "smartdoctor@gmail.com",
+										"password" : "012345",
+										"phone number": "081616161616"
+									}
+								},
+								"dr. Felix Harahap": {
+									"description": "Example Update Nakes Account dr. Felix Harahap",
+									"value": {
+										"id": "3131313131313131",
+										"name": "dr. Felix Harahap",
+										"email": "cleverdoctor@gmail.com",
+										"password" : "123456",
+										"phone number": "081818181818"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Success Update Data Nakes",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"dr. Boyke Santoso": {
+										"description": "Example Update Nakes Account dr. Boyke Santoso",
+										"value": {
+											"id": "3030303030303030",
+											"name": "dr. Boyke Santoso",
+											"email": "smartdoctor@gmail.com",
+											"password" : "012345",
+											"phone number": "081616161616"
+										}
+									},
+									"dr. Felix Harahap": {
+										"description": "Example Update Nakes Account dr. Felix Harahap",
+										"value": {
+											"id": "3131313131313131",
+											"name": "dr. Felix Harahap",
+											"email": "cleverdoctor@gmail.com",
+											"password" : "123456",
+											"phone number": "081818181818"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["C-Track App - Nakes"],
+			  	"summary": "Delete Data Nakes by id",
+				"description": "Delete Data Nakes by id",
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/nakesId"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success Delete Nakes Account",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean"
+										}
+									}
+								},
+								"examples": {
+									"success": {
+										"description": "Success Delete Nakes Account",
+										"value": {
+											"success": true
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Failed Delete Nakes",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean"
+										}
+									}
+								},
+								"examples": {
+									"failed": {
+										"description": "Failed Delete Nakes",
+										"value": {
+											"success": false
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		  "/checker": {
+			"post": {
+				"tags": ["C-Track App - Checker"],
+			  	"summary": "Create New Checker",
+				"description": "Create New Checker",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateOrUpdateUser"
+							},
+							"examples": {
+								"Bambang Pranoto": {
+									"description": "Example Create New Checker Account Bambang Pranoto",
+									"value": {
+										"id": "1818181818181818",
+										"name": "Bambang Pranoto",
+										"email": "securityganteng@gmail.com",
+										"password": "012345",
+										"phone number": "082222222222"
+									}
+								},
+								"Kurniawan Yulianto": {
+									"description": "Example Create New Checker Account Kurniawan Yulianto",
+									"value": {
+										"id": "1919191919191919",
+										"name": "Kurniawan Yulianto",
+										"email": "checkerhebat@gmail.com",
+										"password": "123456",
+										"phone number": "085777777777"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Success Create New Checker Account",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"Bambang Pranoto": {
+										"description": "Example Create New Checker Account Bambang Pranoto",
+										"value": {
+											"id": "1818181818181818",
+											"name": "Bambang Pranoto",
+											"email": "securityganteng@gmail.com",
+											"password": "012345",
+											"phone number": "082222222222"
+										}
+									},
+									"Kurniawan Yulianto": {
+										"description": "Example Create New Checker Account Kurniawan Yulianto",
+										"value": {
+											"id": "1919191919191919",
+											"name": "Kurniawan Yulianto",
+											"email": "checkerhebat@gmail.com",
+											"password": "123456",
+											"phone number": "085777777777"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			} 
+		},
+		  "/checker/{checkerId}": {
+			"get" : {
+				"tags": ["C-Track App - Checker"],
+				"summary": "Get Data Checker by id",
+				"description": "Get Data Checker by id",
+				"parameters": [
+					{
+						"name": "checkerId",
+						"in": "path",
+						"required": true,
+						"description": "Filter Get Data Checker by id",
+						"schema": {
+							"type": "string",
+							"nullable": false,
+							"minLength": 1,
+							"maxLength": 16
+						},
+						"examples": {
+							"1818181818181818": {
+								"value": "1818181818181818"
+							},
+							"1919191919191919": {
+								"value": "1919191919191919"
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success Get Data Checker by id",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ArrayUsers"
+								},
+								"examples": {
+									"success": {
+										"description": "Example Success Get Data Checker by id",
+										"value": [
+											{
+												"id": "1818181818181818",
+												"name": "Bambang Pranoto",
+												"email": "securityganteng@gmail.com",
+												"phone number": "082222222222"
+											},
+											{
+												"id": "1919191919191919",
+												"name": "Kurniawan Yulianto",
+												"email": "checkerhebat@gmail.com",
+												"phone number": "085777777777"
+											}
+										]
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": ["C-Track App - Checker"],
+			  	"summary": "Update Data Checker by id",
+				"description": "Update Data Checker by id",
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/checkerId"
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateOrUpdateUser"
+							},
+							"examples": {
+								"Bambang Pranoto": {
+									"description": "Example Update Checker Account Bambang Pranoto",
+									"value": {
+										"id": "1818181818181818",
+										"name": "Bambang Pranoto",
+										"email": "securityganteng@gmail.com",
+										"password" : "012345",
+										"phone number": "082121212121"
+									}
+								},
+								"Kurniawan Yulianto": {
+									"description": "Example Update Checker Account Kurniawan Yulianto",
+									"value": {
+										"id": "1919191919191919",
+										"name": "Kurniawan Yulianto",
+										"email": "checkerhebat@gmail.com",
+										"password" : "123456",
+										"phone number": "085767676767"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Success Update Data Checker",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"Bambang Pranoto": {
+										"description": "Example Update Checker Account Bambang Pranoto",
+										"value": {
+											"id": "1818181818181818",
+											"name": "Bambang Pranoto",
+											"email": "securityganteng@gmail.com",
+											"password" : "012345",
+											"phone number": "082121212121"
+										}
+									},
+									"Kurniawan Yulianto": {
+										"description": "Example Update Checker Account Kurniawan Yulianto",
+										"value": {
+											"id": "1919191919191919",
+											"name": "Kurniawan Yulianto",
+											"email": "checkerhebat@gmail.com",
+											"password" : "123456",
+											"phone number": "085767676767"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["C-Track App - Checker"],
+			  	"summary": "Delete Data Checker by id",
+				"description": "Delete Data Checker by id",
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/checkerId"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success Delete Checker Account",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean"
+										}
+									}
+								},
+								"examples": {
+									"success": {
+										"description": "Success Delete Checker Account",
+										"value": {
+											"success": true
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Failed Delete Checker",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean"
+										}
+									}
+								},
+								"examples": {
+									"failed": {
+										"description": "Failed Delete Checker",
+										"value": {
+											"success": false
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		  "/test": {
+			"post": {
+				"tags": ["C-Track App - Test"],
+			  	"summary": "Create Testing Covid Result",
+				"description": "Create Testing Covid Result",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateOrUpdateTest"
+							},
+							"examples": {
+								"1": {
+									"description": "Example Create Testing Covid Result 1",
+									"value": {
+										"id": 1,
+										"NIK": "351210010120090008",
+										"date of test": "17/08/2021",
+										"test_category_id": 1,
+										"str_id": "2121212121212121",
+										"date of result": "17/08/2021",
+										"result_status": "negatif",
+										"note": "negatif"
+									}
+								},
+								"2": {
+									"description": "Example Create Testing Covid Result 2",
+									"value": {
+										"id": 2,
+										"NIK": "351910010120090001",
+										"date of test": "17/08/2021",
+										"test_category_id": 2,
+										"str_id": "2121212121212121",
+										"date of result": "17/08/2021",
+										"result_status": "negatif",
+										"note": "negatif"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Success Create Testing Covid Result",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/test"
+								},
+								"examples": {
+									"1": {
+										"description": "Example Testing Covid Result 1",
+										"value": {
+											"id": 1,
+											"NIK": "351210010120090008",
+											"date of test": "17/08/2021",
+											"test_category_id": 1,
+											"str_id": "2121212121212121",
+											"date of result": "17/08/2021",
+											"result_status": "negatif",
+											"note": "negatif"
+										}
+									},
+									"2": {
+										"description": "Example Testing Covid Result 2",
+										"value": {
+											"id": 2,
+											"NIK": "351910010120090001",
+											"date of test": "17/08/2021",
+											"test_category_id": 2,
+											"str_id": "2121212121212121",
+											"date of result": "17/08/2021",
+											"result_status": "negatif",
+											"note": "negatif"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			} 
+		},
+		  "/test/{testId}": {
+			"get" : {
+				"tags": ["C-Track App - Test"],
+			  	"summary": "Get Data Testing Covid Result by id",
+				"description": "Get Data Testing Covid Result by id",
+				"parameters": [
+					{
+						"name": "testId",
+						"in": "path",
+						"required": true,
+						"description": "Filter Get Data Testing Covid by id",
+						"schema": {
+							"type": "string",
+							"nullable": false,
+							"minLength": 1,
+							"maxLength": 16
+						},
+						"examples": {
+							"1": {
+								"value": "1"
+							},
+							"2": {
+								"value": "2"
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success Get Data Testing Covid Result by id",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ArrayTest"
+								},
+								"examples": {
+									"success": {
+										"description": "Example Success Get Data Testing Covid Result by id",
+										"value": [
+											{
+												"id": 1,
+												"NIK": "351210010120090008",
+												"date of test": "17/08/2021",
+												"test_category_id": 1,
+												"str_id": "2121212121212121",
+												"date of result": "17/08/2021",
+												"result_status": "negatif",
+												"note": "negatif"
+											},
+											{
+												"id": 2,
+												"NIK": "351910010120090001",
+												"date of test": "17/08/2021",
+												"test_category_id": 2,
+												"str_id": "2121212121212121",
+												"date of result": "17/08/2021",
+												"result_status": "negatif",
+												"note": "negatif"
+											}
+										]
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": ["C-Track App - Test"],
+			  	"summary": "Update Data Testing Covid Result id",
+				"description": "Update Data Testing Covid Result id",
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/testId"
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateOrUpdateTest"
+							},
+							"examples": {
+								"1": {
+									"description": "Example Update Testing Covid Result 1",
+									"value": {
+										"id": 1,
+										"NIK": "351210010120090008",
+										"date of test": "17/08/2021",
+										"test_category_id": 1,
+										"str_id": "2121212121212121",
+										"date of result": "17/08/2021",
+										"result_status": "negatif",
+										"note": "negatif"
+									}
+								},
+								"2": {
+									"description": "Example Update Testing Covid Result 2",
+									"value": {
+										"id": 2,
+										"NIK": "351910010120090001",
+										"date of test": "17/08/2021",
+										"test_category_id": 2,
+										"str_id": "2121212121212121",
+										"date of result": "17/08/2021",
+										"result_status": "negatif",
+										"note": "negatif"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Success Update Testing Covid Result",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"1": {
+										"description": "Example Update Testing Covid Result 1",
+										"value": {
+											"id": 1,
+											"NIK": "351210010120090008",
+											"date of test": "17/08/2021",
+											"test_category_id": 1,
+											"str_id": "2121212121212121",
+											"date of result": "17/08/2021",
+											"result_status": "negatif",
+											"note": "negatif"
+										}
+									},
+									"2": {
+										"description": "Example Update Testing Covid Result 2",
+										"value": {
+											"id": 2,
+											"NIK": "351910010120090001",
+											"date of test": "17/08/2021",
+											"test_category_id": 2,
+											"str_id": "2121212121212121",
+											"date of result": "17/08/2021",
+											"result_status": "negatif",
+											"note": "negatif"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"securitySchemes": {},
+		"parameters": {
+			"userId": {
+				"name": "userId",
+				"in": "path",
+				"required": true,
+				"description": "User id for get and update",
+				"schema": {
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 16
+				}
+			},
+			"nakesId": {
+				"name": "nakesId",
+				"in": "path",
+				"required": true,
+				"description": "Nakes id for get and update",
+				"schema": {
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 16
+				}
+			},
+			"checkerId": {
+				"name": "checkerId",
+				"in": "path",
+				"required": true,
+				"description": "Checker id for get and update",
+				"schema": {
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 16
+				}
+			},
+			"testId": {
+				"name": "testId",
+				"in": "path",
+				"required": true,
+				"description": "Test id for get and update",
+				"schema": {
+					"type": "number",
+					"format": "int32",
+					"minLength": 1,
+					"maxLength": 10000
+				}
+			}
+		},
+		"schemas": {
+			"users" : {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"phone number": {
+						"type": "string"
+					}
+				}
+			},
+			"test" : {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"NIK": {
+						"type": "string"
+					},
+					"date_of_test": {
+						"type": "string"
+					},
+					"test_category_id": {
+						"type": "number",
+						"format": "int32"
+					},
+					"str_id": {
+						"type": "string"
+					},
+					"date_of_result": {
+						"type": "string"
+					},
+					"result_status": {
+						"type": "string"
+					},
+					"note": {
+						"type": "string"
+					}
+				}
+			},
+			"ArrayUsers" : {
+				"type": "array",
+				"items": {
+					"$ref": "#/components/schemas/users"
+				}
+			},
+			"ArrayTest" : {
+				"type": "array",
+				"items": {
+					"$ref": "#/components/schemas/test"
+				}
+			},
+			"CreateOrUpdateUser": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"phone number": {
+						"type": "string"
+					}
+				}
+			},
+			"CreateOrUpdateTest": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"NIK": {
+						"type": "string"
+					},
+					"date_of_test": {
+						"type": "string"
+					},
+					"test_category_id": {
+						"type": "number",
+						"format": "int32"
+					},
+					"str_id": {
+						"type": "string"
+					},
+					"date_of_result": {
+						"type": "string"
+					},
+					"result_status": {
+						"type": "string"
+					},
+					"note": {
+						"type": "string"
+					}
+				}
+			}
+		}
+	}
+}
