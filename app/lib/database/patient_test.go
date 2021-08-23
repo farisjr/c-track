@@ -4,13 +4,14 @@ import (
 	"app/config"
 	"app/models"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
 
 var (
 	mockDBPatient = models.Patient{
-		//Dob:            2010 - 10 - 10,
+		Dob:            time.Now(),
 		Pob:            "Surabaya",
 		Address:        "Surabaya",
 		City:           "Surabaya",
@@ -18,140 +19,133 @@ var (
 		Gender:         "Male",
 		Blood_type:     "O",
 		Religion:       "Kristen",
-		Marital_Status: "Mariage",
-		User:           models.User{},
-	}
-
-	mockDBPatientEdit = models.Patient{
-		//Dob:            2010 - 10 - 10,
-		Pob:            "Surabaya",
-		Address:        "Jakarta",
-		City:           "Jakarta",
-		Province:       "Jakarta",
-		Gender:         "Male",
-		Blood_type:     "O",
-		Religion:       "Kristen",
-		Marital_Status: "Mariage",
-		User:           models.User{},
+		Marital_Status: "Single",
+		User: models.User{
+			UserID:   3510101010101010,
+			Username: "boruto@gmail.com",
+			Password: "123456",
+			Role:     models.Role("Patient"),
+			Token:    "jafniaebfiajnfe",
+		},
 	}
 )
 
-func TestCreatePatientSuccess(t *testing.T) {
-	config.InitDBTest()
-	config.DB.Migrator().DropTable(&models.Patient{})
-	config.DB.Migrator().AutoMigrate(&models.Patient{})
+func TestCreatePatient(t *testing.T) {
+	config.InitDBTest()                                 // connect to database
+	config.DB.Migrator().DropTable(&models.Patient{})   // delete table from database
+	config.DB.Migrator().AutoMigrate(&models.Patient{}) // create table from database
+	// inject patient data from MockDBPatient into patient's table
 	createdPatient, err := CreatePatientTest(mockDBPatient)
+	// check and test patient data, if data injection exist in patient's table database, test will be pass
 	if assert.NoError(t, err) {
 		assert.Equal(t, "Surabaya", createdPatient.Pob)
 		assert.Equal(t, "Surabaya", createdPatient.Address)
 		assert.Equal(t, "Surabaya", createdPatient.City)
 		assert.Equal(t, "Jawa Timur", createdPatient.Province)
-		assert.Equal(t, "Male", createdPatient.Gender)
-		assert.Equal(t, "O", createdPatient.Blood_type)
-		assert.Equal(t, "Kristen", createdPatient.Religion)
-		assert.Equal(t, "Mariage", createdPatient.Marital_Status)
+		assert.Equal(t, models.Male, createdPatient.Gender)
+		assert.Equal(t, models.O, createdPatient.Blood_type)
+		assert.Equal(t, models.Kristen, createdPatient.Religion)
+		assert.Equal(t, models.Single, createdPatient.Marital_Status)
 	}
 }
 
-func TestCreatePatientError(t *testing.T) {
-	config.InitDBTest()
-	config.DB.Migrator().DropTable(&models.Patient{})
-	_, err := CreatePatientTest(mockDBPatient)
-	assert.Error(t, err)
-}
-
-func TestGetPatientSuccess(t *testing.T) {
-	config.InitDBTest()
-	config.DB.Migrator().DropTable(&models.Patient{})
-	config.DB.Migrator().AutoMigrate(&models.Patient{})
-	createdPatient, err := CreatePatientTest(mockDBPatient)
-	if assert.NoError(t, err) {
-		assert.Equal(t, "1", createdPatient.ID)
-		assert.Equal(t, "2020-01-01", createdPatient.Dob)
-		assert.Equal(t, "Surabaya", createdPatient.Pob)
-		assert.Equal(t, "Surabaya", createdPatient.Address)
-		assert.Equal(t, "Surabaya", createdPatient.City)
-		assert.Equal(t, "Jawa Timur", createdPatient.Province)
-		assert.Equal(t, "Male", createdPatient.Gender)
-		assert.Equal(t, "O", createdPatient.Blood_type)
-		assert.Equal(t, "Kristen", createdPatient.Religion)
-		assert.Equal(t, "Mariage", createdPatient.Marital_Status)
-	}
+func TestGetPatient(t *testing.T) {
+	config.InitDBTest()                                 // connect to database
+	config.DB.Migrator().DropTable(&models.Patient{})   // delete table from database
+	config.DB.Migrator().AutoMigrate(&models.Patient{}) // create table from database
+	// inject patient data from MockDBPatient into patient's table
+	CreatePatientTest(mockDBPatient)
+	// get patient data from database
 	getPatient, err := GetPatientTest()
+	// check and test patient data, if data exist in patient's table database, test will be pass
 	if assert.NoError(t, err) {
-		assert.Equal(t, "1", createdPatient.ID)
-		assert.Equal(t, "2020-01-01", createdPatient.Dob)
 		assert.Equal(t, "Surabaya", getPatient.Pob)
 		assert.Equal(t, "Surabaya", getPatient.Address)
 		assert.Equal(t, "Surabaya", getPatient.City)
 		assert.Equal(t, "Jawa Timur", getPatient.Province)
-		assert.Equal(t, "Male", getPatient.Gender)
-		assert.Equal(t, "O", getPatient.Blood_type)
-		assert.Equal(t, "Kristen", getPatient.Religion)
-		assert.Equal(t, "Mariage", getPatient.Marital_Status)
+		assert.Equal(t, models.Male, getPatient.Gender)
+		assert.Equal(t, models.O, getPatient.Blood_type)
+		assert.Equal(t, models.Kristen, getPatient.Religion)
+		assert.Equal(t, models.Single, getPatient.Marital_Status)
 	}
 }
 
-func TestGetPatientError(t *testing.T) {
-	config.InitDBTest()
-	config.DB.Migrator().DropTable(&models.Patient{})
-	CreatePatient(mockDBPatient)
-	_, err := GetPatient()
-	assert.Error(t, err)
-}
-
-/*func TestGetPatientByIdSuccess(t *testing.T) {
-	config.InitDBTest()
-	config.DB.Migrator().DropTable(&models.Patient{})
-	config.DB.Migrator().AutoMigrate(&models.Patient{})
-}
-
-func TestGetPatientByIdError(t *testing.T) {
-	config.InitDBTest()
-	config.DB.Migrator().DropTable(&models.Patient{})
-}*/
-
-func TestUpdatePatientSuccess(t *testing.T) {
-	config.InitDBTest()
-	config.DB.Migrator().DropTable(&models.Patient{})
-	config.DB.Migrator().AutoMigrate(&models.Patient{})
+func TestGetPatientById(t *testing.T) {
+	config.InitDBTest()                                 // connect to database
+	config.DB.Migrator().DropTable(&models.Patient{})   // delete table from database
+	config.DB.Migrator().AutoMigrate(&models.Patient{}) // create table from database
+	// inject patient data from MockDBPatient into patient's table
 	createdPatient, _ := CreatePatientTest(mockDBPatient)
-	patient, _ := GetPatientByIdTest(int(createdPatient.ID))
-	patient.Pob = "Surabaya"
-	updatePatient, _ := UpdatePatientTest(patient)
-	updatedPatient, err := GetPatientByIdTest(int(updatePatient.ID))
+	// get patient data by id from database
+	getOnePatient, err := GetPatientByIdTest(int(createdPatient.ID))
+	// check and test patient data, if data exist in patient's table database, test will be pass
 	if assert.NoError(t, err) {
-		assert.Equal(t, "Surabaya", updatedPatient.Pob)
+		assert.Equal(t, 1, int(getOnePatient.ID))
+		assert.Equal(t, "Surabaya", getOnePatient.Pob)
+		assert.Equal(t, "Surabaya", getOnePatient.Address)
+		assert.Equal(t, "Surabaya", getOnePatient.City)
+		assert.Equal(t, "Jawa Timur", getOnePatient.Province)
+		assert.Equal(t, models.Male, getOnePatient.Gender)
+		assert.Equal(t, models.O, getOnePatient.Blood_type)
+		assert.Equal(t, models.Kristen, getOnePatient.Religion)
+		assert.Equal(t, models.Single, getOnePatient.Marital_Status)
 	}
 }
 
-func TestUpdatePatientError(t *testing.T) {
-	config.InitDBTest()
-	config.DB.Migrator().DropTable(&models.Patient{})
-	_, err := UpdatePatientTest(mockDBPatientEdit)
-	assert.Error(t, err)
+func TestUpdatePatient(t *testing.T) {
+	config.InitDBTest()                                 // connect to database
+	config.DB.Migrator().DropTable(&models.Patient{})   // delete table from database
+	config.DB.Migrator().AutoMigrate(&models.Patient{}) // create table from database
+	// inject patient data from MockDBPatient into patient's table
+	createdPatient, _ := CreatePatientTest(mockDBPatient)
+	// get patient data by id from database
+	patient, _ := GetPatientById(int(createdPatient.ID))
+	// update patient data into patient's table
+	patient.Address = "Bandung"
+	patient.City = "Bandung"
+	patient.Province = "Jawa Barat"
+	// inject update patient data into patient's table
+	updatePatient, err := UpdatePatientTest(patient)
+	// check and test patient data, if data exist in patient's table database, test will be pass
+	if assert.NoError(t, err) {
+		assert.Equal(t, 1, int(updatePatient.ID))
+		assert.Equal(t, "Surabaya", updatePatient.Pob)
+		assert.Equal(t, "Bandung", updatePatient.Address)
+		assert.Equal(t, "Bandung", updatePatient.City)
+		assert.Equal(t, "Jawa Barat", updatePatient.Province)
+		assert.Equal(t, models.Male, updatePatient.Gender)
+		assert.Equal(t, models.O, updatePatient.Blood_type)
+		assert.Equal(t, models.Kristen, updatePatient.Religion)
+		assert.Equal(t, models.Single, updatePatient.Marital_Status)
+	}
 }
 
-/*
-func TestDeletePatientSuccess(t *testing.T) {
-	config.InitDBTest()
-	config.DB.Migrator().DropTable(&models.Patient{})
-	config.DB.Migrator().AutoMigrate(&models.Patient{})
+func TestDeletePatient(t *testing.T) {
+	config.InitDBTest()                                 // connect to database
+	config.DB.Migrator().DropTable(&models.Patient{})   // delete table from database
+	config.DB.Migrator().AutoMigrate(&models.Patient{}) // create table from database
+	// inject patient data from MockDBPatient into patient's table
+	createdPatient, _ := CreatePatientTest(mockDBPatient)
+	// get patient data by id from database
+	patient, _ := GetPatientById(int(createdPatient.ID))
+	// delete patient data from database, data still exist in database because of using soft delete
+	deletedPatient, err := DeletePatientTest(int(patient.ID))
+	// check and test patient data, if data still exist in patient's table database, test will be pass
+	if assert.NoError(t, err) {
+		assert.Equal(t, 1, int(deletedPatient.ID))
+		assert.Equal(t, "Surabaya", deletedPatient.Pob)
+		assert.Equal(t, "Surabaya", deletedPatient.Address)
+		assert.Equal(t, "Surabaya", deletedPatient.City)
+		assert.Equal(t, "Jawa Timur", deletedPatient.Province)
+		assert.Equal(t, models.Male, deletedPatient.Gender)
+		assert.Equal(t, models.O, deletedPatient.Blood_type)
+		assert.Equal(t, models.Kristen, deletedPatient.Religion)
+		assert.Equal(t, models.Single, deletedPatient.Marital_Status)
+	}
 }
 
-func TestDeletePatientError(t *testing.T) {
-	config.InitDBTest()
-	config.DB.Migrator().DropTable(&models.Patient{})
+func TestPatientLogin(t *testing.T) {
+	config.InitDBTest()                                 // connect to database
+	config.DB.Migrator().DropTable(&models.Patient{})   // delete table from database
+	config.DB.Migrator().AutoMigrate(&models.Patient{}) // create table from database
 }
-
-func TestPatientLoginSuccess(t *testing.T) {
-	config.InitDBTest()
-	config.DB.Migrator().DropTable(&models.Patient{})
-	config.DB.Migrator().AutoMigrate(&models.Patient{})
-}
-
-func TestPatientLoginError(t *testing.T) {
-	config.InitDBTest()
-	config.DB.Migrator().DropTable(&models.Patient{})
-}
-*/
