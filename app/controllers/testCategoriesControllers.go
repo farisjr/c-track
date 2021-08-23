@@ -46,7 +46,7 @@ func GetTestCategoriesIdController(c echo.Context) error {
 			"message": "invalid id",
 		})
 	}
-	testCategories, err := database.GetTestCategoriesId(id)
+	testCategories, err := database.GetTestCategory(id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "cannot fetch data",
@@ -66,9 +66,9 @@ func DeleteTestCategoriesByIdController(c echo.Context) error {
 			"message": "invalid id",
 		})
 	}
-	testCategories, err := database.GetTestCategoriesId(id)
+	testCategories, err := database.GetTestCategory(id)
 	c.Bind(&testCategories)
-	testCategoriesDeleted, err := database.DeleteTestCategoriesById(testCategories)
+	testCategoriesDeleted, err := database.DeleteTestCategory(testCategories)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "cannot delete data",
@@ -87,10 +87,15 @@ func UpdateTestCategoriesController(c echo.Context) error {
 			"message": "invalid id",
 		})
 	}
-	testCategories := database.GetUpdateTestCategories(id)
+	testCategories, err := database.GetTestCategory(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "cannot get data",
+		})
+	}
 	c.Bind(&testCategories)
-	testUpdateCategories, err1 := database.UpdateTestCategories(testCategories)
-	if err1 != nil {
+	testUpdateCategories, err := database.UpdateTestCategory(testCategories)
+	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "cannot post data",
 		})
