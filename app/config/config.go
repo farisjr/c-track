@@ -20,6 +20,16 @@ func InitDb() {
 	}
 	InitMigrate()
 }
+func InitDBTest() {
+	connectionString := "root:02021996Doni*@tcp(localhost:3306)/baru-testing?charset=utf8&parseTime=True&loc=Local"
+	//connectionString := os.Getenv("CONNECTION_STRING")
+	var err error
+	DB, err = gorm.Open(mysql.Open(connectionString), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+	InitMigrate()
+}
 
 func InitPort() {
 	/*var err error
