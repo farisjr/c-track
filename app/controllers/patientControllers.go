@@ -62,7 +62,7 @@ func LogoutPatient(c echo.Context) error {
 			"message": "invalid id",
 		})
 	}
-	logout, err := database.GetPatientById(id)
+	logout, _ := database.GetPatientById(id)
 	patient, err := database.UpdatePatient(logout)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -111,10 +111,6 @@ func CreatePatientsController(c echo.Context) error {
 	patient := models.Patient{}
 	c.Bind(&patient)
 	//Checking if id already exist
-	duplicate := database.CheckDuplicatePatient(patient)
-	if duplicate != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, duplicate.Error())
-	}
 	patients, err := database.CreatePatient(patient)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest)

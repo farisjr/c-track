@@ -3,7 +3,6 @@ package database
 import (
 	"app/config"
 	"app/models"
-	"errors"
 )
 
 func CreatePatient(patient models.Patient) (interface{}, error) {
@@ -14,7 +13,7 @@ func CreatePatient(patient models.Patient) (interface{}, error) {
 }
 
 func GetPatient() (interface{}, error) {
-	var patients []models.Patient
+	var patients models.Patient
 	if err := config.DB.Find(&patients).Error; err != nil {
 		return nil, err
 	}
@@ -46,16 +45,6 @@ func DeletePatient(id int) (interface{}, error) {
 	return patient, nil
 }
 
-func CheckDuplicatePatient(patient models.Patient) error {
-	var patients models.Patient
-	err := config.DB.Where("id = ?", patients.ID).First(&patient).Error
-	if err != nil {
-		return nil
-	}
-	err = errors.New("id Already Exist")
-	return err
-}
-
 //Login for patient with matching username and password
 func PatientLoginDB(username, password string) (models.Patient, error) {
 	var patient models.Patient
@@ -67,4 +56,45 @@ func PatientLoginDB(username, password string) (models.Patient, error) {
 		return patient, err
 	}
 	return patient, err
+}
+
+// Database for Unit Testing
+func CreatePatientTest(patient models.Patient) (models.Patient, error) {
+	if err := config.DB.Save(&patient).Error; err != nil {
+		return patient, err
+	}
+	return patient, nil
+}
+
+func GetPatientTest() (models.Patient, error) {
+	var patients models.Patient
+	if err := config.DB.Find(&patients).Error; err != nil {
+		return patients, err
+	}
+	return patients, nil
+}
+
+func GetPatientByIdTest(id int) (models.Patient, error) {
+	var patient models.Patient
+	var empty models.Patient
+
+	if err := config.DB.Find(&patient, "id=?", id).Error; err != nil {
+		return empty, err
+	}
+	return patient, nil
+}
+
+func UpdatePatientTest(patient models.Patient) (models.Patient, error) {
+	if err := config.DB.Save(&patient).Error; err != nil {
+		return patient, err
+	}
+	return patient, nil
+}
+
+func DeletePatientTest(id int) (models.Patient, error) {
+	var patient models.Patient
+	if err := config.DB.Find(&patient, "id=?", id).Delete(&patient).Error; err != nil {
+		return patient, err
+	}
+	return patient, nil
 }
