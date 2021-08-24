@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C-Track App | Register Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <form>
+        <div class="container">
+            <center>
+                <h1> User Registeration Form</h1>
+            </center>
+            <hr>
+            <label>NO ID: </label>
+            <input type="text" name="ID" placeholder="Input your NIK / Doctor ID / Employee ID" size="15" required />
+            <label>Password: </label>
+            <input type="text" name="password" placeholder="Password" size="15" required />
+            <div>
+                <label>Role :</label>
+                <select>  
+                    <option value="Course">Patient</option>  
+                    <option value="Checker">Checker</option>  
+                    <option value="Doctor">Doctor</option>  
+                </select>
+            </div>
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw" required>
+
+            <label for="psw-repeat"><b>Re-type Password</b></label>
+            <input type="password" placeholder="Retype Password" name="psw-repeat" required>
+            <button type="submit" class="registerbtn">Register</button>
+    </form>
+</body>
+
+</html>

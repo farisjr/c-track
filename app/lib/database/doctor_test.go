@@ -14,7 +14,8 @@ var (
 		MedicalFacilityName:    "RS Husada Utama Surabaya",
 		MedicalFacilityAddress: "Jl. Tunjungan Kota Surabaya",
 		User: models.User{
-			Username: "jankuat@gmail.com",
+			UserID:   11111,
+			Username: "jan@gmail.com",
 			Password: "smartdoctor",
 			Role:     models.Role("Doctor"),
 			Token:    "1919191919kdaieiauen",
@@ -84,7 +85,6 @@ func TestUpdateDoctor(t *testing.T) {
 	updateDoctor, err := UpdateDoctor(doctor)
 	// check and test doctor data, if data exist in doctor's table database, test will be pass
 	if assert.NoError(t, err) {
-		assert.Equal(t, 1, int(updateDoctor.ID))
 		assert.Equal(t, "dr. Doni Pebruwantoro", updateDoctor.Name)
 		assert.Equal(t, "RSUD Nganjuk", updateDoctor.MedicalFacilityName)
 		assert.Equal(t, "Jl. WR. Supratman Nganjuk", updateDoctor.MedicalFacilityAddress)
@@ -103,10 +103,9 @@ func TestDeleteDoctor(t *testing.T) {
 	deletedDoctor, err := DeleteDoctorById(doctor)
 	// check and test doctor data, if data still exist in doctor's table database, test will be pass
 	if assert.NoError(t, err) {
-		assert.Equal(t, 1, int(deletedDoctor.ID))
 		assert.Equal(t, "dr. Doni Pebruwantoro", deletedDoctor.Name)
-		assert.Equal(t, "RSUD Nganjuk", deletedDoctor.MedicalFacilityName)
-		assert.Equal(t, "Jl. WR. Supratman Nganjuk", deletedDoctor.MedicalFacilityAddress)
+		assert.Equal(t, "RS Husada Utama Surabaya", deletedDoctor.MedicalFacilityName)
+		assert.Equal(t, "Jl. Tunjungan Kota Surabaya", deletedDoctor.MedicalFacilityAddress)
 	}
 }
 func TestCheckerLogin(t *testing.T) {

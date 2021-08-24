@@ -83,15 +83,12 @@ func TestUpdateCheckers(t *testing.T) {
 	// get checker data by id from database
 	checker, _ := GetCheckerById(int(createdChecker.EmployeeID))
 	// update checker data into checker's table
-	checker.EmployeeID = 678910111213
 	checker.OfficeName = "Mall Grand City Surabaya"
 	checker.OfficeAddress = "Jl. Darmo Indah"
 	// inject update checker data into checker's table
 	updateChecker, err := UpdateChecker(checker)
 	// check and test checker data, if data exist in checker's table database, test will be pass
 	if assert.NoError(t, err) {
-		assert.Equal(t, 1, int(updateChecker.ID))
-		assert.Equal(t, 678910111213, updateChecker.EmployeeID)
 		assert.Equal(t, "Gunawan Nur Cahyo", updateChecker.Name)
 		assert.Equal(t, "Mall Grand City Surabaya", updateChecker.OfficeName)
 		assert.Equal(t, "Jl. Darmo Indah", updateChecker.OfficeAddress)
