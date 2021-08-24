@@ -21,7 +21,7 @@ var (
 		Religion:       "Kristen",
 		Marital_Status: "Single",
 		User: models.User{
-			UserID:   3510101010101010,
+			UserID:   1010101010,
 			Username: "boruto@gmail.com",
 			Password: "123456",
 			Role:     models.Role("Patient"),
@@ -35,7 +35,7 @@ func TestCreatePatient(t *testing.T) {
 	config.DB.Migrator().DropTable(&models.Patient{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.Patient{}) // create table from database
 	// inject patient data from MockDBPatient into patient's table
-	createdPatient, err := CreatePatientTest(mockDBPatient)
+	createdPatient, err := CreatePatient(mockDBPatient)
 	// check and test patient data, if data injection exist in patient's table database, test will be pass
 	if assert.NoError(t, err) {
 		assert.Equal(t, "Surabaya", createdPatient.Pob)
@@ -54,9 +54,9 @@ func TestGetPatient(t *testing.T) {
 	config.DB.Migrator().DropTable(&models.Patient{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.Patient{}) // create table from database
 	// inject patient data from MockDBPatient into patient's table
-	CreatePatientTest(mockDBPatient)
+	CreatePatient(mockDBPatient)
 	// get patient data from database
-	getPatient, err := GetPatientTest()
+	getPatient, err := GetPatient()
 	// check and test patient data, if data exist in patient's table database, test will be pass
 	if assert.NoError(t, err) {
 		assert.Equal(t, "Surabaya", getPatient.Pob)
@@ -75,9 +75,9 @@ func TestGetPatientById(t *testing.T) {
 	config.DB.Migrator().DropTable(&models.Patient{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.Patient{}) // create table from database
 	// inject patient data from MockDBPatient into patient's table
-	createdPatient, _ := CreatePatientTest(mockDBPatient)
+	createdPatient, _ := CreatePatient(mockDBPatient)
 	// get patient data by id from database
-	getOnePatient, err := GetPatientByIdTest(int(createdPatient.ID))
+	getOnePatient, err := GetPatientById(int(createdPatient.ID))
 	// check and test patient data, if data exist in patient's table database, test will be pass
 	if assert.NoError(t, err) {
 		assert.Equal(t, 1, int(getOnePatient.ID))
@@ -97,7 +97,7 @@ func TestUpdatePatient(t *testing.T) {
 	config.DB.Migrator().DropTable(&models.Patient{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.Patient{}) // create table from database
 	// inject patient data from MockDBPatient into patient's table
-	createdPatient, _ := CreatePatientTest(mockDBPatient)
+	createdPatient, _ := CreatePatient(mockDBPatient)
 	// get patient data by id from database
 	patient, _ := GetPatientById(int(createdPatient.ID))
 	// update patient data into patient's table
@@ -105,7 +105,7 @@ func TestUpdatePatient(t *testing.T) {
 	patient.City = "Bandung"
 	patient.Province = "Jawa Barat"
 	// inject update patient data into patient's table
-	updatePatient, err := UpdatePatientTest(patient)
+	updatePatient, err := UpdatePatient(patient)
 	// check and test patient data, if data exist in patient's table database, test will be pass
 	if assert.NoError(t, err) {
 		assert.Equal(t, 1, int(updatePatient.ID))
@@ -125,11 +125,11 @@ func TestDeletePatient(t *testing.T) {
 	config.DB.Migrator().DropTable(&models.Patient{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.Patient{}) // create table from database
 	// inject patient data from MockDBPatient into patient's table
-	createdPatient, _ := CreatePatientTest(mockDBPatient)
+	createdPatient, _ := CreatePatient(mockDBPatient)
 	// get patient data by id from database
 	patient, _ := GetPatientById(int(createdPatient.ID))
 	// delete patient data from database, data still exist in database because of using soft delete
-	deletedPatient, err := DeletePatientTest(int(patient.ID))
+	deletedPatient, err := DeletePatient(int(patient.ID))
 	// check and test patient data, if data still exist in patient's table database, test will be pass
 	if assert.NoError(t, err) {
 		assert.Equal(t, 1, int(deletedPatient.ID))

@@ -13,4 +13,8 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+<<<<<<< HEAD
+=======
 prod.env
+>>>>>>> add-unit-test2
+.env

@@ -10,15 +10,15 @@ import (
 
 var (
 	mockDBTest = models.Tests{
-		Result: "Positive",
-		// TestCategories: 1,
-		// Patient:        1,
+		Result:         "Positive",
+		TestCategories: models.TestCategories{},
+		Patient:        models.Patient{},
 	}
 
 	mockDBTestEdit = models.Tests{
-		Result: "Negative",
-		// TestCategories: 2,
-		// Patient:        123,
+		Result:         "Negative",
+		TestCategories: models.TestCategories{},
+		Patient:        models.Patient{},
 	}
 )
 
@@ -67,16 +67,12 @@ func TestEditTestSuccess(t *testing.T) {
 	config.DB.Migrator().DropTable(&models.Tests{})
 	config.DB.Migrator().AutoMigrate(&models.Tests{})
 	createdTest, _ := CreateTest(mockDBTest)
-	test, err := GetOneTest(int(createdTest.ID))
+	test, _ := GetOneTest(int(createdTest.ID))
 	test.Result = "Null"
-	// test.TestCategories = "farrastimorremboko@gmail.com"
-	// test.Patient = "12345"
-	editTest, err := UpdateTests(test)
+	editTest, _ := UpdateTests(test)
 	testEdited, err := GetOneTest(int(editTest.ID))
 	if assert.NoError(t, err) {
 		assert.Equal(t, "Null", testEdited.Result)
-		// assert.Equal(t, "farrastimorremboko@gmail.com", testEdited.TestCategories)
-		// assert.Equal(t, "12345", testEdited.Patient)
 	}
 }
 

@@ -5,17 +5,17 @@ import (
 	"app/models"
 )
 
-func CreateChecker(checker models.Checker) (interface{}, error) {
+func CreateChecker(checker models.Checker) (models.Checker, error) {
 	if err := config.DB.Save(&checker).Error; err != nil {
-		return nil, err
+		return checker, err
 	}
 	return checker, nil
 }
 
-func GetCheckers() (interface{}, error) {
-	var checkers []models.Checker
+func GetCheckers() (models.Checker, error) {
+	var checkers models.Checker
 	if err := config.DB.Find(&checkers).Error; err != nil {
-		return nil, err
+		return checkers, err
 	}
 	return checkers, nil
 }

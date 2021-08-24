@@ -12,40 +12,38 @@ func CreateTestCategories(testCategories models.TestCategories) (models.TestCate
 	return testCategories, nil
 }
 
-// func GetTestCategories() (interface{}, error) {
-// 	var testCategories []models.TestCategories
-// 	if err := config.DB.Find(&testCategories).Error; err != nil {
-// 		return nil, err
-// 	}
-// 	return testCategories, nil
-// }
+func GetTestCategories() (interface{}, error) {
+	var testCategories []models.TestCategories
+	if err := config.DB.Find(&testCategories).Error; err != nil {
+		return nil, err
+	}
+	return testCategories, nil
+}
 
-// func GetTestCategoriesId(id int) (models.TestCategories, error) {
-// 	var testCategories models.TestCategories
-// 	if err := config.DB.Find(&testCategories, "id=?", id).Error; err != nil {
-// 		return testCategories, err
-// 	}
-// 	return testCategories, nil
-// }
+func GetTestCategory(id int) (models.TestCategories, error) {
+	var testCategories models.TestCategories
 
-// func DeleteTestCategoriesById(testCategories models.TestCategories) (interface{}, error) {
-// 	if err := config.DB.Delete(&testCategories).Error; err != nil {
-// 		return nil, err
-// 	}
-// 	return testCategories, nil
-// }
+	if err := config.DB.Find(&testCategories, "id=?", id).Error; err != nil {
+		return testCategories, err
+	}
+	return testCategories, nil
+}
 
-// //update test categories info from database
-// func UpdateTestCategories(testCategories models.TestCategories) (models.TestCategories, error) {
-// 	if tx := config.DB.Save(&testCategories).Error; tx != nil {
-// 		return testCategories, tx
-// 	}
-// 	return testCategories, nil
-// }
+func DeleteTestCategory(id int) (interface{}, error) {
+	var testCategories []models.TestCategories
+	if err := config.DB.Find(&testCategories, "id=?", id).Error; err != nil {
+		return nil, err
+	}
+	if err := config.DB.Delete(&testCategories, "id=?", id).Error; err != nil {
+		return nil, err
+	}
+	return testCategories, nil
+}
 
-// //get 1 specified test categories with testCategories struct output
-// func GetUpdateTestCategories(id int) models.TestCategories {
-// 	var testCategories models.TestCategories
-// 	config.DB.Find(&testCategories, "id=?", id)
-// 	return testCategories
-// }
+func UpdateTestCategory(testCategories models.TestCategories) (models.TestCategories, error) {
+	if err := config.DB.Save(&testCategories).Error; err != nil {
+		return testCategories, err
+	}
+
+	return testCategories, nil
+}
