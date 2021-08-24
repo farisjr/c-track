@@ -66,9 +66,8 @@ func DeleteTestCategoriesByIdController(c echo.Context) error {
 			"message": "invalid id",
 		})
 	}
-	testCategories, err := database.GetTestCategory(id)
-	c.Bind(&testCategories)
-	testCategoriesDeleted, err := database.DeleteTestCategory(testCategories)
+
+	testCategoriesDeleted, err := database.DeleteTestCategory(id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "cannot delete data",
