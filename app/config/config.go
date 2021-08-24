@@ -2,6 +2,7 @@ package config
 
 import (
 	"app/models"
+	"os"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -11,16 +12,9 @@ var DB *gorm.DB
 var HTTP_PORT int
 
 func InitDb() {
-<<<<<<< HEAD
-<<<<<<< HEAD
-	//connectionString := "root:02021996Doni*@tcp(localhost:3306)/baru?charset=utf8&parseTime=True&loc=Local"
-=======
->>>>>>> add-unit-test2
-	connectionString := os.Getenv("CONNECTION_STRING")
-=======
-	connectionString := "root:02021996Doni*@tcp(localhost:3306)/baru?charset=utf8&parseTime=True&loc=Local"
+
 	//connectionString := os.Getenv("CONNECTION_STRING")
->>>>>>> d310333dde29ae431d2bc0634ab4ca4872364663
+	connectionString := "root:toor*@tcp(34.101.225.117:80)/ctrack?charset=utf8&parseTime=True&loc=Local"
 	var err error
 	DB, err = gorm.Open(mysql.Open(connectionString), &gorm.Config{})
 	if err != nil {
@@ -40,19 +34,19 @@ func InitDBTest() {
 
 func InitPort() {
 	/*var err error
-	HTTP_PORT, err = strconv.Atoi(os.Getenv("HTTP_PORT"))
-	if err != nil {
-		panic(err)
-<<<<<<< HEAD
-	}
-<<<<<<< HEAD
-	// HTTP_PORT = 80
-=======
->>>>>>> add-unit-test2
-=======
-	}*/
+		HTTP_PORT, err = strconv.Atoi(os.Getenv("HTTP_PORT"))
+		if err != nil {
+			panic(err)
+	<<<<<<< HEAD
+		}
+	<<<<<<< HEAD
+		// HTTP_PORT = 80
+	=======
+	>>>>>>> add-unit-test2
+	=======
+		}*/
 	HTTP_PORT = 80
->>>>>>> d310333dde29ae431d2bc0634ab4ca4872364663
+
 }
 
 func InitMigrate() {
