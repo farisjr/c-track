@@ -12,10 +12,10 @@ func CreateTestCategories(testCategories models.TestCategories) (models.TestCate
 	return testCategories, nil
 }
 
-func GetTestCategories() (interface{}, error) {
-	var testCategories []models.TestCategories
+func GetTestCategories() (models.TestCategories, error) {
+	var testCategories models.TestCategories
 	if err := config.DB.Find(&testCategories).Error; err != nil {
-		return nil, err
+		return testCategories, err
 	}
 	return testCategories, nil
 }
@@ -29,13 +29,13 @@ func GetTestCategory(id int) (models.TestCategories, error) {
 	return testCategories, nil
 }
 
-func DeleteTestCategory(id int) (interface{}, error) {
-	var testCategories []models.TestCategories
+func DeleteTestCategory(id int) (models.TestCategories, error) {
+	var testCategories models.TestCategories
 	if err := config.DB.Find(&testCategories, "id=?", id).Error; err != nil {
-		return nil, err
+		return testCategories, err
 	}
 	if err := config.DB.Delete(&testCategories, "id=?", id).Error; err != nil {
-		return nil, err
+		return testCategories, err
 	}
 	return testCategories, nil
 }

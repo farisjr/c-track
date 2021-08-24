@@ -12,10 +12,10 @@ func CreateTest(createTests models.Tests) (models.Tests, error) {
 	return createTests, nil
 }
 
-func GetAllTests() (interface{}, error) {
-	var tests []models.Tests
+func GetAllTests() (models.Tests, error) {
+	var tests models.Tests
 	if err := config.DB.Find(&tests).Error; err != nil {
-		return nil, err
+		return tests, err
 	}
 	return tests, nil
 }
@@ -28,10 +28,9 @@ func GetOneTest(id int) (models.Tests, error) {
 	return tests, nil
 }
 
-func DeleteTest(deleteTest models.Tests) (interface{}, error) {
-
+func DeleteTest(deleteTest models.Tests) (models.Tests, error) {
 	if err := config.DB.Delete(&deleteTest).Error; err != nil {
-		return nil, err
+		return deleteTest, err
 	}
 	return deleteTest, nil
 }
