@@ -21,6 +21,7 @@ var (
 		Religion:       "Kristen",
 		Marital_Status: "Single",
 		User: models.User{
+			UserID:   1010101010,
 			Username: "boruto@gmail.com",
 			Password: "123456",
 			Role:     models.Role("Patient"),
