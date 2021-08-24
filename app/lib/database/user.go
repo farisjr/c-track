@@ -31,19 +31,19 @@ func GetOneUser(id int) (models.User, error) {
 	return user, nil
 }
 
-func CreateUser(user models.User) (interface{}, error) {
+func CreateUser(user models.User) (models.User, error) {
 	if err := config.DB.Save(&user).Error; err != nil {
-		return nil, err
+		return user, err
 	}
 	return user, nil
 }
 
-func UpdateUser(users models.User, id int) (interface{}, error) {
+func UpdateUser(users models.User, id int) (models.User, error) {
 	if err := config.DB.Find(&users, "id=?", id).Error; err != nil {
-		return nil, err
+		return users, err
 	}
 	if err := config.DB.Save(&users).Error; err != nil {
-		return nil, err
+		return users, err
 	}
 	return users, nil
 }

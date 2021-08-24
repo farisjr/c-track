@@ -20,13 +20,7 @@ var (
 		Blood_type:     "O",
 		Religion:       "Kristen",
 		Marital_Status: "Single",
-		User: models.User{
-			UserID:   1010101010,
-			Username: "boruto@gmail.com",
-			Password: "123456",
-			Role:     models.Role("Patient"),
-			Token:    "jafniaebfiajnfe",
-		},
+		User:           mockDBUser,
 	}
 )
 
@@ -144,8 +138,22 @@ func TestDeletePatient(t *testing.T) {
 	}
 }
 
+/*
 func TestPatientLogin(t *testing.T) {
 	config.InitDBTest()                                 // connect to database
 	config.DB.Migrator().DropTable(&models.Patient{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.Patient{}) // create table from database
+	user, _ := CreateUser(mockDBUser)
+	loggedPatient, err := PatientLoginDB(user.Username, user.Password)
+	if assert.NoError(t, err) {
+		assert.Equal(t, "Surabaya", loggedPatient.Pob)
+		assert.Equal(t, "Surabaya", loggedPatient.Address)
+		assert.Equal(t, "Surabaya", loggedPatient.City)
+		assert.Equal(t, "Jawa Timur", loggedPatient.Province)
+		assert.Equal(t, models.Male, loggedPatient.Gender)
+		assert.Equal(t, models.O, loggedPatient.Blood_type)
+		assert.Equal(t, models.Kristen, loggedPatient.Religion)
+		assert.Equal(t, models.Single, loggedPatient.Marital_Status)
+	}
 }
+*/
