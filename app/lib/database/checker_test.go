@@ -15,6 +15,7 @@ var (
 		OfficeName:    "Mall Tunjungan Plaza",
 		OfficeAddress: "Jl. Tunjungan Kota Surabaya",
 		User: models.User{
+			UserID:   10101010,
 			Username: "gun@gmail.com",
 			Password: "123456",
 			Role:     models.Role("Checker"),
@@ -62,7 +63,7 @@ func TestGetCheckersById(t *testing.T) {
 	// inject checker data from MockDBChecker into checker's table
 	createdChecker, _ := CreateChecker(mockDBChecker)
 	// get checker data by id from database
-	getOneChecker, err := GetCheckerById(int(createdChecker.ID))
+	getOneChecker, err := GetCheckerById(int(createdChecker.EmployeeID))
 	// check and test checker data, if data exist in checker's table database, test will be pass
 	if assert.NoError(t, err) {
 		assert.Equal(t, 1, int(getOneChecker.ID))
@@ -80,7 +81,7 @@ func TestUpdateCheckers(t *testing.T) {
 	// inject checker data from MockDBChecker into checker's table
 	createdChecker, _ := CreateChecker(mockDBChecker)
 	// get checker data by id from database
-	checker, _ := GetCheckerById(int(createdChecker.ID))
+	checker, _ := GetCheckerById(int(createdChecker.EmployeeID))
 	// update checker data into checker's table
 	checker.EmployeeID = 678910111213
 	checker.OfficeName = "Mall Grand City Surabaya"
