@@ -37,13 +37,13 @@ func UpdatePatient(patient models.Patient) (models.Patient, error) {
 	return patient, nil
 }
 
-func DeletePatient(id int) (models.Patient, error) {
-	var patient models.Patient
-	if err := config.DB.Find(&patient, "id=?", id).Delete(&patient).Error; err != nil {
-		return patient, err
-	}
-	return patient, nil
-}
+// func DeletePatient(id int) (models.Patient, error) {
+// 	var patient models.Patient
+// 	if err := config.DB.Find(&patient, "id=?", id).Delete(&patient).Error; err != nil {
+// 		return patient, err
+// 	}
+// 	return patient, nil
+// }
 
 //Login for patient with matching username and password
 func PatientLoginDB(username, password string) (models.Patient, error) {

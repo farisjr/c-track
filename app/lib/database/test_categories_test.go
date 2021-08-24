@@ -14,7 +14,7 @@ var (
 	}
 )
 
-func TestCreateTestCategories(t *testing.T) {
+func TestCreateTestCategoriesSuccess(t *testing.T) {
 	config.InitDBTest()                                        // connect to database
 	config.DB.Migrator().DropTable(&models.TestCategories{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.TestCategories{}) // create table from database
@@ -26,7 +26,16 @@ func TestCreateTestCategories(t *testing.T) {
 	}
 }
 
-func TestGetTestCategories(t *testing.T) {
+func TestCreateTestCategoriesFail(t *testing.T) {
+	config.InitDBTest()                                      // connect to database
+	config.DB.Migrator().DropTable(&models.TestCategories{}) // delete table from database
+	// inject TestCategories data from MockDBTestCategories into TestCategories's table
+	_, err := CreateTestCategories(mockDBTestCategories)
+	// check and test TestCategories data, if data injection exist in TestCategories's table database, test will be pass
+	assert.NoError(t, err)
+}
+
+func TestGetTestCategoriesSuccess(t *testing.T) {
 	config.InitDBTest()                                        // connect to database
 	config.DB.Migrator().DropTable(&models.TestCategories{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.TestCategories{}) // create table from database
@@ -39,7 +48,19 @@ func TestGetTestCategories(t *testing.T) {
 		assert.Equal(t, "SWAB Antigen", getCategories.Name)
 	}
 }
-func TestGetTestCategoriesById(t *testing.T) {
+
+func TestGetTestCategoriesFail(t *testing.T) {
+	config.InitDBTest()                                      // connect to database
+	config.DB.Migrator().DropTable(&models.TestCategories{}) // delete table from database
+	// inject TestCategories data from MockDBTestCategories into TestCategories's table
+	CreateTestCategories(mockDBTestCategories)
+	// get TestCategories data from database
+	_, err := GetTestCategories()
+	// check and test TestCategories data, if data injection exist in TestCategories's table database, test will be pass
+	assert.NoError(t, err)
+}
+
+func TestGetTestCategoriesByIdSuccess(t *testing.T) {
 	config.InitDBTest()                                        // connect to database
 	config.DB.Migrator().DropTable(&models.TestCategories{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.TestCategories{}) // create table from database
@@ -52,21 +73,31 @@ func TestGetTestCategoriesById(t *testing.T) {
 	}
 }
 
-func TestDeleteTestCategory(t *testing.T) {
-	config.InitDBTest()                                        // connect to database
-	config.DB.Migrator().DropTable(&models.TestCategories{})   // delete table from database
-	config.DB.Migrator().AutoMigrate(&models.TestCategories{}) // create table from database
+func TestGetTestCategoriesByIdFail(t *testing.T) {
+	config.InitDBTest()                                      // connect to database
+	config.DB.Migrator().DropTable(&models.TestCategories{}) // delete table from database
 	// inject TestCategories data from MockDBTestCategories into TestCategories's table
-	createdTestCategories, _ := CreateTestCategories(mockDBTestCategories)
+	CreateTestCategories(mockDBTestCategories)
 	// get TestCategories data by id from database
-	testCategory, _ := GetTestCategory(int(createdTestCategories.ID))
-	deletedTestCategory, err := DeleteTestCategory(int(testCategory.ID))
-	if assert.NoError(t, err) {
-		assert.Equal(t, "SWAB Antigen", deletedTestCategory.Name)
-	}
+	_, err := GetTestCategory(1)
+	assert.NoError(t, err)
 }
 
-func TestUpdateTestCategory(t *testing.T) {
+// func TestDeleteTestCategory(t *testing.T) {
+// 	config.InitDBTest()                                        // connect to database
+// 	config.DB.Migrator().DropTable(&models.TestCategories{})   // delete table from database
+// 	config.DB.Migrator().AutoMigrate(&models.TestCategories{}) // create table from database
+// 	// inject TestCategories data from MockDBTestCategories into TestCategories's table
+// 	createdTestCategories, _ := CreateTestCategories(mockDBTestCategories)
+// 	// get TestCategories data by id from database
+// 	testCategory, _ := GetTestCategory(int(createdTestCategories.ID))
+// 	deletedTestCategory, err := DeleteTestCategory(int(testCategory.ID))
+// 	if assert.NoError(t, err) {
+// 		assert.Equal(t, "SWAB Antigen", deletedTestCategory.Name)
+// 	}
+// }
+
+func TestUpdateTestCategorySuccess(t *testing.T) {
 	config.InitDBTest()                                        // connect to database
 	config.DB.Migrator().DropTable(&models.TestCategories{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.TestCategories{}) // create table from database
@@ -81,4 +112,12 @@ func TestUpdateTestCategory(t *testing.T) {
 	if assert.NoError(t, err) {
 		assert.Equal(t, "SWAB PCR", updatetestCategory.Name)
 	}
+}
+
+func TestUpdateTestCategoryFail(t *testing.T) {
+	config.InitDBTest()                                      // connect to database
+	config.DB.Migrator().DropTable(&models.TestCategories{}) // delete table from database
+	// inject update TestCategories data into TestCategories's table
+	_, err := UpdateTestCategory(mockDBTestCategories)
+	assert.NoError(t, err)
 }
