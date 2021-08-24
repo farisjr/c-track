@@ -46,7 +46,6 @@ func New(e *echo.Echo) {
 	e.PUT("/patients/:id", controllers.UpdatePatientsController)
 	e.DELETE("/patients/:id", controllers.DeletePatientsController)
 
-
 	///------------------Non Authorized users ----------------------//
 	// e.GET("/users", controllers.GetPatientsController)
 	// e.GET("/users/:id", controllers.GetPatientsIdController)
@@ -67,11 +66,9 @@ func New(e *echo.Echo) {
 	e.POST("/patients/logout/:id", controllers.LogoutPatient)
 	e.POST("/users/logout/:id", controllers.LogoutUserController)
 
-
 	//AUTHORIZATION JWT
 	eJwt := e.Group("")
 	eJwt.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
-
 
 	//------------------ Adding, Updating and Deleting Covid Test for Doctors ----------------------//
 

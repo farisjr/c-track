@@ -5,17 +5,17 @@ import (
 	"app/models"
 )
 
-func CreateDoctor(addDoctor models.Doctor) (interface{}, error) {
+func CreateDoctor(addDoctor models.Doctor) (models.Doctor, error) {
 	if err := config.DB.Save(&addDoctor).Error; err != nil {
-		return nil, err
+		return addDoctor, err
 	}
 	return addDoctor, nil
 }
 
-func GetDoctor() (interface{}, error) {
-	var doctor []models.Doctor
+func GetDoctor() (models.Doctor, error) {
+	var doctor models.Doctor
 	if err := config.DB.Find(&doctor).Error; err != nil {
-		return nil, err
+		return doctor, err
 	}
 	return doctor, nil
 }
@@ -28,16 +28,16 @@ func GetDoctorById(id int) (models.Doctor, error) {
 	return doctor, nil
 }
 
-func DeleteDoctorById(deleteDoctor models.Doctor) (interface{}, error) {
+func DeleteDoctorById(deleteDoctor models.Doctor) (models.Doctor, error) {
 
 	if err := config.DB.Delete(&deleteDoctor).Error; err != nil {
-		return nil, err
+		return deleteDoctor, err
 	}
 	return deleteDoctor, nil
 }
 
 //update test info from database
-func UpdateDoctor(updateDoctors models.Doctor) (interface{}, error) {
+func UpdateDoctor(updateDoctors models.Doctor) (models.Doctor, error) {
 	if tx := config.DB.Save(&updateDoctors).Error; tx != nil {
 		return updateDoctors, tx
 	}
