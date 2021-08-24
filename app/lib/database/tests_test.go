@@ -16,6 +16,32 @@ var (
 			Name: "SWAB Antigen",
 		},
 		Patient: models.Patient{
+			PatientID:      1010101010,
+			Dob:            time.Now(),
+			Pob:            "Surabaya",
+			Address:        "Surabaya",
+			City:           "Surabaya",
+			Province:       "Jawa Timur",
+			Gender:         "Male",
+			Blood_type:     "O",
+			Religion:       "Kristen",
+			Marital_Status: "Single",
+			User: models.User{
+				UserID:   1010101010,
+				Username: "boruto@gmail.com",
+				Password: "123456",
+				Role:     models.Role("Patient"),
+				Token:    "jafniaebfiajnfe",
+			},
+		},
+	}
+	mockDBTestEdit = models.Tests{
+		Result: "Positive",
+		TestCategories: models.TestCategories{
+			Name: "SWAB Antigen",
+		},
+		Patient: models.Patient{
+			PatientID:      1010101010,
 			Dob:            time.Now(),
 			Pob:            "Surabaya",
 			Address:        "Surabaya",
@@ -36,7 +62,7 @@ var (
 	}
 )
 
-func TestCreateTest(t *testing.T) {
+func TestCreateTestSuccess(t *testing.T) {
 	config.InitDBTest()                               // connect to database
 	config.DB.Migrator().DropTable(&models.Tests{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.Tests{}) // create table from database
@@ -49,7 +75,15 @@ func TestCreateTest(t *testing.T) {
 	}
 }
 
-func TestGetAllTest(t *testing.T) {
+func TestCreateTestFail(t *testing.T) {
+	config.InitDBTest()                             // connect to database
+	config.DB.Migrator().DropTable(&models.Tests{}) // delete table from database
+	// inject Test data from MockDBTest into Test's table
+	_, err := CreateTest(mockDBTest)
+	assert.NoError(t, err)
+}
+
+func TestGetAllTestSuccess(t *testing.T) {
 	config.InitDBTest()                               // connect to database
 	config.DB.Migrator().DropTable(&models.Tests{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.Tests{}) // create table from database
@@ -63,7 +97,16 @@ func TestGetAllTest(t *testing.T) {
 	}
 }
 
-func TestGetOneTest(t *testing.T) {
+func TestGetAllTestFail(t *testing.T) {
+	config.InitDBTest()                             // connect to database
+	config.DB.Migrator().DropTable(&models.Tests{}) // delete table from database
+	// inject Test data from MockDBTest into Test's table
+	CreateTest(mockDBTest)
+	_, err := GetAllTests()
+	assert.NoError(t, err)
+}
+
+func TestGetOneTestSuccess(t *testing.T) {
 	config.InitDBTest()                               // connect to database
 	config.DB.Migrator().DropTable(&models.Tests{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.Tests{}) // create table from database
@@ -78,7 +121,16 @@ func TestGetOneTest(t *testing.T) {
 	}
 }
 
-func TestUpdateTest(t *testing.T) {
+func TestGetOneTestFail(t *testing.T) {
+	config.InitDBTest()                             // connect to database
+	config.DB.Migrator().DropTable(&models.Tests{}) // delete table from database
+	// inject Test data from MockDBTest into Test's table
+	CreateTest(mockDBTest)
+	// get Test data by id from database
+	_, err := GetOneTest(1)
+	assert.NoError(t, err)
+}
+func TestUpdateTestSuccess(t *testing.T) {
 	config.InitDBTest()                               // connect to database
 	config.DB.Migrator().DropTable(&models.Tests{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.Tests{}) // create table from database
@@ -96,18 +148,35 @@ func TestUpdateTest(t *testing.T) {
 	}
 }
 
-func TestDeleteTest(t *testing.T) {
-	config.InitDBTest()                               // connect to database
-	config.DB.Migrator().DropTable(&models.Tests{})   // delete table from database
-	config.DB.Migrator().AutoMigrate(&models.Tests{}) // create table from database
-	// inject Test data from MockDBTest into Test's table
-	createdTest, _ := CreateTest(mockDBTest)
-	// get Test data by id from database
-	test, _ := GetOneTest(int(createdTest.ID))
-	deletedTest, err := DeleteTest(test)
-	if assert.NoError(t, err) {
-		assert.Equal(t, "Positive", deletedTest.Result)
-		assert.Equal(t, "SWAB Antigen", deletedTest.TestCategories.Name)
-		assert.Equal(t, "Surabaya", deletedTest.Patient.City)
-	}
+func TestUpdateTestFail(t *testing.T) {
+	config.InitDBTest()                             // connect to database
+	config.DB.Migrator().DropTable(&models.Tests{}) // delete table from database
+	_, err := EditTest(mockDBTestEdit)
+	assert.NoError(t, err)
 }
+
+// func TestDeleteTestSuccess(t *testing.T) {
+// 	config.InitDBTest()                               // connect to database
+// 	config.DB.Migrator().DropTable(&models.Tests{})   // delete table from database
+// 	config.DB.Migrator().AutoMigrate(&models.Tests{}) // create table from database
+// 	// inject Test data from MockDBTest into Test's table
+// 	createdTest, _ := CreateTest(mockDBTest)
+// 	// get Test data by id from database
+// 	test, _ := GetOneTest(int(createdTest.ID))
+// 	deletedTest, err := DeleteTest(test)
+// 	if assert.NoError(t, err) {
+// 		assert.Equal(t, "Positive", deletedTest.Result)
+// 		assert.Equal(t, "SWAB Antigen", deletedTest.TestCategories.Name)
+// 		assert.Equal(t, "Surabaya", deletedTest.Patient.City)
+// 	}
+// }
+
+// func TestDeleteTestFail(t *testing.T) {
+// 	config.InitDBTest()                             // connect to database
+// 	config.DB.Migrator().DropTable(&models.Tests{}) // delete table from database
+// 	// inject Test data from MockDBTest into Test's table
+// 	CreateTest(mockDBTest)
+// 	// get Test data by id from database
+// 	_, err := DeleteTest(1)
+// 	assert.NoError(t, err)
+// }

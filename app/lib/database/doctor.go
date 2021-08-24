@@ -28,13 +28,13 @@ func GetDoctorById(id int) (models.Doctor, error) {
 	return doctor, nil
 }
 
-func DeleteDoctorById(deleteDoctor models.Doctor) (models.Doctor, error) {
+// func DeleteDoctorById(deleteDoctor models.Doctor) (models.Doctor, error) {
 
-	if err := config.DB.Delete(&deleteDoctor).Error; err != nil {
-		return deleteDoctor, err
-	}
-	return deleteDoctor, nil
-}
+// 	if err := config.DB.Delete(&deleteDoctor).Error; err != nil {
+// 		return deleteDoctor, err
+// 	}
+// 	return deleteDoctor, nil
+// }
 
 //update test info from database
 func UpdateDoctor(updateDoctors models.Doctor) (models.Doctor, error) {
