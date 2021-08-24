@@ -24,6 +24,9 @@ func New(e *echo.Echo) {
 	e.PUT("/tests/:id", controllers.UpdateTestsController)
 	e.DELETE("/tests/:id", controllers.DeleteTestsController)
 
+	//------------------Non Authorized User ----------------------//
+	e.POST("/users", controllers.RegisterUserController)
+
 	//------------------Non Authorized Checker ----------------------//
 	e.GET("/checkers", controllers.GetCheckerController)
 	e.GET("/checkers/:id", controllers.GetCheckerController)

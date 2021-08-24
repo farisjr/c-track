@@ -13,7 +13,10 @@ var DB *gorm.DB
 var HTTP_PORT int
 
 func InitDb() {
+<<<<<<< HEAD
 	//connectionString := "root:02021996Doni*@tcp(localhost:3306)/baru?charset=utf8&parseTime=True&loc=Local"
+=======
+>>>>>>> add-unit-test2
 	connectionString := os.Getenv("CONNECTION_STRING")
 	var err error
 	DB, err = gorm.Open(mysql.Open(connectionString), &gorm.Config{})
@@ -23,8 +26,7 @@ func InitDb() {
 	InitMigrate()
 }
 func InitDBTest() {
-	connectionString := "root:02021996Doni*@tcp(localhost:3306)/baru-testing?charset=utf8&parseTime=True&loc=Local"
-	//connectionString := os.Getenv("CONNECTION_STRING")
+	connectionString := os.Getenv("CONNECTION_STRING")
 	var err error
 	DB, err = gorm.Open(mysql.Open(connectionString), &gorm.Config{})
 	if err != nil {
@@ -39,7 +41,10 @@ func InitPort() {
 	if err != nil {
 		panic(err)
 	}
+<<<<<<< HEAD
 	// HTTP_PORT = 80
+=======
+>>>>>>> add-unit-test2
 }
 
 func InitMigrate() {
@@ -51,5 +56,4 @@ func InitMigrate() {
 	//DB.AutoMigrate(&models.CheckerTestDetails{})
 	// DB.AutoMigrate(&models.TestCategories{})
 	DB.AutoMigrate(&models.Tests{})
-	//DB.AutoMigrate(&models.User{})
 }
