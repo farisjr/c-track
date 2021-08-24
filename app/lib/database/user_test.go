@@ -16,9 +16,16 @@ var (
 		Role:     models.Role("Patient"),
 		Token:    "jafniaebfiajnfe",
 	}
+	mockDBUserEdit = models.User{
+		UserID:   1010101010,
+		Username: "boruto@gmail.com",
+		Password: "123456",
+		Role:     models.Role("Patient"),
+		Token:    "jafniaebfiajnfe",
+	}
 )
 
-func TestCreateUser(t *testing.T) {
+func TestCreateUserSuccess(t *testing.T) {
 	config.InitDBTest()                              // connect to database
 	config.DB.Migrator().DropTable(&models.User{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.User{}) // create table from database
@@ -34,7 +41,16 @@ func TestCreateUser(t *testing.T) {
 	}
 }
 
-func TestGetOneUser(t *testing.T) {
+func TestCreateUserFail(t *testing.T) {
+	config.InitDBTest()                            // connect to database
+	config.DB.Migrator().DropTable(&models.User{}) // delete table from database
+	// inject User data from MockDBUser into User's table
+	_, err := CreateUser(mockDBUser)
+	// check and test User data, if data injection exist in User's table database, test will be pass
+	assert.NoError(t, err)
+}
+
+func TestGetOneUserSuccess(t *testing.T) {
 	config.InitDBTest()                              // connect to database
 	config.DB.Migrator().DropTable(&models.User{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.User{}) // create table from database
@@ -51,7 +67,16 @@ func TestGetOneUser(t *testing.T) {
 	}
 }
 
-func TestUpdateUser(t *testing.T) {
+func TestGetOneUserFail(t *testing.T) {
+	config.InitDBTest()                            // connect to database
+	config.DB.Migrator().DropTable(&models.User{}) // delete table from database
+	CreateUser(mockDBUser)
+	// get User data by id from database
+	_, err := GetOneUser(1)
+	assert.NoError(t, err)
+}
+
+func TestUpdateUserSuccess(t *testing.T) {
 	config.InitDBTest()                              // connect to database
 	config.DB.Migrator().DropTable(&models.User{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.User{}) // create table from database
@@ -69,4 +94,11 @@ func TestUpdateUser(t *testing.T) {
 		assert.Equal(t, models.Role("Patient"), updatedUser.Role)
 		assert.Equal(t, "jafniaebfiajnfe", updatedUser.Token)
 	}
+}
+
+func TestUpdateUserFail(t *testing.T) {
+	config.InitDBTest()                            // connect to database
+	config.DB.Migrator().DropTable(&models.User{}) // delete table from database
+	_, err := EditUser(mockDBUserEdit)
+	assert.NoError(t, err)
 }
