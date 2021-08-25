@@ -42,7 +42,7 @@ func TestGetTestCategoriesSuccess(t *testing.T) {
 	// inject TestCategories data from MockDBTestCategories into TestCategories's table
 	CreateTestCategories(mockDBTestCategories)
 	// get TestCategories data from database
-	getCategories, err := GetTestCategories()
+	getCategories, err := GetAllTestCategories()
 	// check and test TestCategories data, if data injection exist in TestCategories's table database, test will be pass
 	if assert.NoError(t, err) {
 		assert.Equal(t, "SWAB Antigen", getCategories.Name)
@@ -55,7 +55,7 @@ func TestGetTestCategoriesFail(t *testing.T) {
 	// inject TestCategories data from MockDBTestCategories into TestCategories's table
 	CreateTestCategories(mockDBTestCategories)
 	// get TestCategories data from database
-	_, err := GetTestCategories()
+	_, err := GetAllTestCategories()
 	// check and test TestCategories data, if data injection exist in TestCategories's table database, test will be pass
 	assert.NoError(t, err)
 }
@@ -67,7 +67,7 @@ func TestGetTestCategoriesByIdSuccess(t *testing.T) {
 	// inject TestCategories data from MockDBTestCategories into TestCategories's table
 	createdTestCategories, _ := CreateTestCategories(mockDBTestCategories)
 	// get TestCategories data by id from database
-	getOneTestCategories, err := GetTestCategory(int(createdTestCategories.TestCategoriesID))
+	getOneTestCategories, err := GetOneTestCategory(int(createdTestCategories.TestCategoriesID))
 	if assert.NoError(t, err) {
 		assert.Equal(t, "SWAB Antigen", getOneTestCategories.Name)
 	}
@@ -79,7 +79,7 @@ func TestGetTestCategoriesByIdFail(t *testing.T) {
 	// inject TestCategories data from MockDBTestCategories into TestCategories's table
 	CreateTestCategories(mockDBTestCategories)
 	// get TestCategories data by id from database
-	_, err := GetTestCategory(1)
+	_, err := GetOneTestCategory(1)
 	assert.NoError(t, err)
 }
 
@@ -104,7 +104,7 @@ func TestUpdateTestCategorySuccess(t *testing.T) {
 	// inject TestCategories data from MockDBTestCategories into TestCategories's table
 	createdTestCategories, _ := CreateTestCategories(mockDBTestCategories)
 	// get TestCategories data by id from database
-	testCategory, _ := GetTestCategory(int(createdTestCategories.TestCategoriesID))
+	testCategory, _ := GetOneTestCategory(int(createdTestCategories.TestCategoriesID))
 	// update TestCategory
 	testCategory.Name = "SWAB PCR"
 	// inject update TestCategories data into TestCategories's table
