@@ -17,10 +17,10 @@ func LogMiddlewares(e *echo.Echo) {
 }
 
 //create token with adding limit time
-func CreateToken(userId int) (string, error) {
+func CreateToken(user_id int) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
-	claims["userId"] = int(userId)
+	claims["user_id"] = int(user_id)
 	claims["role"] = "user"
 	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
 
@@ -67,9 +67,9 @@ func ExtractTokenUserId(e echo.Context) (int, string) {
 	if user.Valid {
 		claims := user.Claims.(jwt.MapClaims)
 		fmt.Println(claims)
-		userId := int(claims["userId"].(float64))
+		user_id := int(claims["user_id"].(float64))
 		role := fmt.Sprintf("%v", claims["role"])
-		return userId, role
+		return user_id, role
 	}
 	return 0, "a"
 }

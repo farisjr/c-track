@@ -83,10 +83,10 @@ func UpdateTestsController(c echo.Context) error {
 			"message": "invalid id",
 		})
 	}
-	updateTests := database.GetUpdateTests(id)
+	updateTests, _ := database.GetOneTest(id)
 	c.Bind(&updateTests)
-	testsId, err1 := database.UpdateTests(updateTests)
-	if err1 != nil {
+	testsId, err := database.UpdateTests(updateTests)
+	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"message": "invalid id",
 		})
