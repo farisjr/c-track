@@ -150,23 +150,23 @@ func UpdatePatientsController(c echo.Context) error {
 	})
 }
 
-func DeletePatientsController(c echo.Context) error {
-	//Validation of id
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"message": "invalid id",
-		})
-	}
-	// Deleting Patient Data
-	delete_patient, err := database.DeletePatient(id)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "can not fetch data",
-		})
-	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"status": "success",
-		"users":  delete_patient,
-	})
-}
+// func DeletePatientsController(c echo.Context) error {
+// 	//Validation of id
+// 	id, err := strconv.Atoi(c.Param("id"))
+// 	if err != nil {
+// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+// 			"message": "invalid id",
+// 		})
+// 	}
+// 	// Deleting Patient Data
+// 	delete_patient, err := database.DeletePatient(id)
+// 	if err != nil {
+// 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+// 			"message": "can not fetch data",
+// 		})
+// 	}
+// 	return c.JSON(http.StatusOK, map[string]interface{}{
+// 		"status": "success",
+// 		"users":  delete_patient,
+// 	})
+// }

@@ -22,7 +22,7 @@ func New(e *echo.Echo) {
 	e.GET("/tests/:id", controllers.GetTestsIdController)
 	e.POST("/tests", controllers.CreateTestsController)
 	e.PUT("/tests/:id", controllers.UpdateTestsController)
-	e.DELETE("/tests/:id", controllers.DeleteTestsController)
+	//e.DELETE("/tests/:id", controllers.DeleteTestsController)
 
 	//------------------Non Authorized User ----------------------//
 	e.POST("/users", controllers.RegisterUserController)
@@ -37,14 +37,14 @@ func New(e *echo.Echo) {
 	e.GET("/doctors/:id", controllers.GetDoctorsIdController)
 	e.POST("/doctors", controllers.CreateDoctorsController)
 	e.PUT("/doctors/:id", controllers.UpdateDoctorsController)
-	e.DELETE("/doctors/:id", controllers.DeleteDoctorsController)
+	//e.DELETE("/doctors/:id", controllers.DeleteDoctorsController)
 
 	///------------------Non Authorized Patient ----------------------//
 	e.GET("/patients", controllers.GetPatientsController)
 	e.GET("/patients/:id", controllers.GetPatientsIdController)
 	e.POST("/patients", controllers.CreatePatientsController)
 	e.PUT("/patients/:id", controllers.UpdatePatientsController)
-	e.DELETE("/patients/:id", controllers.DeletePatientsController)
+	//e.DELETE("/patients/:id", controllers.DeletePatientsController)
 
 	///------------------Non Authorized users ----------------------//
 	// e.GET("/users", controllers.GetPatientsController)

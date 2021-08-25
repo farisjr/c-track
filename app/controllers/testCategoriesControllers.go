@@ -59,25 +59,25 @@ func GetTestCategoriesIdController(c echo.Context) error {
 	})
 }
 
-func DeleteTestCategoriesByIdController(c echo.Context) error {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"message": "invalid id",
-		})
-	}
+// func DeleteTestCategoriesByIdController(c echo.Context) error {
+// 	id, err := strconv.Atoi(c.Param("id"))
+// 	if err != nil {
+// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+// 			"message": "invalid id",
+// 		})
+// 	}
 
-	testCategoriesDeleted, err := database.DeleteTestCategory(id)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "cannot delete data",
-		})
-	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "delete success ",
-		"data":    testCategoriesDeleted,
-	})
-}
+// 	testCategoriesDeleted, err := database.DeleteTestCategory(id)
+// 	if err != nil {
+// 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+// 			"message": "cannot delete data",
+// 		})
+// 	}
+// 	return c.JSON(http.StatusOK, map[string]interface{}{
+// 		"message": "delete success ",
+// 		"data":    testCategoriesDeleted,
+// 	})
+// }
 
 func UpdateTestCategoriesController(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
