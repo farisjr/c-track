@@ -1,15 +1,20 @@
 package models
 
 import (
-	"gorm.io/gorm"
+	"database/sql"
+	"time"
 )
 
 type Doctor struct {
-	gorm.Model
+	DoctorID               int    `gorm:"primaryKey; unique; not null" json:"doctor_id"`
+	UserID                 int    `json:"user_id" form:"user_id"`
 	Name                   string `json:"name"`
 	MedicalFacilityName    string `json:"medical_facility_name"`
 	MedicalFacilityAddress string `json:"medical_facility_address"`
-	User                   User   `gorm:"foreignKey:ID" json:"user_id"`
+	User                   User   `gorm:"foreignKey:UserID"`
+	CreatedAt              time.Time
+	UpdatedAt              time.Time
+	DeletedAt              sql.NullTime `gorm:"index"`
 }
 
 type DoctorResponse struct {

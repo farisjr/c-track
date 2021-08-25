@@ -78,10 +78,10 @@ func TestGetDoctorByIdSuccess(t *testing.T) {
 	// inject doctor data from MockDBDoctor into doctor's table
 	createdDoctor, _ := CreateDoctor(mockDBDoctor)
 	// get doctor data by id from database
-	getOneDoctor, err := GetDoctorById(int(createdDoctor.ID))
+	getOneDoctor, err := GetDoctorById(int(createdDoctor.DoctorID))
 	// check and test doctor data, if data exist in doctor's table database, test will be pass
 	if assert.NoError(t, err) {
-		assert.Equal(t, 1, int(getOneDoctor.ID))
+		assert.Equal(t, 1, int(getOneDoctor.DoctorID))
 		assert.Equal(t, "dr. Doni Pebruwantoro", getOneDoctor.Name)
 		assert.Equal(t, "RS Husada Utama Surabaya", getOneDoctor.MedicalFacilityName)
 		assert.Equal(t, "Jl. Tunjungan Kota Surabaya", getOneDoctor.MedicalFacilityAddress)
@@ -105,7 +105,7 @@ func TestUpdateDoctorSuccess(t *testing.T) {
 	// inject doctor data from MockDBDoctor into doctor's table
 	createdDoctor, _ := CreateDoctor(mockDBDoctor)
 	// get doctor data by id from database
-	doctor, _ := GetDoctorById(int(createdDoctor.ID))
+	doctor, _ := GetDoctorById(int(createdDoctor.DoctorID))
 	// update doctor data into checker's table
 	doctor.MedicalFacilityName = "RSUD Nganjuk"
 	doctor.MedicalFacilityAddress = "Jl. WR. Supratman Nganjuk"
