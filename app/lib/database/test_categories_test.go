@@ -67,7 +67,7 @@ func TestGetTestCategoriesByIdSuccess(t *testing.T) {
 	// inject TestCategories data from MockDBTestCategories into TestCategories's table
 	createdTestCategories, _ := CreateTestCategories(mockDBTestCategories)
 	// get TestCategories data by id from database
-	getOneTestCategories, err := GetTestCategory(int(createdTestCategories.ID))
+	getOneTestCategories, err := GetTestCategory(int(createdTestCategories.TestCategoriesID))
 	if assert.NoError(t, err) {
 		assert.Equal(t, "SWAB Antigen", getOneTestCategories.Name)
 	}
@@ -104,7 +104,7 @@ func TestUpdateTestCategorySuccess(t *testing.T) {
 	// inject TestCategories data from MockDBTestCategories into TestCategories's table
 	createdTestCategories, _ := CreateTestCategories(mockDBTestCategories)
 	// get TestCategories data by id from database
-	testCategory, _ := GetTestCategory(int(createdTestCategories.ID))
+	testCategory, _ := GetTestCategory(int(createdTestCategories.TestCategoriesID))
 	// update TestCategory
 	testCategory.Name = "SWAB PCR"
 	// inject update TestCategories data into TestCategories's table

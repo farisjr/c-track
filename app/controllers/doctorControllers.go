@@ -36,7 +36,7 @@ func LoginDoctor(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 	mapLogindoctor := map[string]interface{}{
-		"UserID": logindoctor.ID,
+		"UserID": logindoctor.UserID,
 		"Name":   logindoctor.Name,
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{

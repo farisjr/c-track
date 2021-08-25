@@ -21,6 +21,7 @@ func InitDb() {
 	}
 	InitMigrate()
 }
+
 func InitDBTest() {
 	//connectionString := os.Getenv("CONNECTION_STRING")
 	connectionString := "root:toor@tcp(34.101.101.64:3306)/ctrack_test?charset=utf8&parseTime=True&loc=Local"

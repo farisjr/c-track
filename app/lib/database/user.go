@@ -13,7 +13,7 @@ func LoginUser(username, password string) (models.User, error) {
 		return user, err
 	}
 
-	user.Token, err = middlewares.CreateToken(int(user.ID))
+	user.Token, err = middlewares.CreateToken(int(user.UserID))
 	if err != nil {
 		return user, err
 	}

@@ -83,7 +83,7 @@ func TestGetCheckersByIdSuccess(t *testing.T) {
 	getOneChecker, err := GetCheckerById(int(createdChecker.EmployeeID))
 	// check and test checker data, if data exist in checker's table database, test will be pass
 	if assert.NoError(t, err) {
-		assert.Equal(t, 1, int(getOneChecker.ID))
+		assert.Equal(t, 1, int(getOneChecker.EmployeeID))
 		assert.Equal(t, 1234567890, getOneChecker.EmployeeID)
 		assert.Equal(t, "Gunawan Nur Cahyo", getOneChecker.Name)
 		assert.Equal(t, "Mall Tunjungan Plaza", getOneChecker.OfficeName)

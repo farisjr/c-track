@@ -57,7 +57,7 @@ func TestGetOneUserSuccess(t *testing.T) {
 	// inject User data from MockDBUser into User's table
 	createdUser, _ := CreateUser(mockDBUser)
 	// get User data by id from database
-	getUser, err := GetOneUser(int(createdUser.ID))
+	getUser, err := GetOneUser(int(createdUser.UserID))
 	if assert.NoError(t, err) {
 		assert.Equal(t, 1010101010, getUser.UserID)
 		assert.Equal(t, "boruto@gmail.com", getUser.Username)
@@ -83,7 +83,7 @@ func TestUpdateUserSuccess(t *testing.T) {
 	// inject User data from MockDBUser into User's table
 	createdUser, _ := CreateUser(mockDBUser)
 	// get User data by id from database
-	getUser, _ := GetOneUser(int(createdUser.ID))
+	getUser, _ := GetOneUser(int(createdUser.UserID))
 	getUser.Username = "enakenak"
 	getUser.Password = "qwerrty"
 	updatedUser, err := UpdateUser(getUser, getUser.UserID)
