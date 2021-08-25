@@ -12,7 +12,7 @@ import (
 func main() {
 	e := echo.New()
 	config.InitDb()
-	config.InitDBTest()
+	//config.InitDBTest()
 	config.InitPort()
 	middlewares.LogMiddlewares((e))
 	routes.New(e)
