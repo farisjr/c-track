@@ -37,22 +37,8 @@ func GetOneTest(id int) (models.Tests, error) {
 
 //update test info from database
 func UpdateTests(updateTests models.Tests) (models.Tests, error) {
-	if tx := config.DB.Save(&updateTests).Error; tx != nil {
-		return updateTests, tx
+	if err := config.DB.Save(&updateTests).Error; err != nil {
+		return updateTests, err
 	}
 	return updateTests, nil
-}
-
-//get 1 specified test with test struct output
-func GetUpdateTests(id int) models.Tests {
-	var tests models.Tests
-	config.DB.Find(&tests, "id=?", id)
-	return tests
-}
-
-func EditTest(test models.Tests) (models.Tests, error) {
-	if err := config.DB.Save(&test).Error; err != nil {
-		return test, err
-	}
-	return test, nil
 }

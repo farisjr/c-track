@@ -151,7 +151,7 @@ func TestUpdateTestSuccess(t *testing.T) {
 func TestUpdateTestFail(t *testing.T) {
 	config.InitDBTest()                             // connect to database
 	config.DB.Migrator().DropTable(&models.Tests{}) // delete table from database
-	_, err := EditTest(mockDBTestEdit)
+	_, err := UpdateTests(mockDBTestEdit)
 	assert.NoError(t, err)
 }
 

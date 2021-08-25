@@ -6,7 +6,11 @@ import (
 )
 
 type Tests struct {
+<<<<<<< HEAD
 	TestsID          int `gorm:"primaryKey; unique; not null" json:"test_id"`
+=======
+	TestsID          int `gorm:"primaryKey; not null" json:"test_id" form:"test_id"`
+>>>>>>> development
 	PatientID        int `json:"patient_id" form:"patient_id"`
 	TestCategoriesID int `json:"testcategories_id" form:"testcategories_id"`
 	CreatedAt        time.Time
