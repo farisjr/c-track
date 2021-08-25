@@ -25,7 +25,7 @@ func CreateTestCategoriesController(c echo.Context) error {
 }
 
 func GetAllTestCategoriesController(c echo.Context) error {
-	testCategories, err := database.GetAllTests()
+	testCategories, err := database.GetAllTestCategories()
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
@@ -42,7 +42,7 @@ func GetOneTestCategoriesController(c echo.Context) error {
 			"message": "invalid id",
 		})
 	}
-	testCategories, err := database.GetTestCategory(id)
+	testCategories, err := database.GetOneTestCategory(id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "cannot fetch data",
@@ -83,7 +83,7 @@ func UpdateTestCategoriesController(c echo.Context) error {
 			"message": "invalid id",
 		})
 	}
-	GetTestCategories, err := database.GetTestCategory(id)
+	GetTestCategories, err := database.GetOneTestCategory(id)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"message": "cannot get data",
