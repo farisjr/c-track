@@ -27,21 +27,11 @@ func CreateTestCategoriesController(c echo.Context) error {
 func GetAllTestCategoriesController(c echo.Context) error {
 	testCategories, err := database.GetAllTests()
 	if err != nil {
-<<<<<<< HEAD
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "cannot fetch data",
-		})
-	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message":         "success get test categories by id",
-		"test categories": testCategories,
-=======
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "success get patients data",
 		"data":    testCategories,
->>>>>>> development
 	})
 }
 
