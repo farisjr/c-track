@@ -30,22 +30,21 @@ func RegisterUserController(c echo.Context) error {
 func LoginUserController(c echo.Context) error {
 	user := models.User{}
 	c.Bind(&user)
-
-	user, e := database.LoginUser(user.Username, user.Password)
-	if e != nil {
+	users, err := database.LoginUser(user.Username, user.Password)
+	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "username or password is not correct",
 		})
 	}
-	mapUserLogin := map[string]interface{}{
-		"ID":    user.UserID,
-		"Name":  user.Username,
-		"Role":  user.Role,
-		"Token": user.Token,
-	}
+	// mapUserLogin := map[string]interface{}{
+	// 	"ID":    user.UserID,
+	// 	"Name":  user.Username,
+	// 	"Role":  user.Role,
+	// 	"Token": user.Token,
+	// }
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "welcome",
-		"user":    mapUserLogin,
+		"data":    users,
 	})
 }
 

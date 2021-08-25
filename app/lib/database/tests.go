@@ -5,17 +5,17 @@ import (
 	"app/models"
 )
 
-func CreateTest(createTests models.Tests) (models.Tests, error) {
+func CreateTest(createTests models.Tests) (interface{}, error) {
 	if err := config.DB.Save(&createTests).Error; err != nil {
-		return createTests, err
+		return nil, err
 	}
 	return createTests, nil
 }
 
-func GetAllTests() (models.Tests, error) {
-	var tests models.Tests
+func GetAllTests() (interface{}, error) {
+	var tests []models.Tests
 	if err := config.DB.Find(&tests).Error; err != nil {
-		return tests, err
+		return nil, err
 	}
 	return tests, nil
 }
@@ -36,23 +36,9 @@ func GetOneTest(id int) (models.Tests, error) {
 // }
 
 //update test info from database
-func UpdateTests(updateTests models.Tests) (models.Tests, error) {
-	if tx := config.DB.Save(&updateTests).Error; tx != nil {
-		return updateTests, tx
+func UpdateTests(updateTests models.Tests) (interface{}, error) {
+	if err := config.DB.Save(&updateTests).Error; err != nil {
+		return nil, err
 	}
 	return updateTests, nil
-}
-
-//get 1 specified test with test struct output
-func GetUpdateTests(id int) models.Tests {
-	var tests models.Tests
-	config.DB.Find(&tests, "id=?", id)
-	return tests
-}
-
-func EditTest(test models.Tests) (models.Tests, error) {
-	if err := config.DB.Save(&test).Error; err != nil {
-		return test, err
-	}
-	return test, nil
 }

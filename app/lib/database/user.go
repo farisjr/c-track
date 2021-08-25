@@ -6,21 +6,21 @@ import (
 	"app/models"
 )
 
-func LoginUser(username, password string) (models.User, error) {
+func LoginUser(username, password string) (interface{}, error) {
 	var err error
 	var user models.User
 	if err = config.DB.Where("username=? AND password=?", username, password).First(&user).Error; err != nil {
-		return user, err
+		return nil, err
 	}
 
 	user.Token, err = middlewares.CreateToken(int(user.UserID))
 	if err != nil {
-		return user, err
+		return nil, err
 	}
 	if err := config.DB.Save(user).Error; err != nil {
-		return user, err
+		return nil, err
 	}
-	return user, nil
+	return user, err
 }
 
 func GetOneUser(id int) (models.User, error) {
@@ -68,4 +68,11 @@ func EditUser(user models.User) (models.User, error) {
 		return user, err
 	}
 	return user, nil
+}
+
+//get token user
+func GetToken(user_id int) string {
+	var user models.User
+	config.DB.Model(&user).Select("token").Where("user_id=?", user_id)
+	return user.Token
 }
