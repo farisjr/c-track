@@ -1,12 +1,16 @@
 package models
 
 import (
-	"gorm.io/gorm"
+	"database/sql"
+	"time"
 )
 
 type TestCategories struct {
-	gorm.Model
-	Name string `json:"name" form:"name"`
+	TestCategoriesID int    `gorm:"primaryKey; unique; not null" json:"testcategories_id"`
+	Name             string `gorm:"type:char(16); not null" json:"name"`
+	CreatedAt        time.Time
+	UpdatedAt        time.Time
+	DeletedAt        sql.NullTime `gorm:"index"`
 }
 
 type TestCategoriesResponse struct {

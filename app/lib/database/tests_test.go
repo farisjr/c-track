@@ -113,7 +113,7 @@ func TestGetOneTestSuccess(t *testing.T) {
 	// inject Test data from MockDBTest into Test's table
 	createdTest, _ := CreateTest(mockDBTest)
 	// get Test data by id from database
-	test, err := GetOneTest(int(createdTest.ID))
+	test, err := GetOneTest(int(createdTest.TestsID))
 	if assert.NoError(t, err) {
 		assert.Equal(t, "Positive", test.Result)
 		assert.Equal(t, "SWAB Antigen", test.TestCategories.Name)
@@ -137,12 +137,12 @@ func TestUpdateTestSuccess(t *testing.T) {
 	// inject Test data from MockDBTest into Test's table
 	createdTest, _ := CreateTest(mockDBTest)
 	// get Test data by id from database
-	test, _ := GetOneTest(int(createdTest.ID))
+	test, _ := GetOneTest(int(createdTest.TestsID))
 	// update Test
 	test.Result = "Negative"
 	// inject update Test data into Test's table
 	editTest, _ := UpdateTests(test)
-	testEdited, err := GetOneTest(int(editTest.ID))
+	testEdited, err := GetOneTest(int(editTest.TestCategoriesID))
 	if assert.NoError(t, err) {
 		assert.Equal(t, "Negative", testEdited.Result)
 	}

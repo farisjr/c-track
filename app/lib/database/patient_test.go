@@ -91,10 +91,10 @@ func TestGetPatientByIdSuccess(t *testing.T) {
 	// inject patient data from MockDBPatient into patient's table
 	createdPatient, _ := CreatePatient(mockDBPatient)
 	// get patient data by id from database
-	getOnePatient, err := GetPatientById(int(createdPatient.ID))
+	getOnePatient, err := GetPatientById(int(createdPatient.PatientID))
 	// check and test patient data, if data exist in patient's table database, test will be pass
 	if assert.NoError(t, err) {
-		assert.Equal(t, 1, int(getOnePatient.ID))
+		assert.Equal(t, 1, int(getOnePatient.PatientID))
 		assert.Equal(t, "Surabaya", getOnePatient.Pob)
 		assert.Equal(t, "Surabaya", getOnePatient.Address)
 		assert.Equal(t, "Surabaya", getOnePatient.City)
@@ -124,7 +124,7 @@ func TestUpdatePatientSuccess(t *testing.T) {
 	// inject patient data from MockDBPatient into patient's table
 	createdPatient, _ := CreatePatient(mockDBPatient)
 	// get patient data by id from database
-	patient, _ := GetPatientById(int(createdPatient.ID))
+	patient, _ := GetPatientById(int(createdPatient.PatientID))
 	// update patient data into patient's table
 	patient.Address = "Bandung"
 	patient.City = "Bandung"
@@ -133,7 +133,7 @@ func TestUpdatePatientSuccess(t *testing.T) {
 	updatePatient, err := UpdatePatient(patient)
 	// check and test patient data, if data exist in patient's table database, test will be pass
 	if assert.NoError(t, err) {
-		assert.Equal(t, 1, int(updatePatient.ID))
+		assert.Equal(t, 1, int(updatePatient.PatientID))
 		assert.Equal(t, "Surabaya", updatePatient.Pob)
 		assert.Equal(t, "Bandung", updatePatient.Address)
 		assert.Equal(t, "Bandung", updatePatient.City)
