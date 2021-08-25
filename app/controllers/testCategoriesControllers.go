@@ -30,12 +30,13 @@ func GetTestCategoriesController(c echo.Context) error {
 	err := config.DB.Debug().Model(&models.TestCategories{}).Find(&testCategories).Error
 	//testCategories, err := database.GetTestCategories()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, models.TestCategoriesResponse{
-			false, "Failed get database test category", nil,
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot fetch data",
 		})
 	}
-	return c.JSON(http.StatusOK, models.TestCategoriesResponse{
-		true, "Success", testCategories,
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message":         "success get test categories by id",
+		"test categories": testCategories,
 	})
 }
 
