@@ -8,6 +8,7 @@ import (
 
 type Patient struct {
 	gorm.Model
+	PatientID      int            `gorm:primaryKey"; not null" json:"patient_id"`
 	Dob            time.Time      `gorm:"; not null" json:"borndate"`
 	Pob            string         `gorm:"type:varchar(30); not null" json:"bornplace"`
 	Address        string         `gorm:"type:varchar(100); not null" json:"address"`
