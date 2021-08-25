@@ -122,26 +122,26 @@ func GetDoctorsIdController(c echo.Context) error {
 	})
 }
 
-func DeleteDoctorsController(c echo.Context) error {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"message": "invalid id",
-		})
-	}
-	doctors, _ := database.GetDoctorById(id)
-	c.Bind(&doctors)
-	doctorsDeleted, err := database.DeleteDoctorById(doctors)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "cannot delete data",
-		})
-	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success delete selected doctor",
-		"data":    doctorsDeleted,
-	})
-}
+// func DeleteDoctorsController(c echo.Context) error {
+// 	id, err := strconv.Atoi(c.Param("id"))
+// 	if err != nil {
+// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+// 			"message": "invalid id",
+// 		})
+// 	}
+// 	doctors, _ := database.GetDoctorById(id)
+// 	c.Bind(&doctors)
+// 	doctorsDeleted, err := database.DeleteDoctorById(doctors)
+// 	if err != nil {
+// 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+// 			"message": "cannot delete data",
+// 		})
+// 	}
+// 	return c.JSON(http.StatusOK, map[string]interface{}{
+// 		"message": "success delete selected doctor",
+// 		"data":    doctorsDeleted,
+// 	})
+// }
 
 func UpdateDoctorsController(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
