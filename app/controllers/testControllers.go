@@ -9,10 +9,10 @@ import (
 	"github.com/labstack/echo"
 )
 
+//Create new test from registered patients
 func CreateTestsController(c echo.Context) error {
 	tests := models.Tests{}
 	c.Bind(&tests)
-
 	testsAdd, err := database.CreateTest(tests)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
@@ -24,6 +24,7 @@ func CreateTestsController(c echo.Context) error {
 	})
 }
 
+//get all test data
 func GetTestsController(c echo.Context) error {
 	tests, err := database.GetAllTests()
 	if err != nil {
@@ -35,7 +36,7 @@ func GetTestsController(c echo.Context) error {
 	})
 }
 
-func GetTestsIdController(c echo.Context) error {
+func GetOneTestController(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -77,15 +78,21 @@ func GetTestsIdController(c echo.Context) error {
 // }
 
 func UpdateTestsController(c echo.Context) error {
+	var test models.Tests
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"message": "invalid id",
 		})
 	}
+	//get test by id
 	updateTests, _ := database.GetOneTest(id)
-	c.Bind(&updateTests)
-	testsId, err := database.UpdateTests(updateTests)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest)
+	}
+	test = updateTests
+	c.Bind(&test)
+	updatedTest, err := database.UpdateTests(test)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"message": "invalid id",
@@ -94,6 +101,6 @@ func UpdateTestsController(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message":          "success update test ",
-		"update test data": testsId,
+		"update test data": updatedTest,
 	})
 }
