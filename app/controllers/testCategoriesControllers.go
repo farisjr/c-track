@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"app/config"
 	"app/lib/database"
 	"app/models"
 	"net/http"
@@ -25,21 +24,18 @@ func CreateTestCategoriesController(c echo.Context) error {
 	})
 }
 
-func GetTestCategoriesController(c echo.Context) error {
-	var testCategories []models.TestCategories
-	err := config.DB.Debug().Model(&models.TestCategories{}).Find(&testCategories).Error
-	//testCategories, err := database.GetTestCategories()
+func GetAllTestCategoriesController(c echo.Context) error {
+	testCategories, err := database.GetAllTests()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, models.TestCategoriesResponse{
-			false, "Failed get database test category", nil,
-		})
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
-	return c.JSON(http.StatusOK, models.TestCategoriesResponse{
-		true, "Success", testCategories,
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success get patients data",
+		"data":    testCategories,
 	})
 }
 
-func GetTestCategoriesIdController(c echo.Context) error {
+func GetOneTestCategoriesController(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -80,20 +76,22 @@ func GetTestCategoriesIdController(c echo.Context) error {
 // }
 
 func UpdateTestCategoriesController(c echo.Context) error {
+	var testCategories models.TestCategories
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"message": "invalid id",
 		})
 	}
-	testCategories, err := database.GetTestCategory(id)
+	GetTestCategories, err := database.GetTestCategory(id)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"message": "cannot get data",
 		})
 	}
+	testCategories = GetTestCategories
 	c.Bind(&testCategories)
-	testUpdateCategories, err := database.UpdateTestCategory(testCategories)
+	updatedTestCategories, err := database.UpdateTestCategory(testCategories)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "cannot post data",
@@ -102,6 +100,6 @@ func UpdateTestCategoriesController(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message":                "success update test categories",
-		"update test categories": testUpdateCategories,
+		"update test categories": updatedTestCategories,
 	})
 }
