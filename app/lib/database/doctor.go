@@ -52,7 +52,7 @@ func GetUpdateDoctor(id int) models.Doctor {
 }
 
 //Login for doctor with matching username and password
-func LoginDoctorDB(username, password string) (models.Doctor, error) {
+/*func LoginDoctorDB(username, password string) (models.Doctor, error) {
 	var doctor models.Doctor
 	var err error
 	if err = config.DB.Where("username=? AND password=?", username, password).First(&doctor).Error; err != nil {
@@ -62,4 +62,4 @@ func LoginDoctorDB(username, password string) (models.Doctor, error) {
 		return doctor, err
 	}
 	return doctor, err
-}
+}*/
