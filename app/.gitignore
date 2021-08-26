@@ -15,11 +15,5 @@
 # vendor/
 prod.env
 .env
-<<<<<<< HEAD
-config/config.go
-models/patient.go
-main.go
-=======
 main.go
 config/config.go
->>>>>>> fixing-somebugs
