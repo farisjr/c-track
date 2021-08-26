@@ -51,7 +51,7 @@ func TestGetTestCategoriesSuccess(t *testing.T) {
 	getCategories, err := GetAllTestCategories()
 	// check and test TestCategories data, if data injection exist in TestCategories's table database, test will be pass
 	if assert.NoError(t, err) {
-		assert.Equal(t, "SWAB Antigen", getCategories.Name)
+		assert.Equal(t, "SWAB Antigen", getCategories)
 	}
 }
 

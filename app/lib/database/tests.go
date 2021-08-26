@@ -12,10 +12,10 @@ func CreateTest(createTests models.Tests) (models.Tests, error) {
 	return createTests, nil
 }
 
-func GetAllTests() (models.Tests, error) {
-	var tests models.Tests
+func GetAllTests() (interface{}, error) {
+	var tests []models.Tests
 	if err := config.DB.Find(&tests).Error; err != nil {
-		return tests, err
+		return nil, err
 	}
 	return tests, nil
 }
