@@ -24,7 +24,7 @@ func GetPatientById(id int) (models.Patient, error) {
 	var patient models.Patient
 	var empty models.Patient
 
-	if err := config.DB.Find(&patient, "id=?", id).Error; err != nil {
+	if err := config.DB.Find(&patient, "patient_id=?", id).Error; err != nil {
 		return empty, err
 	}
 	return patient, nil
@@ -46,7 +46,7 @@ func UpdatePatient(patient models.Patient) (models.Patient, error) {
 // }
 
 //Login for patient with matching username and password
-func PatientLoginDB(username, password string) (models.Patient, error) {
+/*func PatientLoginDB(username, password string) (models.Patient, error) {
 	var patient models.Patient
 	var err error
 	if err = config.DB.Where("username=? AND password=?", username, password).First(&patient).Error; err != nil {
@@ -56,4 +56,4 @@ func PatientLoginDB(username, password string) (models.Patient, error) {
 		return patient, err
 	}
 	return patient, err
-}
+}*/

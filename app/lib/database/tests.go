@@ -12,17 +12,17 @@ func CreateTest(createTests models.Tests) (models.Tests, error) {
 	return createTests, nil
 }
 
-func GetAllTests() (models.Tests, error) {
-	var tests models.Tests
+func GetAllTests() (interface{}, error) {
+	var tests []models.Tests
 	if err := config.DB.Find(&tests).Error; err != nil {
-		return tests, err
+		return nil, err
 	}
 	return tests, nil
 }
 
 func GetOneTest(id int) (models.Tests, error) {
 	var tests models.Tests
-	if err := config.DB.Find(&tests, "id=?", id).Error; err != nil {
+	if err := config.DB.Find(&tests, "test_id=?", id).Error; err != nil {
 		return tests, err
 	}
 	return tests, nil

@@ -12,10 +12,10 @@ func CreateTestCategories(testCategories models.TestCategories) (models.TestCate
 	return testCategories, nil
 }
 
-func GetAllTestCategories() (models.TestCategories, error) {
-	var testCategories models.TestCategories
+func GetAllTestCategories() (interface{}, error) {
+	var testCategories []models.TestCategories
 	if err := config.DB.Find(&testCategories).Error; err != nil {
-		return testCategories, err
+		return nil, err
 	}
 	return testCategories, nil
 }
@@ -23,7 +23,7 @@ func GetAllTestCategories() (models.TestCategories, error) {
 func GetOneTestCategory(id int) (models.TestCategories, error) {
 	var testCategories models.TestCategories
 
-	if err := config.DB.Find(&testCategories, "id=?", id).Error; err != nil {
+	if err := config.DB.Find(&testCategories, "testcategories_id=?", id).Error; err != nil {
 		return testCategories, err
 	}
 	return testCategories, nil

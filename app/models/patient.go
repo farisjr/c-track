@@ -1,7 +1,6 @@
 package models
 
 import (
-	"database/sql"
 	"time"
 )
 
@@ -21,7 +20,7 @@ type Patient struct {
 	User           User           `gorm:"foreignKey:UserID"`
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
-	DeletedAt      sql.NullTime `gorm:"index"`
+	DeletedAt      time.Time `gorm:"index"`
 }
 
 type Gender string

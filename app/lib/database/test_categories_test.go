@@ -3,14 +3,20 @@ package database
 import (
 	"app/config"
 	"app/models"
+	"database/sql"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
 
 var (
 	mockDBTestCategories = models.TestCategories{
-		Name: "SWAB Antigen",
+		TestCategoriesID: 1,
+		Name:             "SWAB Antigen",
+		CreatedAt:        time.Now(),
+		UpdatedAt:        time.Now(),
+		DeletedAt:        sql.NullTime{},
 	}
 )
 
@@ -45,7 +51,7 @@ func TestGetTestCategoriesSuccess(t *testing.T) {
 	getCategories, err := GetAllTestCategories()
 	// check and test TestCategories data, if data injection exist in TestCategories's table database, test will be pass
 	if assert.NoError(t, err) {
-		assert.Equal(t, "SWAB Antigen", getCategories.Name)
+		assert.Equal(t, "SWAB Antigen", getCategories)
 	}
 }
 
@@ -65,11 +71,11 @@ func TestGetTestCategoriesByIdSuccess(t *testing.T) {
 	config.DB.Migrator().DropTable(&models.TestCategories{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.TestCategories{}) // create table from database
 	// inject TestCategories data from MockDBTestCategories into TestCategories's table
-	createdTestCategories, _ := CreateTestCategories(mockDBTestCategories)
+	CreateTestCategories(mockDBTestCategories)
 	// get TestCategories data by id from database
-	getOneTestCategories, err := GetOneTestCategory(int(createdTestCategories.TestCategoriesID))
+	testCategory, err := GetOneTestCategory(1)
 	if assert.NoError(t, err) {
-		assert.Equal(t, "SWAB Antigen", getOneTestCategories.Name)
+		assert.Equal(t, "SWAB Antigen", testCategory.Name)
 	}
 }
 
