@@ -35,8 +35,483 @@
 		}
 	],
 	"paths": {
+		"/patients": {
+			"post": {
+				"tags": ["C-Track App - Patient"],
+			  	"summary": "Create New Patient",
+				"description": "Create New Patient Account",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateOrUpdateUser"
+							},
+							"examples": {
+								"Iwan Budianto": {
+									"description": "Example Create New Patient",
+									"value": {
+										"PatientID": "3030303030303030",
+										"DOB": "1995-10-10",
+										"POB": "Merauke",
+										"Address": "Jl Panglima Sudirman",
+										"City": "Jakarta",
+										"Province": "DKI Jakarta",
+										"Gender": "Male",
+										"Blood Type": "AB",
+										"Religion": "Kristen",
+										"Marital Status": "Single",
+										"User": {
+											"UserID": "351010101010",
+											"UserDOB": "iwanbuds",
+											"Password": "12345",
+											"Role": "Patient",
+											"Token": "qwerty" 	
+										}
+									}
+								},
+								"Santoso Budianto": {
+									"description": "Example Create New Patient",
+									"value": {
+										"PatientID": "3737373737373737",
+										"DOB": "1995-10-10",
+										"POB": "Makasar",
+										"Address": "Jl Panglima Sudirman",
+										"City": "Jakarta",
+										"Province": "DKI Jakarta",
+										"Gender": "Male",
+										"Blood Type": "B",
+										"Religion": "Katholik",
+										"Marital Status": "Single",
+										"User": {
+											"UserID": "351010101010",
+											"UserDOB": "sansbud",
+											"Password": "12345",
+											"Role": "Patient",
+											"Token": "qwerty" 	
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Success Create New Patient",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"Iwan Budianto": {
+										"description": "Example Create New Patient",
+										"value": {
+											"PatientID": "3030303030303030",
+											"DOB": "1995-10-10",
+											"POB": "Merauke",
+											"Address": "Jl Panglima Sudirman",
+											"City": "Jakarta",
+											"Province": "DKI Jakarta",
+											"Gender": "Male",
+											"Blood Type": "AB",
+											"Religion": "Kristen",
+											"Marital Status": "Single",
+											"User": {
+												"UserID": "351010101010",
+												"UserDOB": "iwanbuds",
+												"Password": "12345",
+												"Role": "Patient",
+												"Token": "qwerty"
+											}
+										}
+									},
+									"Santoso Budianto": {
+										"description": "Example Create New Doctor",
+										"value": {
+											"PatientID": "3737373737373737",
+											"DOB": "1995-10-10",
+											"POB": "Makasar",
+											"Address": "Jl Panglima Sudirman",
+											"City": "Jakarta",
+											"Province": "DKI Jakarta",
+											"Gender": "Male",
+											"Blood Type": "B",
+											"Religion": "Katholik",
+											"Marital Status": "Single",
+											"User": {
+												"UserID": "351010101010",
+												"UserDOB": "sansbud",
+												"Password": "12345",
+												"Role": "Patient",
+												"Token": "qwerty" 	
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400":{
+						"description": "Can not Create Patient",
+						"content": {
+							"Application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples":{
+									"Iwan Budianto": {
+										"description": "Example Unsuccess Create New Patient",
+										"value": {
+												"message": "Can not insert data"
+											}
+									},
+									"Santoso Budianto": {
+										"description": "Example Unsuccess Create New Patient",
+										"value": {
+												"message": "Can not insert data"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			} 
+		},
+		  "/patients/{patientId}": {
+			"get" : {
+				"security": [
+					{
+						"JWTAuth":[]
+					}
+				],
+				"tags": ["C-Track App - Patient"],
+			  	"summary": "Get Data Patient by id",
+				"description": "Get Data Patient by id",
+				"parameters": [
+					{
+						"name": "patientId",
+						"in": "path",
+						"required": true,
+						"description": "Filter Get Data Patient by id",
+						"schema": {
+							"type": "string",
+							"nullable": false,
+							"minLength": 1,
+							"maxLength": 16
+						},
+						"examples": {
+							"3030303030303030": {
+								"value": "3030303030303030"
+							},
+							"3737373737373737": {
+								"value": "3737373737373737"
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success Get Data Patient by id",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ArrayUsers"
+								},
+								"examples": {
+									"3030303030303030": {
+										"description": "Example Success Get Data Patient by id",
+										"value": [
+											{
+												"PatientID": "3030303030303030",
+												"DOB": "1995-10-10",
+												"POB": "Merauke",
+												"Address": "Jl Panglima Sudirman",
+												"City": "Jakarta",
+												"Province": "DKI Jakarta",
+												"Gender": "Male",
+												"Blood Type": "AB",
+												"Religion": "Kristen",
+												"Marital Status": "Single",
+												"User": {
+													"UserID": "351010101010",
+													"UserDOB": "iwanbuds",
+													"Password": "12345",
+													"Role": "Patient",
+													"Token": "qwerty" 	
+												}
+											}
+										]
+									},
+									"3737373737373737":{
+										"description": "Example Get Data Patient by id",
+										"value": {
+											"PatientID": "3737373737373737",
+											"DOB": "1995-10-10",
+											"POB": "Makasar",
+											"Address": "Jl Panglima Sudirman",
+											"City": "Jakarta",
+											"Province": "DKI Jakarta",
+											"Gender": "Male",
+											"Blood Type": "B",
+											"Religion": "Katholik",
+											"Marital Status": "Single",
+											"User": {
+												"UserID": "351010101010",
+												"UserDOB": "sansbud",
+												"Password": "12345",
+												"Role": "Patient",
+												"Token": "qwerty" 	
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400":{
+						"description": "Can not fetch data Patient",
+						"content": {
+							"Application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"3030303030303030": {
+										"description": "Example Unsuccess Fetch Data Patient",
+											"value": {
+												"message": "Patient not found"
+											}
+									},
+									"3131313131313131": {
+										"description": "Example Unsuccess Fetch Data Patient",
+											"value": {
+												"message": "Patient not found"
+											}
+									}
+								}	
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"security": [
+					{
+						"JWTAuth":[]
+					}
+				],
+				"tags": ["C-Track App - Patient"],
+			  	"summary": "Update Data Patient by id",
+				"description": "Update Data Patient by id",
+				"parameters": [
+					{
+						"name": "patientId",
+						"in": "path",
+						"required": true,
+						"description": "Filter Update Data Patient by id",
+						"schema": {
+							"type": "string",
+							"nullable": false,
+							"minLength": 1,
+							"maxLength": 16
+						},
+						"examples": {
+							"3030303030303030": {
+								"value": "3030303030303030"
+							},
+							"3737373737373737": {
+								"value": "3131313131313131"
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success Update Data Patient",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"3030303030303030": {
+										"description": "Example Update Patient",
+										"value": [
+											{
+												"PatientID": "3030303030303030",
+												"DOB": "1995-10-10",
+												"POB": "Merauke",
+												"Address": "Jl Panglima Sudirman",
+												"City": "Jakarta",
+												"Province": "DKI Jakarta",
+												"Gender": "Male",
+												"Blood Type": "AB",
+												"Religion": "Kristen",
+												"Marital Status": "Single",
+												"User": {
+													"UserID": "351010101010",
+													"UserDOB": "iwanbuds",
+													"Password": "12345",
+													"Role": "Patient",
+													"Token": "qwerty" 	
+												}
+											}
+										]
+									},
+									"3737373737373737": {
+										"description": "Example Update Patient",
+										"value": [
+											{
+												"PatientID": "3737373737373737",
+												"DOB": "1995-10-10",
+												"POB": "Makasar",
+												"Address": "Jl Panglima Sudirman",
+												"City": "Jakarta",
+												"Province": "DKI Jakarta",
+												"Gender": "Male",
+												"Blood Type": "B",
+												"Religion": "Katholik",
+												"Marital Status": "Single",
+												"User": {
+													"UserID": "351010101010",
+													"UserDOB": "sansbud",
+													"Password": "12345",
+													"Role": "Patient",
+													"Token": "qwerty" 	
+												}
+											}
+										]
+									}
+								}
+							}
+						}
+					},
+					"400":{
+						"description": "Can not Update data Patient",
+						"content": {
+							"Application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"3030303030303030": {
+										"description": "Example Unsuccess Update Data Patient",
+											"value": {
+												"message": "Patient not found"
+											}
+									},
+									"3131313131313131": {
+										"description": "Example Unsuccess Update Data Patient",
+											"value": {
+												"message": "Patient not found"
+											}
+									}
+								}	
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"security": [
+					{
+						"JWTAuth":[]
+					}
+				],
+				"tags": ["C-Track App - Patient"],
+			  	"summary": "Delete Data Patient by id",
+				"description": "Delete Data Patient by id",
+				"parameters": [
+					{
+						"name": "patientId",
+						"in": "path",
+						"required": true,
+						"description": "Filter Delete Data Patient by id",
+						"schema": {
+							"type": "string",
+							"nullable": false,
+							"minLength": 1,
+							"maxLength": 16
+						},
+						"examples":{
+							"3030303030303030": {
+								"value": "3030303030303030"
+							},
+							"3737373737373737": {
+								"value": "3737373737373737"
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success Delete Patient Account",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean"
+										}
+									}
+								},
+								"examples": {
+									"3030303030303030": {
+										"description": "Success Delete Patient",
+										"value": {
+											"message": "success delete Patient",
+											"success": true
+										}
+									},
+									"3737373737373737": {
+										"description": "Success Delete Patient",
+										"value": {
+											"message": "success delete Patient",
+											"success": true
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Can not delete data Patient",
+						"content": {
+							"Application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"3030303030303030": {
+										"description": "Example Unsuccess Delete Data Patient",
+											"value": {
+												"message": "Patient not found, Can not Delete Data"
+											}
+									},
+									"3737373737373737": {
+										"description": "Example Unsuccess Delete Data Patient",
+											"value": {
+												"message": "Patient not found, Can not Delete Data"
+											}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/login/users": {
 			"post": {
+				"security": [
+					{
+						"JWTAuth":[]
+					}
+				],
 				"tags": ["C-Track App - Login"],
 				"summary": "Login When You Have User Account",
 				"description": "Login into C-Track App When You Have User Account",
@@ -51,15 +526,15 @@
 								"Doni Pebruwantoro": {
 									"description": "Login into C-Track App When You Have User Account Doni Pebruwantoro",
 									"value": {
-										"id": "351210010120090008",
-										"password": "012345"
+										"ID": 351210010120090008,
+										"Password": 12345
 									}
 								},
 								"David Beckham": {
 									"description": "Login into C-Track App When You Have User Account David Beckham",
 									"value": {
-										"id": "351910010120090001",
-										"password": "123456"
+										"ID": 351910010120090001,
+										"Password": 56789
 									}
 								}
 							}
@@ -77,11 +552,47 @@
 								"examples": {
 									"Doni Pebruwantoro": {
 										"description": "Success Login into C-Track App as Doni Pebruwantoro",
-										"value": "Success Login into C-Track App as Doni Pebruwantoro"
+										"value": {
+											"message": "welcome",
+											"ID": 351910010120090001,
+											"Name": "Doni Pebruwantoro",
+											"Role": "Patient",
+											"Token": "asdfgh"
+										}
 									},
 									"David Beckham": {
 										"description": "Success Login into C-Track App as David Beckham",
-										"value": "Success Login into C-Track App as David Beckham"
+										"value": {
+											"message": "welcome",
+											"ID": 351910010120090001,
+											"Name": "David Beckham",
+											"Role": "Patient",
+											"Token": "asdfgh"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400" :{
+						"description": "Username or Password incorrect",
+						"content": {
+							"application/json":{
+								"schema":{
+									"$ref": "#/components/schemas/CreateOrUpdateUser"
+								},
+								"examples": {
+									"Doni Pebruwantoro": {
+										"description": "Unsuccess Login into C-Track App",
+										"value":{
+											"message": "Username or Password incorrect"
+										}
+									},
+									"David Beckham": {
+										"description": "Unsuccess Login into C-Track App",
+										"value":{
+											"message": "Username or Password incorrect"
+										}
 									}
 								}
 							}
@@ -106,21 +617,21 @@
 								"Doni Pebruwantoro": {
 									"description": "Example Create New User Account Doni Pebruwantoro",
 									"value": {
-										"id": "351210010120090008",
-										"name": "Doni Pebruwantoro",
-										"email": "painakatsuki@gmail.com",
-										"password": "012345",
-										"phone number": "081927818989"
+										"UserId": "351210010120090008",
+										"Username": "Doni Pebruwantoro",
+										"Password": "012345",
+										"Role": "Patient",
+										"Token": "ahbdabfef"
 									}
 								},
 								"David Beckham": {
 									"description": "Example Create New User Account David Beckham",
 									"value": {
-										"id": "351910010120090001",
-										"name": "David Beckham",
-										"email": "beckham@gmail.com",
-										"password": "123456",
-										"phone number": "081111111111"
+										"UserId": "351910010120090001",
+										"Username": "David Beckham",
+										"Password": "123456",
+										"Role": "Checker",
+										"Token": "ajbfaibuea"
 									}
 								}
 							}
@@ -138,22 +649,50 @@
 								"examples": {
 									"Doni Pebruwantoro": {
 										"description": "Example Create New User Account Doni Pebruwantoro",
-										"value": {
-											"id": "351210010120090008",
-											"name": "Doni Pebruwantoro",
-											"email": "painakatsuki@gmail.com",
-											"password": "012345",
-											"phone number": "081927818989"
-										}
+										"value": [
+											{
+											"UserId": "351210010120090008",
+											"Username": "Doni Pebruwantoro",
+											"Password": "012345",
+											"Role": "Patient",
+											"Token": "ahbdabfef"
+											}
+										]
 									},
 									"David Beckham": {
 										"description": "Example Create New User Account David Beckham",
+										"value": [
+											{
+											"UserId": "351910010120090001",
+											"Username": "David Beckham",
+											"Password": "123456",
+											"Role": "Checker",
+											"Token": "ajbfaibuea"
+											}
+										]
+									}
+								}
+							}
+						}
+					},
+					"400":{
+						"description": "Can not Create User",
+						"content": {
+							"Application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples":{
+									"Doni Pebruwantoro": {
+										"description": "Example Unsuccess Create New User Doni Pebruwantoro",
 										"value": {
-											"id": "351910010120090001",
-											"name": "David Beckham",
-											"email": "beckham@gmail.com",
-											"password": "123456",
-											"phone number": "081111111111"
+											"message": "Can not insert data"
+										}
+									},
+									"David Beckham": {
+										"description": "Example Unsuccess Create New User David Beckham",
+										"value": {
+											"message": "Can not insert data"
 										}
 									}
 								}
@@ -165,6 +704,11 @@
 		},
 		"/users/{userId}": {
 			"get" : {
+				"security": [
+					{
+						"JWTAuth":[]
+					}
+				],
 				"tags": ["C-Track App - User"],
 				"summary": "Get Data User by id",
 				"description": "Get Data User by id",
@@ -199,70 +743,91 @@
 									"$ref": "#/components/schemas/ArrayUsers"
 								},
 								"examples": {
-									"success": {
-										"description": "Example Success Get Data User by id",
+									"Doni Pebruwantoro": {
+										"description": "Example Create New User Account Doni Pebruwantoro",
 										"value": [
 											{
-												"id": "351210010120090008",
-												"name": "Doni Pebruwantoro",
-												"email": "painakatsuki@gmail.com",
-												"phone number": "081927818989"
-											},
+											"UserId": "351210010120090008",
+											"Username": "Doni Pebruwantoro",
+											"Password": "012345",
+											"Role": "Patient",
+											"Token": "ahbdabfef"
+											}
+										]
+									},
+									"David Beckham": {
+										"description": "Example Create New User Account David Beckham",
+										"value": [
 											{
-												"id": "351910010120090001",
-												"name": "David Beckham",
-												"email": "beckham@gmail.com",
-												"phone number": "081111111111"
+											"UserId": "351910010120090001",
+											"Username": "David Beckham",
+											"password": "123456",
+											"Role": "Checker",
+											"Token": "ajbfaibuea"
 											}
 										]
 									}
 								}
 							}
 						}
+					},
+					"400":{
+						"description": "Can not fetch data User",
+						"content": {
+							"Application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"351210010120090008": {
+										"description": "Example Unsuccess Fetch Data User",
+											"value": {
+												"message": "User not found"
+											}
+									},
+									"351910010120090001": {
+										"description": "Example Unsuccess Fetch Data User",
+											"value": {
+												"message": "User not found"
+											}
+									}
+								}	
+							}
+						}
 					}
 				}
 			},
 			"put": {
+				"security": [
+					{
+						"JWTAuth":[]
+					}
+				],
 				"tags": ["C-Track App - User"],
 				"summary": "Update Data User by id",
 				"description": "Update Data User by id",
 				"parameters": [
 					{
-						"$ref": "#/components/parameters/userId"
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CreateOrUpdateUser"
+						"name": "userId",
+						"in": "path",
+						"required": true,
+						"description": "Filter Get Data User by id",
+						"schema": {
+							"type": "string",
+							"nullable": false,
+							"minLength": 1,
+							"maxLength": 16
+						},
+						"examples": {
+							"351210010120090008": {
+								"value": "351210010120090008"
 							},
-							"examples": {
-								"Doni Pebruwantoro": {
-									"description": "Example Update User Account Doni Pebruwantoro",
-									"value": {
-										"id": "351210010120090008",
-										"name": "Doni Pebruwantoro",
-										"email": "painakatsuki@gmail.com",
-										"password" : "012345",
-										"phone number": "089978799897"
-									}
-								},
-								"David Beckham": {
-									"description": "Example Update User Account David Beckham",
-									"value": {
-										"id": "351910010120090001",
-										"name": "David Beckham",
-										"email": "beckham@gmail.com",
-										"password" : "123456",
-										"phone number": "082211111111"
-									}
-								}
+							"351910010120090001": {
+								"value": "351910010120090001"
 							}
 						}
 					}
-				},
+				],
 				"responses": {
 					"200": {
 						"description": "Success Update Data User",
@@ -275,36 +840,82 @@
 									"Doni Pebruwantoro": {
 										"description": "Example Update User Account Doni Pebruwantoro",
 										"value": {
-											"id": "351210010120090008",
-											"name": "Doni Pebruwantoro",
-											"email": "painakatsuki@gmail.com",
-											"password" : "012345",
-											"phone number": "089978799897"
+											"UserId": "351210010120090008",
+											"Username": "Doni Pebruwantoro",
+											"Password": "012345",
+											"Role": "Patient",
+											"Token": "ahbdabfef"
 										}
 									},
 									"David Beckham": {
 										"description": "Example Update User Account David Beckham",
 										"value": {
-											"id": "351910010120090001",
-											"name": "David Beckham",
-											"email": "beckham@gmail.com",
-											"password" : "123456",
-											"phone number": "082211111111"
+											"UserId": "351910010120090001",
+											"Username": "David Beckham",
+											"password": "123456",
+											"Role": "Checker",
+											"Token": "ajbfaibuea"
 										}
 									}
 								}
+							}
+						}
+					},
+					"400":{
+						"description": "Can not Update Data User",
+						"content": {
+							"Application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"351210010120090008": {
+										"description": "Example Unsuccess Update Data User",
+											"value": {
+												"message": "User not found"
+											}
+									},
+									"351910010120090001": {
+										"description": "Example Unsuccess Update Data User",
+											"value": {
+												"message": "User not found"
+											}
+									}
+								}	
 							}
 						}
 					}
 				}
 			},
 			"delete": {
+				"security": [
+					{
+						"JWTAuth":[]
+					}
+				],
 				"tags": ["C-Track App - User"],
 				"summary": "Delete Data User by id",
 				"description": "Delete Data User by id",
 				"parameters": [
 					{
-						"$ref": "#/components/parameters/userId"
+						"name": "doctorId",
+						"in": "path",
+						"required": true,
+						"description": "Filter Delete Data Doctor by id",
+						"schema": {
+							"type": "string",
+							"nullable": false,
+							"minLength": 1,
+							"maxLength": 16
+						},
+						"examples":{
+							"3030303030303030": {
+								"value": "3030303030303030"
+							},
+							"3131313131313131": {
+								"value": "3131313131313131"
+							}
+						}
 					}
 				],
 				"responses": {
@@ -321,9 +932,17 @@
 									}
 								},
 								"examples": {
-									"success": {
+									"3030303030303030": {
 										"description": "Success Delete User Account",
 										"value": {
+											"message": "success delete User",
+											"success": true
+										}
+									},
+									"3131313131313131": {
+										"description": "Success Delete User Account",
+										"value": {
+											"message": "success delete User",
 											"success": true
 										}
 									}
@@ -332,23 +951,24 @@
 						}
 					},
 					"404": {
-						"description": "Failed Delete User",
+						"description": "Can not delete data User",
 						"content": {
-							"application/json": {
+							"Application/json": {
 								"schema": {
-									"type": "object",
-									"properties": {
-										"success": {
-											"type": "boolean"
-										}
-									}
+									"$ref": "#/components/schemas/users"
 								},
 								"examples": {
-									"failed": {
-										"description": "Failed Delete User",
-										"value": {
-											"success": false
-										}
+									"3030303030303030": {
+										"description": "Example Unsuccess Delete Data User",
+											"value": {
+												"message": "User not found, Can not Delete Data"
+											}
+									},
+									"3131313131313131": {
+										"description": "Example Unsuccess Delete Data User",
+											"value": {
+												"message": "User not found, Can not Delete Data"
+											}
 									}
 								}
 							}
@@ -357,11 +977,11 @@
 				}
 			}
 		},
-		"/nakes": {
+		"/doctors": {
 			"post": {
-				"tags": ["C-Track App - Nakes"],
-			  	"summary": "Create New Nakes",
-				"description": "Create New Nakes Account",
+				"tags": ["C-Track App - Doctor"],
+			  	"summary": "Create New Doctor",
+				"description": "Create New Doctor Account",
 				"requestBody": {
 					"required": true,
 					"content": {
@@ -371,23 +991,35 @@
 							},
 							"examples": {
 								"dr. Boyke Santoso": {
-									"description": "Example Create New Nakes Account dr. Boyke Santoso",
+									"description": "Example Create New Doctor Account dr. Boyke Santoso",
 									"value": {
-										"id": "3030303030303030",
-										"name": "dr. Boyke Santoso",
-										"email": "smartdoctor@gmail.com",
-										"password": "012345",
-										"phone number": "085789101112"
+										"DoctorID": "3030303030303030",
+										"Name": "dr. Boyke Santoso",
+										"Medical Facility Name": "RSUD Pertamina Jakarta",
+										"Medical Facility Address": "Jakarta Pusat",
+										"User": {
+											"UserID": "351010101010",
+											"Username": "bamsoke",
+											"Password": "12345",
+											"Role": "Checker",
+											"Token": "qwerty" 	
+										}
 									}
 								},
 								"dr. Felix Harahap": {
-									"description": "Example Create New Nakes Account dr. Felix Harahap",
+									"description": "Example Create New Doctor Account dr. Felix Harahap",
 									"value": {
-										"id": "3131313131313131",
-										"name": "dr. Felix Harahap",
-										"email": "cleverdoctor@gmail.com",
-										"password": "123456",
-										"phone number": "081717171717"
+										"DoctorID": "3131313131313131",
+										"Name": "dr. Felix Harahap",
+										"Medical Facility Name": "RSUD Pertamina Jakarta",
+										"Medical Facility Address": "Jakarta Pusat",
+										"User": {
+											"UserID": "351010101010",
+											"Username": "bamsoke",
+											"Password": "12345",
+											"Role": "Checker",
+											"Token": "qwerty" 	
+										}
 									}
 								}
 							}
@@ -396,7 +1028,7 @@
 				},
 				"responses": {
 					"200": {
-						"description": "Success Create New Nakes Account",
+						"description": "Success Create New Doctor Account",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -404,23 +1036,59 @@
 								},
 								"examples": {
 									"dr. Boyke Santoso": {
-										"description": "Example Create New Nakes Account dr. Boyke Santoso",
+										"description": "Example Create New Doctor dr. Boyke Santoso",
 										"value": {
-											"id": "3030303030303030",
-											"name": "dr. Boyke Santoso",
-											"email": "smartdoctor@gmail.com",
-											"password": "012345",
-											"phone number": "085789101112"
+											"DoctorID": "3030303030303030",
+											"Name": "dr. Boyke Santoso",
+											"Medical Facility Name": "RSUD Pertamina Jakarta",
+											"Medical Facility Address": "Jakarta Pusat",
+											"User": {
+												"UserID": "351010101010",
+												"Username": "bamsoke",
+												"Password": "12345",
+												"Role": "Checker",
+												"Token": "qwerty" 	
+											}
 										}
 									},
 									"dr. Felix Harahap": {
-										"description": "Example Create New User Account dr. Felix Harahap",
+										"description": "Example Create New Doctor dr. Felix Harahap",
 										"value": {
-											"id": "3131313131313131",
-											"name": "dr. Felix Harahap",
-											"email": "cleverdoctor@gmail.com",
-											"password": "123456",
-											"phone number": "081717171717"
+											"DoctorID": "3131313131313131",
+											"Name": "dr. Felix Harahap",
+											"Medical Facility Name": "RSUD Pertamina Jakarta",
+											"Medical Facility Address": "Jakarta Pusat",
+											"User": {
+												"UserID": "351010101010",
+												"Username": "bamsoke",
+												"Password": "12345",
+												"Role": "Checker",
+												"Token": "qwerty" 	
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400":{
+						"description": "Can not Create Doctor",
+						"content": {
+							"Application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples":{
+									"dr. Boyke Santoso": {
+										"description": "Example Unsuccess Create New Doctor dr. Boyke Santoso",
+										"value": {
+												"message": "Can not insert data"
+											}
+									},
+									"dr. Felix Harahap": {
+										"description": "Example Unsuccess Create New Doctor dr. Felix Harahap",
+										"value": {
+												"message": "Can not insert data"
 										}
 									}
 								}
@@ -430,17 +1098,22 @@
 				}
 			} 
 		},
-		  "/nakes/{nakesId}": {
+		  "/doctors/{doctorsId}": {
 			"get" : {
-				"tags": ["C-Track App - Nakes"],
-			  	"summary": "Get Data Nakes by id",
-				"description": "Get Data Nakes by id",
+				"security": [
+					{
+						"JWTAuth":[]
+					}
+				],
+				"tags": ["C-Track App - Doctor"],
+			  	"summary": "Get Data Doctor by id",
+				"description": "Get Data Doctor by id",
 				"parameters": [
 					{
-						"name": "nakesId",
+						"name": "doctorsId",
 						"in": "path",
 						"required": true,
-						"description": "Filter Get Data Nakes by id",
+						"description": "Filter Get Data Doctor by id",
 						"schema": {
 							"type": "string",
 							"nullable": false,
@@ -459,124 +1132,217 @@
 				],
 				"responses": {
 					"200": {
-						"description": "Success Get Data Nakes by id",
+						"description": "Success Get Data Doctor by id",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ArrayUsers"
 								},
 								"examples": {
-									"success": {
-										"description": "Example Success Get Data Nakes by id",
+									"3030303030303030": {
+										"description": "Example Success Get Data Doctor by id",
 										"value": [
 											{
-												"id": "3030303030303030",
-												"name": "dr. Boyke Santoso",
-												"email": "smartdoctor@gmail.com",
-												"phone number": "085789101112"
-											},
-											{
-												"id": "3131313131313131",
-												"name": "dr. Felix Harahap",
-												"email": "cleverdoctor@gmail.com",
-												"phone number": "081717171717"
+												"DoctorID": "3030303030303030",
+												"Name": "dr. Boyke Santoso",
+												"Medical Facility Name": "RSUD Pertamina Jakarta",
+												"Medical Facility Address": "Jakarta Pusat",
+												"User": {
+													"UserID": "351010101010",
+													"Username": "bamsoke",
+													"Password": "12345",
+													"Role": "Checker",
+													"Token": "qwerty" 	
+												}
 											}
 										]
+									},
+									"3131313131313131":{
+										"description": "Example Create New Doctor Account dr. Felix Harahap",
+										"value": {
+											"DoctorID": "3131313131313131",
+											"Name": "dr. Felix Harahap",
+											"Medical Facility Name": "RSUD Pertamina Jakarta",
+											"Medical Facility Address": "Jakarta Pusat",
+											"User": {
+												"UserID": "351010101010",
+												"Username": "bamsoke",
+												"Password": "12345",
+												"Role": "Checker",
+												"Token": "qwerty" 	
+											}
+										}
 									}
 								}
+							}
+						}
+					},
+					"400":{
+						"description": "Can not fetch data Doctor",
+						"content": {
+							"Application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"3030303030303030": {
+										"description": "Example Unsuccess Fetch Data Doctor",
+											"value": {
+												"message": "Doctor not found"
+											}
+									},
+									"3131313131313131": {
+										"description": "Example Unsuccess Fetch Data Doctor",
+											"value": {
+												"message": "Doctor not found"
+											}
+									}
+								}	
 							}
 						}
 					}
 				}
 			},
 			"put": {
-				"tags": ["C-Track App - Nakes"],
-			  	"summary": "Update Data Nakes by id",
-				"description": "Update Data Nakes by id",
-				"parameters": [
+				"security": [
 					{
-						"$ref": "#/components/parameters/nakesId"
+						"JWTAuth":[]
 					}
 				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CreateOrUpdateUser"
+				"tags": ["C-Track App - Doctor"],
+			  	"summary": "Update Data Doctor by id",
+				"description": "Update Data Doctor by id",
+				"parameters": [
+					{
+						"name": "doctorId",
+						"in": "path",
+						"required": true,
+						"description": "Filter Get Data Doctor by id",
+						"schema": {
+							"type": "string",
+							"nullable": false,
+							"minLength": 1,
+							"maxLength": 16
+						},
+						"examples": {
+							"3030303030303030": {
+								"value": "3030303030303030"
 							},
-							"examples": {
-								"dr. Boyke Santoso": {
-									"description": "Example Update Nakes Account dr. Boyke Santoso",
-									"value": {
-										"id": "3030303030303030",
-										"name": "dr. Boyke Santoso",
-										"email": "smartdoctor@gmail.com",
-										"password" : "012345",
-										"phone number": "081616161616"
-									}
-								},
-								"dr. Felix Harahap": {
-									"description": "Example Update Nakes Account dr. Felix Harahap",
-									"value": {
-										"id": "3131313131313131",
-										"name": "dr. Felix Harahap",
-										"email": "cleverdoctor@gmail.com",
-										"password" : "123456",
-										"phone number": "081818181818"
-									}
-								}
+							"3737373737373737": {
+								"value": "3737373737373737"
 							}
 						}
 					}
-				},
+				],
 				"responses": {
 					"200": {
-						"description": "Success Update Data Nakes",
+						"description": "Success Update Data Patient",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/users"
 								},
 								"examples": {
-									"dr. Boyke Santoso": {
-										"description": "Example Update Nakes Account dr. Boyke Santoso",
-										"value": {
-											"id": "3030303030303030",
-											"name": "dr. Boyke Santoso",
-											"email": "smartdoctor@gmail.com",
-											"password" : "012345",
-											"phone number": "081616161616"
-										}
+									"3030303030303030": {
+										"description": "Example Update Doctor",
+										"value": [
+											{
+												"DoctorID": "3030303030303030",
+												"Name": "dr. Boyke Santoso",
+												"Medical Facility Name": "RSUD Pertamina Jakarta",
+												"Medical Facility Address": "Jakarta Pusat",
+												"User": {
+													"UserID": "351010101010",
+													"Username": "bamsoke",
+													"Password": "12345",
+													"Role": "Checker",
+													"Token": "qwerty" 	
+												}
+											}
+										]
 									},
-									"dr. Felix Harahap": {
-										"description": "Example Update Nakes Account dr. Felix Harahap",
-										"value": {
-											"id": "3131313131313131",
-											"name": "dr. Felix Harahap",
-											"email": "cleverdoctor@gmail.com",
-											"password" : "123456",
-											"phone number": "081818181818"
-										}
+									"3131313131313131": {
+										"description": "Example Update Doctor Account dr. Felix Harahap",
+										"value": [
+											{
+												"DoctorID": "3131313131313131",
+												"Name": "dr. Felix Harahap",
+												"Medical Facility Name": "RSUD Pertamina Jakarta",
+												"Medical Facility Address": "Jakarta Pusat",
+												"User": {
+													"UserID": "351010101010",
+													"Username": "bamsoke",
+													"Password": "12345",
+													"Role": "Checker",
+													"Token": "qwerty"
+												}
+											}
+										]
 									}
 								}
+							}
+						}
+					},
+					"400":{
+						"description": "Can not Update data Doctor",
+						"content": {
+							"Application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"3030303030303030": {
+										"description": "Example Unsuccess Update Data Doctor",
+											"value": {
+												"message": "Doctor not found"
+											}
+									},
+									"3131313131313131": {
+										"description": "Example Unsuccess Update Data Doctor",
+											"value": {
+												"message": "Doctor not found"
+											}
+									}
+								}	
 							}
 						}
 					}
 				}
 			},
 			"delete": {
-				"tags": ["C-Track App - Nakes"],
-			  	"summary": "Delete Data Nakes by id",
-				"description": "Delete Data Nakes by id",
+				"security": [
+					{
+						"JWTAuth":[]
+					}
+				],
+				"tags": ["C-Track App - Doctor"],
+			  	"summary": "Delete Data Doctor by id",
+				"description": "Delete Data Doctor by id",
 				"parameters": [
 					{
-						"$ref": "#/components/parameters/nakesId"
+						"name": "doctorId",
+						"in": "path",
+						"required": true,
+						"description": "Filter Delete Data Doctor by id",
+						"schema": {
+							"type": "string",
+							"nullable": false,
+							"minLength": 1,
+							"maxLength": 16
+						},
+						"examples":{
+							"3030303030303030": {
+								"value": "3030303030303030"
+							},
+							"3131313131313131": {
+								"value": "3131313131313131"
+							}
+						}
 					}
 				],
 				"responses": {
 					"200": {
-						"description": "Success Delete Nakes Account",
+						"description": "Success Delete Doctor Account",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -588,9 +1354,17 @@
 									}
 								},
 								"examples": {
-									"success": {
-										"description": "Success Delete Nakes Account",
+									"3030303030303030": {
+										"description": "Success Delete Doctor Account",
 										"value": {
+											"message": "success delete doctor",
+											"success": true
+										}
+									},
+									"3131313131313131": {
+										"description": "Success Delete Doctor Account",
+										"value": {
+											"message": "success delete doctor",
 											"success": true
 										}
 									}
@@ -599,23 +1373,24 @@
 						}
 					},
 					"404": {
-						"description": "Failed Delete Nakes",
+						"description": "Can not delete data Doctor",
 						"content": {
-							"application/json": {
+							"Application/json": {
 								"schema": {
-									"type": "object",
-									"properties": {
-										"success": {
-											"type": "boolean"
-										}
-									}
+									"$ref": "#/components/schemas/users"
 								},
 								"examples": {
-									"failed": {
-										"description": "Failed Delete Nakes",
-										"value": {
-											"success": false
-										}
+									"3030303030303030": {
+										"description": "Example Unsuccess Delete Data Doctor",
+											"value": {
+												"message": "Doctor not found, Can not Delete Data"
+											}
+									},
+									"3131313131313131": {
+										"description": "Example Unsuccess Delete Data Doctor",
+											"value": {
+												"message": "Doctor not found, Can not Delete Data"
+											}
 									}
 								}
 							}
@@ -624,7 +1399,7 @@
 				}
 			}
 		},
-		  "/checker": {
+		  "/checkers": {
 			"post": {
 				"tags": ["C-Track App - Checker"],
 			  	"summary": "Create New Checker",
@@ -640,21 +1415,29 @@
 								"Bambang Pranoto": {
 									"description": "Example Create New Checker Account Bambang Pranoto",
 									"value": {
-										"id": "1818181818181818",
-										"name": "Bambang Pranoto",
-										"email": "securityganteng@gmail.com",
-										"password": "012345",
-										"phone number": "082222222222"
+										"EmployeeID": "1818181818181818",
+										"Name": "Bambang Pranoto",
+										"OfficeName": "Mall Kelapa Gading Jakarta",
+										"OfficeAddress": "Jakarta",
+										"UserID": "351010101010",
+										"Username": "bamsoke",
+										"Password": "12345",
+										"Role": "Checker",
+										"Token": "qwerty"
 									}
 								},
 								"Kurniawan Yulianto": {
 									"description": "Example Create New Checker Account Kurniawan Yulianto",
 									"value": {
-										"id": "1919191919191919",
-										"name": "Kurniawan Yulianto",
-										"email": "checkerhebat@gmail.com",
-										"password": "123456",
-										"phone number": "085777777777"
+										"EmployeeID": "1919191919191919",
+										"Name": "Kurniawan Yulianto",
+										"OfficeName": "Mall Kelapa Gading Jakarta",
+										"OfficeAddress": "Jakarta",
+										"UserID": "351111111111",
+										"Username": "kurniawanasik",
+										"Password": "12345",
+										"Role": "Checker",
+										"Token": "qwerty"
 									}
 								}
 							}
@@ -663,7 +1446,7 @@
 				},
 				"responses": {
 					"200": {
-						"description": "Success Create New Checker Account",
+						"description": "Success Create New Checker",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -671,34 +1454,71 @@
 								},
 								"examples": {
 									"Bambang Pranoto": {
-										"description": "Example Create New Checker Account Bambang Pranoto",
+										"description": "Example Create New Checker Bambang Pranoto",
 										"value": {
-											"id": "1818181818181818",
-											"name": "Bambang Pranoto",
-											"email": "securityganteng@gmail.com",
-											"password": "012345",
-											"phone number": "082222222222"
+											"EmployeeID": "1818181818181818",
+											"Name": "Bambang Pranoto",
+											"OfficeName": "Mall Kelapa Gading Jakarta",
+											"OfficeAddress": "Jakarta",
+											"UserID": "351010101010",
+											"Username": "bamsoke",
+											"Password": "12345",
+											"Role": "Checker",
+											"Token": "qwerty"
 										}
 									},
 									"Kurniawan Yulianto": {
-										"description": "Example Create New Checker Account Kurniawan Yulianto",
+										"description": "Example Create New Checker Kurniawan Yulianto",
 										"value": {
-											"id": "1919191919191919",
-											"name": "Kurniawan Yulianto",
-											"email": "checkerhebat@gmail.com",
-											"password": "123456",
-											"phone number": "085777777777"
+											"EmployeeID": "1919191919191919",
+											"Name": "Kurniawan Yulianto",
+											"OfficeName": "Mall Kelapa Gading Jakarta",
+											"OfficeAddress": "Jakarta",
+											"UserID": "351111111111",
+											"Username": "kurniawanasik",
+											"Password": "12345",
+											"Role": "Checker",
+											"Token": "qwerty"
 										}
 									}
 								}
+							}
+						}
+					},
+					"400":{
+						"description": "Can not Create Checker",
+						"content": {
+							"Application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"Bambang Pranoto": {
+										"description": "Example Unsuccess Create New Checker Bambang Pranoto",
+											"value": {
+												"message": "Can not insert data"
+											}
+									},
+									"Kurniawan Yulianto": {
+										"description": "Example Unsuccess Create New Checker Kurniawan Yulianto",
+											"value": {
+												"message": "Can not insert data"
+											}
+									}
+								}	
 							}
 						}
 					}
 				}
 			} 
 		},
-		  "/checker/{checkerId}": {
+		  "/checkers/{checkerId}": {
 			"get" : {
+				"security": [
+					{
+						"JWTAuth":[]
+					}
+				],
 				"tags": ["C-Track App - Checker"],
 				"summary": "Get Data Checker by id",
 				"description": "Get Data Checker by id",
@@ -733,70 +1553,101 @@
 									"$ref": "#/components/schemas/ArrayUsers"
 								},
 								"examples": {
-									"success": {
+									"1818181818181818": {
 										"description": "Example Success Get Data Checker by id",
 										"value": [
 											{
-												"id": "1818181818181818",
-												"name": "Bambang Pranoto",
-												"email": "securityganteng@gmail.com",
-												"phone number": "082222222222"
-											},
+												"message": "Success get data checker",
+												"EmployeeID": "1818181818181818",
+												"Name": "Bambang Pranoto",
+												"OfficeName": "Mall Kelapa Gading Jakarta",
+												"OfficeAddress": "Jakarta",
+												"UserID": "351010101010",
+												"Username": "bamsoke",
+												"Password": "12345",
+												"Role": "Checker",
+												"Token": "qwerty"
+											}
+										]
+									},
+									"1919191919191919": {
+										"description": "Example Success Get Data Checker by id",
+										"value": [
 											{
-												"id": "1919191919191919",
-												"name": "Kurniawan Yulianto",
-												"email": "checkerhebat@gmail.com",
-												"phone number": "085777777777"
+												"message": "Success get data checker",
+												"EmployeeID": "1919191919191919",
+												"Name": "Kurniawan Yulianto",
+												"OfficeName": "Mall Kelapa Gading Jakarta",
+												"OfficeAddress": "Jakarta",
+												"UserID": "351111111111",
+												"Username": "kurniawanasik",
+												"Password": "12345",
+												"Role": "Checker",
+												"Token": "qwerty"
 											}
 										]
 									}
 								}
 							}
 						}
+					},
+					"400":{
+						"description": "Can not fetch data Checker",
+						"content": {
+							"Application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"1818181818181818": {
+										"description": "Example Unsuccess Fetch Data Checker",
+											"value": {
+												"message": "Checker not found"
+											}
+									},
+									"1919191919191919": {
+										"description": "Example Unsuccess Fetch Data Checker",
+											"value": {
+												"message": "Checker not found"
+											}
+									}
+								}	
+							}
+						}
 					}
 				}
 			},
 			"put": {
+				"security": [
+					{
+						"JWTAuth":[]
+					}
+				],
 				"tags": ["C-Track App - Checker"],
 			  	"summary": "Update Data Checker by id",
 				"description": "Update Data Checker by id",
 				"parameters": [
 					{
-						"$ref": "#/components/parameters/checkerId"
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CreateOrUpdateUser"
+						"name": "checkerId",
+						"in": "path",
+						"required": true,
+						"description": "Filter Get Data Checker by id",
+						"schema": {
+							"type": "string",
+							"nullable": false,
+							"minLength": 1,
+							"maxLength": 16
+						},
+						"examples":{
+							"1818181818181818": {
+								"value": "1818181818181818"
 							},
-							"examples": {
-								"Bambang Pranoto": {
-									"description": "Example Update Checker Account Bambang Pranoto",
-									"value": {
-										"id": "1818181818181818",
-										"name": "Bambang Pranoto",
-										"email": "securityganteng@gmail.com",
-										"password" : "012345",
-										"phone number": "082121212121"
-									}
-								},
-								"Kurniawan Yulianto": {
-									"description": "Example Update Checker Account Kurniawan Yulianto",
-									"value": {
-										"id": "1919191919191919",
-										"name": "Kurniawan Yulianto",
-										"email": "checkerhebat@gmail.com",
-										"password" : "123456",
-										"phone number": "085767676767"
-									}
-								}
+							"1919191919191919": {
+								"value": "1919191919191919"
 							}
 						}
 					}
-				},
+				],
 				"responses": {
 					"200": {
 						"description": "Success Update Data Checker",
@@ -806,39 +1657,95 @@
 									"$ref": "#/components/schemas/users"
 								},
 								"examples": {
-									"Bambang Pranoto": {
+									"1818181818181818": {
 										"description": "Example Update Checker Account Bambang Pranoto",
 										"value": {
-											"id": "1818181818181818",
-											"name": "Bambang Pranoto",
-											"email": "securityganteng@gmail.com",
-											"password" : "012345",
-											"phone number": "082121212121"
-										}
+											"message": "Success update data checker",
+											"EmployeeID": "1818181818181818",
+											"Name": "Bambang Pranoto",
+											"OfficeName": "Mall Kelapa Gading Jakarta",
+											"OfficeAddress": "Jakarta",
+											"UserID": "351010101010",
+											"Username": "bamsoke",
+											"Password": "12345",
+											"Role": "Checker",
+											"Token": "qwerty"
+											}
 									},
-									"Kurniawan Yulianto": {
+									"1919191919191919": {
 										"description": "Example Update Checker Account Kurniawan Yulianto",
 										"value": {
-											"id": "1919191919191919",
-											"name": "Kurniawan Yulianto",
-											"email": "checkerhebat@gmail.com",
-											"password" : "123456",
-											"phone number": "085767676767"
-										}
+											"message": "Success update data checker",
+												"EmployeeID": "1919191919191919",
+												"Name": "Kurniawan Yulianto",
+												"OfficeName": "Mall Kelapa Gading Jakarta",
+												"OfficeAddress": "Jakarta",
+												"UserID": "351111111111",
+												"Username": "kurniawanasik",
+												"Password": "12345",
+												"Role": "Checker",
+												"Token": "qwerty"
+											}
 									}
 								}
+							}
+						}
+					},
+					"400":{
+						"description": "Can not fetch data Checker",
+						"content": {
+							"Application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"1818181818181818": {
+										"description": "Example Unsuccess Update Data Checker",
+											"value": {
+												"message": "Can not Update Data"
+											}
+									},
+									"1919191919191919": {
+										"description": "Example Unsuccess Update Data Checker",
+											"value": {
+												"message": "Can not Update Data"
+											}
+									}
+								}	
 							}
 						}
 					}
 				}
 			},
 			"delete": {
+				"security": [
+					{
+						"JWTAuth":[]
+					}
+				],
 				"tags": ["C-Track App - Checker"],
 			  	"summary": "Delete Data Checker by id",
 				"description": "Delete Data Checker by id",
 				"parameters": [
 					{
-						"$ref": "#/components/parameters/checkerId"
+						"name": "checkerId",
+						"in": "path",
+						"required": true,
+						"description": "Filter Delete Data Checker by id",
+						"schema": {
+							"type": "string",
+							"nullable": false,
+							"minLength": 1,
+							"maxLength": 16
+						},
+						"examples":{
+							"1818181818181818": {
+								"value": "1818181818181818"
+							},
+							"1919191919191919": {
+								"value": "1919191919191919"
+							}
+						}
 					}
 				],
 				"responses": {
@@ -855,9 +1762,17 @@
 									}
 								},
 								"examples": {
-									"success": {
+									"1818181818181818": {
 										"description": "Success Delete Checker Account",
 										"value": {
+											"message": "success delete checker",
+											"success": true
+										}
+									},
+									"1919191919191919": {
+										"description": "Success Delete Checker Account",
+										"value": {
+											"message": "success delete checker",
 											"success": true
 										}
 									}
@@ -866,23 +1781,24 @@
 						}
 					},
 					"404": {
-						"description": "Failed Delete Checker",
+						"description": "Can not fetch data Checker",
 						"content": {
-							"application/json": {
+							"Application/json": {
 								"schema": {
-									"type": "object",
-									"properties": {
-										"success": {
-											"type": "boolean"
-										}
-									}
+									"$ref": "#/components/schemas/users"
 								},
 								"examples": {
-									"failed": {
-										"description": "Failed Delete Checker",
-										"value": {
-											"success": false
-										}
+									"1818181818181818": {
+										"description": "Example Unsuccess Update Data Checker",
+											"value": {
+												"message": "Checker not found, Can not Delete Data"
+											}
+									},
+									"1919191919191919": {
+										"description": "Example Unsuccess Update Data Checker",
+											"value": {
+												"message": "Checker not found, Can not Delete Data"
+											}
 									}
 								}
 							}
@@ -893,6 +1809,11 @@
 		},
 		  "/test": {
 			"post": {
+				"security": [
+					{
+						"JWTAuth":[]
+					}
+				],
 				"tags": ["C-Track App - Test"],
 			  	"summary": "Create Testing Covid Result",
 				"description": "Create Testing Covid Result",
@@ -905,29 +1826,57 @@
 							},
 							"examples": {
 								"1": {
-									"description": "Example Create Testing Covid Result 1",
+									"description": "Example Create Testing Covid Result",
 									"value": {
-										"id": 1,
-										"NIK": "351210010120090008",
-										"date of test": "17/08/2021",
-										"test_category_id": 1,
-										"str_id": "2121212121212121",
-										"date of result": "17/08/2021",
-										"result_status": "negatif",
-										"note": "negatif"
+										"ID": 1,
+										"Test category": "SWAB Antigen",
+										"Patient": {
+											"PatientID": "3030303030303030",
+											"DOB": "1995-10-10",
+											"POB": "Merauke",
+											"Address": "Jl Panglima Sudirman",
+											"City": "Jakarta",
+											"Province": "DKI Jakarta",
+											"Gender": "Male",
+											"Blood Type": "AB",
+											"Religion": "Kristen",
+											"Marital Status": "Single",
+											"User": {
+												"UserID": "351010101010",
+												"UserDOB": "iwanbuds",
+												"Password": "12345",
+												"Role": "Patient",
+												"Token": "qwerty" 	
+											}
+										},
+										"Result": "Negative"
 									}
 								},
 								"2": {
-									"description": "Example Create Testing Covid Result 2",
+									"description": "Example Create Testing Covid Result",
 									"value": {
-										"id": 2,
-										"NIK": "351910010120090001",
-										"date of test": "17/08/2021",
-										"test_category_id": 2,
-										"str_id": "2121212121212121",
-										"date of result": "17/08/2021",
-										"result_status": "negatif",
-										"note": "negatif"
+										"ID": 2,
+										"Test category": "SWAB Antigen",
+										"Patient": {
+											"PatientID": "3737373737373737",
+											"DOB": "1995-10-10",
+											"POB": "Makasar",
+											"Address": "Jl Panglima Sudirman",
+											"City": "Jakarta",
+											"Province": "DKI Jakarta",
+											"Gender": "Male",
+											"Blood Type": "B",
+											"Religion": "Katholik",
+											"Marital Status": "Single",
+											"User": {
+												"UserID": "351010101010",
+												"UserDOB": "sansbud",
+												"Password": "12345",
+												"Role": "Patient",
+												"Token": "qwerty" 	
+											}
+										},
+										"Result": "Negative"
 									}
 								}
 							}
@@ -944,29 +1893,81 @@
 								},
 								"examples": {
 									"1": {
-										"description": "Example Testing Covid Result 1",
+										"description": "Example Testing Covid Result",
 										"value": {
-											"id": 1,
-											"NIK": "351210010120090008",
-											"date of test": "17/08/2021",
-											"test_category_id": 1,
-											"str_id": "2121212121212121",
-											"date of result": "17/08/2021",
-											"result_status": "negatif",
-											"note": "negatif"
+											"ID": 1,
+											"Test category": "SWAB Antigen",
+											"Patient": {
+												"PatientID": "3030303030303030",
+												"DOB": "1995-10-10",
+												"POB": "Merauke",
+												"Address": "Jl Panglima Sudirman",
+												"City": "Jakarta",
+												"Province": "DKI Jakarta",
+												"Gender": "Male",
+												"Blood Type": "AB",
+												"Religion": "Kristen",
+												"Marital Status": "Single",
+												"User": {
+													"UserID": "351010101010",
+													"UserDOB": "iwanbuds",
+													"Password": "12345",
+													"Role": "Patient",
+													"Token": "qwerty" 	
+												}
+											},
+											"Result": "Negative"
 										}
 									},
 									"2": {
-										"description": "Example Testing Covid Result 2",
+										"description": "Example Create Testing Covid Result",
 										"value": {
-											"id": 2,
-											"NIK": "351910010120090001",
-											"date of test": "17/08/2021",
-											"test_category_id": 2,
-											"str_id": "2121212121212121",
-											"date of result": "17/08/2021",
-											"result_status": "negatif",
-											"note": "negatif"
+											"ID": 2,
+											"Test category": "SWAB Antigen",
+											"Patient": {
+												"PatientID": "3737373737373737",
+												"DOB": "1995-10-10",
+												"POB": "Makasar",
+												"Address": "Jl Panglima Sudirman",
+												"City": "Jakarta",
+												"Province": "DKI Jakarta",
+												"Gender": "Male",
+												"Blood Type": "B",
+												"Religion": "Katholik",
+												"Marital Status": "Single",
+												"User": {
+													"UserID": "351010101010",
+													"UserDOB": "sansbud",
+													"Password": "12345",
+													"Role": "Patient",
+													"Token": "qwerty" 	
+												}
+											},
+											"Result": "Negative"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Can not Create Testing Covid Result",
+						"content": {
+							"Application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples":{
+									"1": {
+										"description": "Example Unsuccess Create New Testing Covid Result",
+										"value": {
+												"message": "Can not insert data"
+											}
+									},
+									"2": {
+										"description": "Example Unsuccess Create New Testing Covid Result",
+										"value": {
+												"message": "Can not insert data"
 										}
 									}
 								}
@@ -1012,84 +2013,125 @@
 									"$ref": "#/components/schemas/ArrayTest"
 								},
 								"examples": {
-									"success": {
+									"1": {
 										"description": "Example Success Get Data Testing Covid Result by id",
 										"value": [
 											{
-												"id": 1,
-												"NIK": "351210010120090008",
-												"date of test": "17/08/2021",
-												"test_category_id": 1,
-												"str_id": "2121212121212121",
-												"date of result": "17/08/2021",
-												"result_status": "negatif",
-												"note": "negatif"
-											},
+												"ID": 1,
+												"Test category": "SWAB Antigen",
+												"Patient": {
+													"PatientID": "3030303030303030",
+													"DOB": "1995-10-10",
+													"POB": "Merauke",
+													"Address": "Jl Panglima Sudirman",
+													"City": "Jakarta",
+													"Province": "DKI Jakarta",
+													"Gender": "Male",
+													"Blood Type": "AB",
+													"Religion": "Kristen",
+													"Marital Status": "Single",
+													"User": {
+														"UserID": "351010101010",
+														"UserDOB": "iwanbuds",
+														"Password": "12345",
+														"Role": "Patient",
+														"Token": "qwerty" 	
+													}
+												},
+												"Result": "Negative"
+											}
+										]
+									},
+									"2": {
+										"description": "Example Success Get Data Testing Covid Result by id",
+										"value": [
 											{
-												"id": 2,
-												"NIK": "351910010120090001",
-												"date of test": "17/08/2021",
-												"test_category_id": 2,
-												"str_id": "2121212121212121",
-												"date of result": "17/08/2021",
-												"result_status": "negatif",
-												"note": "negatif"
+												"ID": 2,
+												"Test category": "SWAB Antigen",
+												"Patient": {
+													"PatientID": "3737373737373737",
+													"DOB": "1995-10-10",
+													"POB": "Makasar",
+													"Address": "Jl Panglima Sudirman",
+													"City": "Jakarta",
+													"Province": "DKI Jakarta",
+													"Gender": "Male",
+													"Blood Type": "B",
+													"Religion": "Katholik",
+													"Marital Status": "Single",
+													"User": {
+														"UserID": "351010101010",
+														"UserDOB": "sansbud",
+														"Password": "12345",
+														"Role": "Patient",
+														"Token": "qwerty" 	
+													}
+												},
+												"Result": "Negative"
 											}
 										]
 									}
 								}
 							}
 						}
+					},
+					"400":{
+						"description": "Can not fetch data Testing Covid Result",
+						"content": {
+							"Application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"1": {
+										"description": "Example Unsuccess Fetch Data Testing Covid Result",
+											"value": {
+												"message": "Testing Covid Result not found"
+											}
+									},
+									"2": {
+										"description": "Example Unsuccess Fetch Data Testing Covid Result",
+											"value": {
+												"message": "Testing Covid Result not found"
+											}
+									}
+								}	
+							}
+						}
 					}
 				}
 			},
 			"put": {
+				"security": [
+					{
+						"JWTAuth":[]
+					}
+				],
 				"tags": ["C-Track App - Test"],
 			  	"summary": "Update Data Testing Covid Result id",
 				"description": "Update Data Testing Covid Result id",
 				"parameters": [
 					{
-						"$ref": "#/components/parameters/testId"
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CreateOrUpdateTest"
+						"name": "testsId",
+						"in": "path",
+						"required": true,
+						"description": "Filter Get Data Testing Covid Result by id",
+						"schema": {
+							"type": "string",
+							"nullable": false,
+							"minLength": 1,
+							"maxLength": 16
+						},
+						"examples": {
+							"1": {
+								"value": "1"
 							},
-							"examples": {
-								"1": {
-									"description": "Example Update Testing Covid Result 1",
-									"value": {
-										"id": 1,
-										"NIK": "351210010120090008",
-										"date of test": "17/08/2021",
-										"test_category_id": 1,
-										"str_id": "2121212121212121",
-										"date of result": "17/08/2021",
-										"result_status": "negatif",
-										"note": "negatif"
-									}
-								},
-								"2": {
-									"description": "Example Update Testing Covid Result 2",
-									"value": {
-										"id": 2,
-										"NIK": "351910010120090001",
-										"date of test": "17/08/2021",
-										"test_category_id": 2,
-										"str_id": "2121212121212121",
-										"date of result": "17/08/2021",
-										"result_status": "negatif",
-										"note": "negatif"
-									}
-								}
+							"2": {
+								"value": "2"
 							}
 						}
 					}
-				},
+				],
 				"responses": {
 					"200": {
 						"description": "Success Update Testing Covid Result",
@@ -1102,30 +2144,82 @@
 									"1": {
 										"description": "Example Update Testing Covid Result 1",
 										"value": {
-											"id": 1,
-											"NIK": "351210010120090008",
-											"date of test": "17/08/2021",
-											"test_category_id": 1,
-											"str_id": "2121212121212121",
-											"date of result": "17/08/2021",
-											"result_status": "negatif",
-											"note": "negatif"
+											"ID": 1,
+											"Test category": "SWAB Antigen",
+											"Patient": {
+												"PatientID": "3030303030303030",
+												"DOB": "1995-10-10",
+												"POB": "Merauke",
+												"Address": "Jl Panglima Sudirman",
+												"City": "Jakarta",
+												"Province": "DKI Jakarta",
+												"Gender": "Male",
+												"Blood Type": "AB",
+												"Religion": "Kristen",
+												"Marital Status": "Single",
+												"User": {
+													"UserID": "351010101010",
+													"UserDOB": "iwanbuds",
+													"Password": "12345",
+													"Role": "Patient",
+													"Token": "qwerty" 	
+													}
+												},
+											"Result": "Negative"
 										}
 									},
 									"2": {
 										"description": "Example Update Testing Covid Result 2",
 										"value": {
-											"id": 2,
-											"NIK": "351910010120090001",
-											"date of test": "17/08/2021",
-											"test_category_id": 2,
-											"str_id": "2121212121212121",
-											"date of result": "17/08/2021",
-											"result_status": "negatif",
-											"note": "negatif"
+											"ID": 2,
+											"Test category": "SWAB Antigen",
+											"Patient": {
+												"PatientID": "3737373737373737",
+												"DOB": "1995-10-10",
+												"POB": "Makasar",
+												"Address": "Jl Panglima Sudirman",
+												"City": "Jakarta",
+												"Province": "DKI Jakarta",
+												"Gender": "Male",
+												"Blood Type": "B",
+												"Religion": "Katholik",
+												"Marital Status": "Single",
+												"User": {
+													"UserID": "351010101010",
+													"UserDOB": "sansbud",
+													"Password": "12345",
+													"Role": "Patient",
+													"Token": "qwerty" 	
+													}
+												},
+											"Result": "Negative"
 										}
 									}
 								}
+							}
+						}
+					},
+					"400":{
+						"description": "Can not Update data Testing Covid Result",
+						"content": {
+							"Application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/users"
+								},
+								"examples": {
+									"1": {
+										"description": "Example Unsuccess Update Data Testing Covid Result",
+											"value": {
+												"message": "Testing Covid Result not found"
+											}
+									},
+									"2": {
+										"description": "Example Unsuccess Update Data Testing Covid Result",
+											"value": {
+												"message": "Testing Covid Result not found"
+											}
+									}
+								}	
 							}
 						}
 					}
@@ -1134,7 +2228,13 @@
 		}
 	},
 	"components": {
-		"securitySchemes": {},
+		"securitySchemes": {
+			"JWTAuth": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		},
 		"parameters": {
 			"userId": {
 				"name": "userId",
@@ -1248,19 +2348,17 @@
 			"CreateOrUpdateUser": {
 				"type": "object",
 				"properties": {
-					"id": {
+					"ID": {
+						"type": "number",
+						"format": "uint32"
+					},
+					"Name": {
 						"type": "string"
 					},
-					"name": {
+					"Role": {
 						"type": "string"
 					},
-					"email": {
-						"type": "string"
-					},
-					"password": {
-						"type": "string"
-					},
-					"phone number": {
+					"Token": {
 						"type": "string"
 					}
 				}
