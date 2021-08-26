@@ -32,15 +32,16 @@ func TestCreateCheckerSuccess(t *testing.T) {
 	createdChecker, err := CreateChecker(mockDBChecker)
 	// check and test checker data, if data injection exist in checker's table database, test will be pass
 	if assert.NoError(t, err) {
-		assert.Equal(t, 1234567890, createdChecker.EmployeeID)
-		assert.Equal(t, "Gunawan Nur Cahyo", createdChecker.Name)
-		assert.Equal(t, "Mall Tunjungan Plaza", createdChecker.OfficeName)
-		assert.Equal(t, "Jl. Tunjungan Kota Surabaya", createdChecker.OfficeAddress)
+		assert.Equal(t, mockDBChecker.EmployeeID, createdChecker.EmployeeID)
+		assert.Equal(t, mockDBChecker.Name, createdChecker.Name)
+		assert.Equal(t, mockDBChecker.OfficeName, createdChecker.OfficeName)
+		assert.Equal(t, mockDBChecker.OfficeAddress, createdChecker.OfficeAddress)
 	}
 }
 func TestCreateCheckerFail(t *testing.T) {
 	config.InitDBTest()                               // connect to database
 	config.DB.Migrator().DropTable(&models.Checker{}) // delete table from database
+	//config.DB.Migrator().AutoMigrate(&models.Checker{}) // create table from database
 	_, err := CreateChecker(mockDBChecker)
 	// check and test checker data, if data injection exist in checker's table database, test will be pass
 	assert.NoError(t, err)
@@ -56,16 +57,17 @@ func TestGetCheckersSuccess(t *testing.T) {
 	getChecker, err := GetCheckers()
 	// check and test checker data, if data exist in checker's table database, test will be pass
 	if assert.NoError(t, err) {
-		assert.Equal(t, 1234567890, getChecker.EmployeeID)
-		assert.Equal(t, "Gunawan Nur Cahyo", getChecker.Name)
-		assert.Equal(t, "Mall Tunjungan Plaza", getChecker.OfficeName)
-		assert.Equal(t, "Jl. Tunjungan Kota Surabaya", getChecker.OfficeAddress)
+		assert.Equal(t, mockDBChecker.EmployeeID, getChecker.EmployeeID)
+		assert.Equal(t, mockDBChecker.Name, getChecker.Name)
+		assert.Equal(t, mockDBChecker.OfficeName, getChecker.OfficeName)
+		assert.Equal(t, mockDBChecker.OfficeAddress, getChecker.OfficeAddress)
 	}
 }
 
 func TestGetCheckersFail(t *testing.T) {
 	config.InitDBTest()                               // connect to database
 	config.DB.Migrator().DropTable(&models.Checker{}) // delete table from database
+	//config.DB.Migrator().AutoMigrate(&models.Checker{}) // create table from database
 	CreateChecker(mockDBChecker)
 	// get checker data from database
 	_, err := GetCheckers()
@@ -83,17 +85,17 @@ func TestGetCheckersByIdSuccess(t *testing.T) {
 	getOneChecker, err := GetCheckerById(int(createdChecker.EmployeeID))
 	// check and test checker data, if data exist in checker's table database, test will be pass
 	if assert.NoError(t, err) {
-		assert.Equal(t, 1, int(getOneChecker.EmployeeID))
-		assert.Equal(t, 1234567890, getOneChecker.EmployeeID)
-		assert.Equal(t, "Gunawan Nur Cahyo", getOneChecker.Name)
-		assert.Equal(t, "Mall Tunjungan Plaza", getOneChecker.OfficeName)
-		assert.Equal(t, "Jl. Tunjungan Kota Surabaya", getOneChecker.OfficeAddress)
+		assert.Equal(t, mockDBChecker.EmployeeID, getOneChecker.EmployeeID)
+		assert.Equal(t, mockDBChecker.Name, getOneChecker.Name)
+		assert.Equal(t, mockDBChecker.OfficeName, getOneChecker.OfficeName)
+		assert.Equal(t, mockDBChecker.OfficeAddress, getOneChecker.OfficeAddress)
 	}
 }
 
 func TestGetCheckersByIdFail(t *testing.T) {
 	config.InitDBTest()                               // connect to database
 	config.DB.Migrator().DropTable(&models.Checker{}) // delete table from database
+	//config.DB.Migrator().AutoMigrate(&models.Checker{}) // create table from database
 	CreateChecker(mockDBChecker)
 	// get checker data by id from database
 	_, err := GetCheckerById(1)
@@ -115,7 +117,8 @@ func TestUpdateCheckersSuccess(t *testing.T) {
 	updateChecker, err := UpdateChecker(checker)
 	// check and test checker data, if data exist in checker's table database, test will be pass
 	if assert.NoError(t, err) {
-		assert.Equal(t, "Gunawan Nur Cahyo", updateChecker.Name)
+		assert.Equal(t, mockDBChecker.EmployeeID, updateChecker.EmployeeID)
+		assert.Equal(t, mockDBChecker.Name, updateChecker.Name)
 		assert.Equal(t, "Mall Grand City Surabaya", updateChecker.OfficeName)
 		assert.Equal(t, "Jl. Darmo Indah", updateChecker.OfficeAddress)
 	}
@@ -124,13 +127,15 @@ func TestUpdateCheckersSuccess(t *testing.T) {
 func TestUpdateCheckersFail(t *testing.T) {
 	config.InitDBTest()                               // connect to database
 	config.DB.Migrator().DropTable(&models.Checker{}) // delete table from database
+	//config.DB.Migrator().AutoMigrate(&models.Checker{}) // create table from database
 	_, err := UpdateChecker(mockDBChecker)
 	assert.NoError(t, err)
 }
 
+/*
 func TestCheckersLogin(t *testing.T) {
 	config.InitDBTest()                                 // connect to database
 	config.DB.Migrator().DropTable(&models.Checker{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.Checker{}) // create table from database
 
-}
+}*/

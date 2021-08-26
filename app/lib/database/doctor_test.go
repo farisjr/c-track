@@ -10,6 +10,7 @@ import (
 
 var (
 	mockDBDoctor = models.Doctor{
+		DoctorID:               12345,
 		Name:                   "dr. Doni Pebruwantoro",
 		MedicalFacilityName:    "RS Husada Utama Surabaya",
 		MedicalFacilityAddress: "Jl. Tunjungan Kota Surabaya",
@@ -31,15 +32,16 @@ func TestCreateDoctorSuccess(t *testing.T) {
 	createdDoctor, err := CreateDoctor(mockDBDoctor)
 	// check and test doctor data, if data injection exist in doctor's table database, test will be pass
 	if assert.NoError(t, err) {
-		assert.Equal(t, "dr. Doni Pebruwantoro", createdDoctor.Name)
-		assert.Equal(t, "RS Husada Utama Surabaya", createdDoctor.MedicalFacilityName)
-		assert.Equal(t, "Jl. Tunjungan Kota Surabaya", createdDoctor.MedicalFacilityAddress)
+		assert.Equal(t, mockDBDoctor.Name, createdDoctor.Name)
+		assert.Equal(t, mockDBDoctor.MedicalFacilityName, createdDoctor.MedicalFacilityName)
+		assert.Equal(t, mockDBDoctor.MedicalFacilityAddress, createdDoctor.MedicalFacilityAddress)
 	}
 }
 
 func TestCreateDoctorFail(t *testing.T) {
 	config.InitDBTest()                              // connect to database
 	config.DB.Migrator().DropTable(&models.Doctor{}) // delete table from database
+	//config.DB.Migrator().AutoMigrate(&models.Doctor{}) // create table from database
 	// inject doctor data from MockDBDoctor into doctor's table
 	_, err := CreateDoctor(mockDBDoctor)
 	assert.NoError(t, err)
@@ -55,15 +57,16 @@ func TestGetDoctorSuccess(t *testing.T) {
 	getDoctor, err := GetDoctor()
 	// check and test doctor data, if data exist in doctor's table database, test will be pass
 	if assert.NoError(t, err) {
-		assert.Equal(t, "dr. Doni Pebruwantoro", getDoctor.Name)
-		assert.Equal(t, "RS Husada Utama Surabaya", getDoctor.MedicalFacilityName)
-		assert.Equal(t, "Jl. Tunjungan Kota Surabaya", getDoctor.MedicalFacilityAddress)
+		assert.Equal(t, mockDBDoctor.Name, getDoctor.Name)
+		assert.Equal(t, mockDBDoctor.MedicalFacilityName, getDoctor.MedicalFacilityName)
+		assert.Equal(t, mockDBDoctor.MedicalFacilityAddress, getDoctor.MedicalFacilityAddress)
 	}
 }
 
 func TestGetDoctorFail(t *testing.T) {
 	config.InitDBTest()                              // connect to database
 	config.DB.Migrator().DropTable(&models.Doctor{}) // delete table from database
+	//config.DB.Migrator().AutoMigrate(&models.Doctor{}) // create table from database
 	// inject doctor data from MockDBDoctor into doctor's table
 	CreateDoctor(mockDBDoctor)
 	// get doctor data from database
@@ -78,19 +81,19 @@ func TestGetDoctorByIdSuccess(t *testing.T) {
 	// inject doctor data from MockDBDoctor into doctor's table
 	createdDoctor, _ := CreateDoctor(mockDBDoctor)
 	// get doctor data by id from database
-	getOneDoctor, err := GetDoctorById(int(createdDoctor.DoctorID))
+	getOneDoctor, err := GetDoctorById(createdDoctor.DoctorID)
 	// check and test doctor data, if data exist in doctor's table database, test will be pass
 	if assert.NoError(t, err) {
-		assert.Equal(t, 1, int(getOneDoctor.DoctorID))
-		assert.Equal(t, "dr. Doni Pebruwantoro", getOneDoctor.Name)
-		assert.Equal(t, "RS Husada Utama Surabaya", getOneDoctor.MedicalFacilityName)
-		assert.Equal(t, "Jl. Tunjungan Kota Surabaya", getOneDoctor.MedicalFacilityAddress)
+		assert.Equal(t, mockDBDoctor.Name, getOneDoctor.Name)
+		assert.Equal(t, mockDBDoctor.MedicalFacilityName, getOneDoctor.MedicalFacilityName)
+		assert.Equal(t, mockDBDoctor.MedicalFacilityAddress, getOneDoctor.MedicalFacilityAddress)
 	}
 }
 
 func TestGetDoctorByIdFail(t *testing.T) {
 	config.InitDBTest()                              // connect to database
 	config.DB.Migrator().DropTable(&models.Doctor{}) // delete table from database
+	//config.DB.Migrator().AutoMigrate(&models.Doctor{}) // create table from database
 	// inject doctor data from MockDBDoctor into doctor's table
 	CreateDoctor(mockDBDoctor)
 	// get doctor data by id from database
@@ -122,7 +125,31 @@ func TestUpdateDoctorSuccess(t *testing.T) {
 func TestUpdateDoctorFail(t *testing.T) {
 	config.InitDBTest()                              // connect to database
 	config.DB.Migrator().DropTable(&models.Doctor{}) // delete table from database
+	//config.DB.Migrator().AutoMigrate(&models.Doctor{}) // create table from database
 	_, err := UpdateDoctor(mockDBDoctor)
+	assert.NoError(t, err)
+}
+func TestGetUpdateDoctorSuccess(t *testing.T) {
+	config.InitDBTest()                                // connect to database
+	config.DB.Migrator().DropTable(&models.Doctor{})   // delete table from database
+	config.DB.Migrator().AutoMigrate(&models.Doctor{}) // create table from database
+	// inject doctor data from MockDBDoctor into doctor's table
+	createdDoctor, _ := CreateDoctor(mockDBDoctor)
+	// get doctor data by id from database
+	doctor, _ := GetDoctorById(int(createdDoctor.DoctorID))
+	updateDoctor, err := GetUpdateDoctor(doctor.DoctorID)
+	if assert.NoError(t, err) {
+		assert.Equal(t, mockDBDoctor.Name, updateDoctor.Name)
+		assert.Equal(t, mockDBDoctor.MedicalFacilityName, updateDoctor.MedicalFacilityName)
+		assert.Equal(t, mockDBDoctor.MedicalFacilityAddress, updateDoctor.MedicalFacilityAddress)
+	}
+}
+func TestGetUpdateDoctorFail(t *testing.T) {
+	config.InitDBTest()                              // connect to database
+	config.DB.Migrator().DropTable(&models.Doctor{}) // delete table from database
+	//config.DB.Migrator().AutoMigrate(&models.Doctor{}) // create table from database
+	createdDoctor, _ := CreateDoctor(mockDBDoctor)
+	_, err := GetUpdateDoctor(createdDoctor.DoctorID)
 	assert.NoError(t, err)
 }
 
@@ -143,9 +170,9 @@ func TestUpdateDoctorFail(t *testing.T) {
 // 		assert.Equal(t, "Jl. Tunjungan Kota Surabaya", deletedDoctor.MedicalFacilityAddress)
 // 	}
 // }
-func TestCheckerLogin(t *testing.T) {
+/*func TestCheckerLogin(t *testing.T) {
 	config.InitDBTest()                                 // connect to database
 	config.DB.Migrator().DropTable(&models.Checker{})   // delete table from database
 	config.DB.Migrator().AutoMigrate(&models.Checker{}) // create table from database
 
-}
+}*/

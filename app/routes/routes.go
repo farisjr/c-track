@@ -54,9 +54,9 @@ func New(e *echo.Echo) {
 	// e.DELETE("/users/:id", controllers.DeletePatientsController)
 
 	//------------------ Login Controllers ----------------------//
-	e.POST("/checkers/login", controllers.LoginChecker)
-	e.POST("/doctors/login", controllers.LoginDoctor)
-	e.POST("/patients/login", controllers.LoginPatient)
+	//e.POST("/checkers/login", controllers.LoginChecker)
+	//e.POST("/doctors/login", controllers.LoginDoctor)
+	//e.POST("/patients/login", controllers.LoginPatient)
 	e.POST("/users/login", controllers.LoginUserController)
 	e.POST("/register", controllers.RegisterUserController)
 
@@ -73,9 +73,9 @@ func New(e *echo.Echo) {
 	//------------------ Adding, Updating and Deleting Covid Test for Doctors ----------------------//
 
 	//------------------ Login Controllers ----------------------//
-	eJwt.POST("/checkers/login", controllers.LoginChecker)
-	eJwt.POST("/doctors/login", controllers.LoginDoctor)
-	eJwt.POST("/patients/login", controllers.LoginPatient)
+	//eJwt.POST("/checkers/login", controllers.LoginChecker)
+	//eJwt.POST("/doctors/login", controllers.LoginDoctor)
+	//eJwt.POST("/patients/login", controllers.LoginPatient)
 	eJwt.POST("/users/login", controllers.LoginUserController)
 
 	//------------------ Creating Covid Test for Doctors ----------------------//

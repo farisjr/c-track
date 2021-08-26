@@ -6,26 +6,26 @@ import (
 	"app/models"
 )
 
-func LoginUser(username, password string) (interface{}, error) {
+func LoginUser(username, password string) (models.User, error) {
 	var err error
 	var user models.User
 	if err = config.DB.Where("username=? AND password=?", username, password).First(&user).Error; err != nil {
-		return nil, err
+		return user, err
 	}
 
 	user.Token, err = middlewares.CreateToken(int(user.UserID))
 	if err != nil {
-		return nil, err
+		return user, err
 	}
 	if err := config.DB.Save(user).Error; err != nil {
-		return nil, err
+		return user, err
 	}
 	return user, err
 }
 
 func GetOneUser(id int) (models.User, error) {
 	var user models.User
-	if err := config.DB.Find(&user, "userid=?", id).Error; err != nil {
+	if err := config.DB.Find(&user, "user_id=?", id).Error; err != nil {
 		return user, err
 	}
 	return user, nil
@@ -39,26 +39,23 @@ func CreateUser(user models.User) (models.User, error) {
 }
 
 func UpdateUser(users models.User, id int) (models.User, error) {
-	if err := config.DB.Find(&users, "id=?", id).Error; err != nil {
-		return users, err
-	}
-	if err := config.DB.Save(&users).Error; err != nil {
+	if err := config.DB.Find(&users, "user_id=?", id).Save(&users).Error; err != nil {
 		return users, err
 	}
 	return users, nil
 }
 
-func GetUser(id int) (interface{}, error) {
+func GetUser(id int) (models.User, error) {
 	var users models.User
-	if err := config.DB.Find(&users, "id=?", id).Error; err != nil {
-		return nil, err
+	if err := config.DB.Find(&users, "user_id=?", id).Error; err != nil {
+		return users, err
 	}
 	return users, nil
 }
-func GetDetailUser(userId int) (interface{}, error) {
+func GetDetailUser(userId int) (models.User, error) {
 	var user models.User
 	if err := config.DB.Find(&user, userId).Error; err != nil {
-		return nil, err
+		return user, err
 	}
 	return user, nil
 }
@@ -71,8 +68,10 @@ func EditUser(user models.User) (models.User, error) {
 }
 
 //get token user
-func GetToken(user_id int) string {
+func GetToken(user_id int) (string, error) {
 	var user models.User
-	config.DB.Model(&user).Select("token").Where("user_id=?", user_id)
-	return user.Token
+	if tx := config.DB.Model(&user).Select("token").Where("user_id=?", user_id).Error; tx != nil {
+		return user.Token, tx
+	}
+	return user.Token, nil
 }

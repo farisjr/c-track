@@ -35,6 +35,7 @@ func UpdateChecker(checker models.Checker) (models.Checker, error) {
 	return checker, nil
 }
 
+/*
 //Login for checker with matching email and password
 func LoginCheckerDB(username, password string) (models.Checker, error) {
 	var checker models.Checker
@@ -47,3 +48,4 @@ func LoginCheckerDB(username, password string) (models.Checker, error) {
 	}
 	return checker, err
 }
+*/
