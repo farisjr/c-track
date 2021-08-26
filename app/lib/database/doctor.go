@@ -22,7 +22,7 @@ func GetDoctor() (models.Doctor, error) {
 
 func GetDoctorById(id int) (models.Doctor, error) {
 	var doctor models.Doctor
-	if err := config.DB.Find(&doctor, "id=?", id).Error; err != nil {
+	if err := config.DB.Find(&doctor, "doctor_id=?", id).Error; err != nil {
 		return doctor, err
 	}
 	return doctor, nil
@@ -45,14 +45,16 @@ func UpdateDoctor(updateDoctors models.Doctor) (models.Doctor, error) {
 }
 
 //get 1 specified test with test struct output
-func GetUpdateDoctor(id int) models.Doctor {
+func GetUpdateDoctor(id int) (models.Doctor, error) {
 	var doctor models.Doctor
-	config.DB.Find(&doctor, "id=?", id)
-	return doctor
+	if tx := config.DB.Find(&doctor, "doctor_id=?", id).Error; tx != nil {
+		return doctor, tx
+	}
+	return doctor, nil
 }
 
 //Login for doctor with matching username and password
-func LoginDoctorDB(username, password string) (models.Doctor, error) {
+/*func LoginDoctorDB(username, password string) (models.Doctor, error) {
 	var doctor models.Doctor
 	var err error
 	if err = config.DB.Where("username=? AND password=?", username, password).First(&doctor).Error; err != nil {
@@ -62,4 +64,4 @@ func LoginDoctorDB(username, password string) (models.Doctor, error) {
 		return doctor, err
 	}
 	return doctor, err
-}
+}*/

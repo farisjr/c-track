@@ -22,7 +22,7 @@ func GetAllTests() (models.Tests, error) {
 
 func GetOneTest(id int) (models.Tests, error) {
 	var tests models.Tests
-	if err := config.DB.Find(&tests, "id=?", id).Error; err != nil {
+	if err := config.DB.Find(&tests, "test_id=?", id).Error; err != nil {
 		return tests, err
 	}
 	return tests, nil

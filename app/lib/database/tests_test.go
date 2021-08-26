@@ -11,21 +11,29 @@ import (
 
 var (
 	mockDBTest = models.Tests{
-		Result: "Positive",
+		TestsID:          12,
+		PatientID:        1010101010,
+		TestCategoriesID: 1,
+		CreatedAt:        time.Now(),
+		UpdatedAt:        time.Now(),
 		TestCategories: models.TestCategories{
-			Name: "SWAB Antigen",
+			TestCategoriesID: 1,
+			Name:             "SWAB Antigen",
+			CreatedAt:        time.Now(),
+			UpdatedAt:        time.Now(),
 		},
 		Patient: models.Patient{
 			PatientID:      1010101010,
+			UserID:         12345,
 			Dob:            time.Now(),
 			Pob:            "Surabaya",
 			Address:        "Surabaya",
 			City:           "Surabaya",
 			Province:       "Jawa Timur",
-			Gender:         "Male",
-			Blood_type:     "O",
-			Religion:       "Kristen",
-			Marital_Status: "Single",
+			Gender:         models.Gender("Male"),
+			Blood_type:     models.Blood_type("AB"),
+			Religion:       models.Religion("Kristen"),
+			Marital_Status: models.Marital_Status("Single"),
 			User: models.User{
 				UserID:   1010101010,
 				Username: "boruto@gmail.com",
@@ -34,31 +42,7 @@ var (
 				Token:    "jafniaebfiajnfe",
 			},
 		},
-	}
-	mockDBTestEdit = models.Tests{
-		Result: "Positive",
-		TestCategories: models.TestCategories{
-			Name: "SWAB Antigen",
-		},
-		Patient: models.Patient{
-			PatientID:      1010101010,
-			Dob:            time.Now(),
-			Pob:            "Surabaya",
-			Address:        "Surabaya",
-			City:           "Surabaya",
-			Province:       "Jawa Timur",
-			Gender:         "Male",
-			Blood_type:     "O",
-			Religion:       "Kristen",
-			Marital_Status: "Single",
-			User: models.User{
-				UserID:   1010101010,
-				Username: "boruto@gmail.com",
-				Password: "123456",
-				Role:     models.Role("Patient"),
-				Token:    "jafniaebfiajnfe",
-			},
-		},
+		Result: "Negative",
 	}
 )
 
@@ -69,15 +53,16 @@ func TestCreateTestSuccess(t *testing.T) {
 	// inject Test data from MockDBTest into Test's table
 	createdTest, err := CreateTest(mockDBTest)
 	if assert.NoError(t, err) {
-		assert.Equal(t, "Positive", createdTest.Result)
-		assert.Equal(t, "SWAB Antigen", createdTest.TestCategories.Name)
-		assert.Equal(t, "Surabaya", createdTest.Patient.City)
+		assert.Equal(t, mockDBTest.TestsID, createdTest.TestsID)
+		assert.Equal(t, mockDBTest.TestCategoriesID, createdTest.TestCategoriesID)
+		assert.Equal(t, mockDBTest.PatientID, createdTest.PatientID)
 	}
 }
 
 func TestCreateTestFail(t *testing.T) {
 	config.InitDBTest()                             // connect to database
 	config.DB.Migrator().DropTable(&models.Tests{}) // delete table from database
+	//config.DB.Migrator().AutoMigrate(&models.Tests{}) // create table from database
 	// inject Test data from MockDBTest into Test's table
 	_, err := CreateTest(mockDBTest)
 	assert.NoError(t, err)
@@ -91,15 +76,16 @@ func TestGetAllTestSuccess(t *testing.T) {
 	CreateTest(mockDBTest)
 	getTest, err := GetAllTests()
 	if assert.NoError(t, err) {
-		assert.Equal(t, "Positive", getTest.Result)
-		assert.Equal(t, "SWAB Antigen", getTest.TestCategories.Name)
-		assert.Equal(t, "Surabaya", getTest.Patient.City)
+		assert.Equal(t, mockDBTest.TestsID, getTest.TestsID)
+		assert.Equal(t, mockDBTest.TestCategoriesID, getTest.TestCategoriesID)
+		assert.Equal(t, mockDBTest.PatientID, getTest.PatientID)
 	}
 }
 
 func TestGetAllTestFail(t *testing.T) {
 	config.InitDBTest()                             // connect to database
 	config.DB.Migrator().DropTable(&models.Tests{}) // delete table from database
+	//config.DB.Migrator().AutoMigrate(&models.Tests{}) // create table from database
 	// inject Test data from MockDBTest into Test's table
 	CreateTest(mockDBTest)
 	_, err := GetAllTests()
@@ -113,17 +99,18 @@ func TestGetOneTestSuccess(t *testing.T) {
 	// inject Test data from MockDBTest into Test's table
 	createdTest, _ := CreateTest(mockDBTest)
 	// get Test data by id from database
-	test, err := GetOneTest(int(createdTest.TestsID))
+	test, err := GetOneTest(createdTest.TestsID)
 	if assert.NoError(t, err) {
-		assert.Equal(t, "Positive", test.Result)
-		assert.Equal(t, "SWAB Antigen", test.TestCategories.Name)
-		assert.Equal(t, "Surabaya", test.Patient.City)
+		assert.Equal(t, mockDBTest.TestCategoriesID, test.TestsID)
+		assert.Equal(t, mockDBTest.TestCategoriesID, test.TestCategoriesID)
+		assert.Equal(t, mockDBTest.PatientID, test.PatientID)
 	}
 }
 
 func TestGetOneTestFail(t *testing.T) {
 	config.InitDBTest()                             // connect to database
 	config.DB.Migrator().DropTable(&models.Tests{}) // delete table from database
+	//config.DB.Migrator().AutoMigrate(&models.Tests{}) // create table from database
 	// inject Test data from MockDBTest into Test's table
 	CreateTest(mockDBTest)
 	// get Test data by id from database
@@ -137,21 +124,19 @@ func TestUpdateTestSuccess(t *testing.T) {
 	// inject Test data from MockDBTest into Test's table
 	createdTest, _ := CreateTest(mockDBTest)
 	// get Test data by id from database
-	test, _ := GetOneTest(int(createdTest.TestsID))
-	// update Test
-	test.Result = "Negative"
+	createdTest.Result = "Positive"
 	// inject update Test data into Test's table
-	editTest, _ := UpdateTests(test)
-	testEdited, err := GetOneTest(int(editTest.TestCategoriesID))
+	editTest, err := UpdateTests(createdTest)
 	if assert.NoError(t, err) {
-		assert.Equal(t, "Negative", testEdited.Result)
+		assert.Equal(t, "Positive", editTest.Result)
 	}
 }
 
 func TestUpdateTestFail(t *testing.T) {
 	config.InitDBTest()                             // connect to database
 	config.DB.Migrator().DropTable(&models.Tests{}) // delete table from database
-	_, err := UpdateTests(mockDBTestEdit)
+	//config.DB.Migrator().AutoMigrate(&models.Tests{}) // create table from database
+	_, err := UpdateTests(mockDBTest)
 	assert.NoError(t, err)
 }
 

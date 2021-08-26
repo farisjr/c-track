@@ -28,7 +28,7 @@ func RegisterDoctorController(c echo.Context) error {
 }
 
 //Login for doctor with matching username and password
-func LoginDoctor(c echo.Context) error {
+/*func LoginDoctor(c echo.Context) error {
 	doctor := models.User{}
 	c.Bind(&doctor)
 	logindoctor, err := database.LoginDoctorDB(doctor.Username, doctor.Password)
@@ -43,7 +43,7 @@ func LoginDoctor(c echo.Context) error {
 		"message": "succes login",
 		"doctor":  mapLogindoctor,
 	})
-}
+}*/
 
 //Authorization doctor
 func AuthorizationDoctor(doctorId int, c echo.Context) error {
@@ -63,7 +63,7 @@ func LogoutDoctor(c echo.Context) error {
 			"message": "invalid id",
 		})
 	}
-	logout, err := database.GetDoctorById(id)
+	logout, _ := database.GetDoctorById(id)
 	doctor, err := database.UpdateDoctor(logout)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -150,7 +150,7 @@ func UpdateDoctorsController(c echo.Context) error {
 			"message": "invalid id",
 		})
 	}
-	updateDoctors := database.GetUpdateDoctor(id)
+	updateDoctors, _ := database.GetUpdateDoctor(id)
 	c.Bind(&updateDoctors)
 	testsId, err1 := database.UpdateDoctor(updateDoctors)
 	if err1 != nil {

@@ -1,7 +1,6 @@
 package models
 
 import (
-	"database/sql"
 	"time"
 )
 
@@ -9,7 +8,7 @@ type Patient struct {
 	PatientID      int            `gorm:"primaryKey; not null" json:"patient_id"`
 	UserID         int            `json:"user_id" form:"user_id"`
 	Fullname       string         `gorm:"type:varchar(30); not null" json:"fullname"`
-	Dob            time.Time      `gorm:"type:date(); not null" json:"borndate"`
+	Dob            time.Time      `gorm:"not null" json:"borndate"`
 	Pob            string         `gorm:"type:varchar(30); not null" json:"bornplace"`
 	Address        string         `gorm:"type:varchar(100); not null" json:"address"`
 	City           string         `gorm:"type:varchar(100); not null" json:"city"`
@@ -21,7 +20,7 @@ type Patient struct {
 	User           User           `gorm:"foreignKey:UserID"`
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
-	DeletedAt      sql.NullTime `gorm:"index"`
+	DeletedAt      time.Time `gorm:"index"`
 }
 
 type Gender string

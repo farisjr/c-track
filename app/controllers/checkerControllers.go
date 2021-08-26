@@ -28,7 +28,7 @@ func RegisterCheckerController(c echo.Context) error {
 }
 
 //Login for checker with matching username and password
-func LoginChecker(c echo.Context) error {
+/*func LoginChecker(c echo.Context) error {
 	checker := models.User{}
 	c.Bind(&checker)
 	loginchecker, err := database.LoginCheckerDB(checker.Username, checker.Password)
@@ -43,7 +43,7 @@ func LoginChecker(c echo.Context) error {
 		"message": "succes login",
 		"checker": mapLoginchecker,
 	})
-}
+}*/
 
 //Authorization checker
 func AuthorizationChecker(checkerId int, c echo.Context) error {

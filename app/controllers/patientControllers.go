@@ -28,7 +28,7 @@ func RegisterPatientController(c echo.Context) error {
 }
 
 //Login for patient with matching username and password
-func LoginPatient(c echo.Context) error {
+/*func LoginPatient(c echo.Context) error {
 	patient := models.User{}
 	c.Bind(&patient)
 	loginpatient, err := database.PatientLoginDB(patient.Username, patient.Password)
@@ -42,7 +42,7 @@ func LoginPatient(c echo.Context) error {
 		"message": "success login",
 		"doctor":  mapLoginpatient,
 	})
-}
+}*/
 
 //Authorization patient
 func AuthorizationPatient(patientId int, c echo.Context) error {
