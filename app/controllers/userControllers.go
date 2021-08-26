@@ -20,9 +20,16 @@ func RegisterUserController(c echo.Context) error {
 			"message": "cannot insert data",
 		})
 	}
+
+	mapUserRegister := map[string]interface{}{
+		"ID":       user.UserID,
+		"Username": user.Username,
+		"Role":     user.Role,
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "add new user",
-		"data":    user,
+		"message": "register user success",
+		"data":    mapUserRegister,
 	})
 
 }
@@ -30,21 +37,23 @@ func RegisterUserController(c echo.Context) error {
 func LoginUserController(c echo.Context) error {
 	user := models.User{}
 	c.Bind(&user)
-	users, err := database.LoginUser(user.Username, user.Password)
+	user, err := database.LoginUser(user.Username, user.Password)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"message": "username or password is not correct",
 		})
 	}
-	// mapUserLogin := map[string]interface{}{
-	// 	"ID":    user.UserID,
-	// 	"Name":  user.Username,
-	// 	"Role":  user.Role,
-	// 	"Token": user.Token,
-	// }
+
+	mapUserLogin := map[string]interface{}{
+		"ID":       user.UserID,
+		"Username": user.Username,
+		"Role":     user.Role,
+		"Token":    user.Token,
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "welcome",
-		"data":    users,
+		"data":    mapUserLogin,
 	})
 }
 

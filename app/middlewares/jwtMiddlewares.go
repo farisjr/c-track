@@ -28,39 +28,6 @@ func CreateToken(user_id int) (string, error) {
 	return token.SignedString([]byte(constants.SECRET_JWT))
 }
 
-// func CreatePatientToken(userId int) (string, error) {
-// 	claims := jwt.MapClaims{}
-// 	claims["authorized"] = true
-// 	claims["userId"] = int(userId)
-// 	claims["role"] = "patient"
-// 	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
-
-// 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-// 	return token.SignedString([]byte(constants.SECRET_JWT))
-// }
-
-// func CreateDoctorToken(userId int) (string, error) {
-// 	claims := jwt.MapClaims{}
-// 	claims["authorized"] = true
-// 	claims["userId"] = int(userId)
-// 	claims["role"] = "doctor"
-// 	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
-
-// 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-// 	return token.SignedString([]byte(constants.SECRET_JWT))
-// }
-
-// func CreateCheckerToken(userId int) (string, error) {
-// 	claims := jwt.MapClaims{}
-// 	claims["authorized"] = true
-// 	claims["userId"] = int(userId)
-// 	claims["role"] = "checker"
-// 	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
-
-// 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-// 	return token.SignedString([]byte(constants.SECRET_JWT))
-// }
-
 func ExtractTokenUserId(e echo.Context) (int, string) {
 	user := e.Get("user").(*jwt.Token)
 

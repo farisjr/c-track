@@ -17,9 +17,6 @@ func LoginUser(username, password string) (models.User, error) {
 	if err != nil {
 		return user, err
 	}
-	if err := config.DB.Save(user).Error; err != nil {
-		return user, err
-	}
 	return user, err
 }
 
