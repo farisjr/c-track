@@ -15,5 +15,5 @@
 # vendor/
 prod.env
 .env
-main.go
-config/config.go
+
+
