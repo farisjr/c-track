@@ -91,9 +91,9 @@ func TestGetAllTestSuccess(t *testing.T) {
 	CreateTest(mockDBTest)
 	getTest, err := GetAllTests()
 	if assert.NoError(t, err) {
-		assert.Equal(t, "Positive", getTest.Result)
-		assert.Equal(t, "SWAB Antigen", getTest.TestCategories.Name)
-		assert.Equal(t, "Surabaya", getTest.Patient.City)
+		assert.Equal(t, "Positive", getTest)
+		assert.Equal(t, "SWAB Antigen", getTest)
+		assert.Equal(t, "Surabaya", getTest)
 	}
 }
 

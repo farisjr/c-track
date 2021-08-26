@@ -30,8 +30,7 @@ func GetAllTestCategoriesController(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success get patients data",
-		"data":    testCategories,
+		  "data" : testCategories,
 	})
 }
 
