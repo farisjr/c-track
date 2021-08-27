@@ -5,7 +5,7 @@ import (
 )
 
 type Patient struct {
-	PatientID      int            `gorm:"primaryKey; not null" json:"patient_id"`
+	PatientID      int            `gorm:"primaryKey; unique; not null" json:"patient_id"`
 	UserID         int            `json:"user_id" form:"user_id"`
 	Fullname       string         `gorm:"type:varchar(30); not null" json:"fullname"`
 	Dob            time.Time      `gorm:"not null" json:"borndate"`
@@ -14,9 +14,9 @@ type Patient struct {
 	City           string         `gorm:"type:varchar(100); not null" json:"city"`
 	Province       string         `gorm:"type:varchar(100); not null" json:"province"`
 	Gender         Gender         `gorm:"type:varchar(10);not null" json:"gender"`
-	Blood_type     Blood_type     `gorm:"type:varchar(2);not null" json:"blood type"`
+	Blood_type     Blood_type     `gorm:"type:varchar(2);not null" json:"blood_type"`
 	Religion       Religion       `gorm:"type:varchar(10);not null" json:"religion"`
-	Marital_Status Marital_Status `gorm:"type:varchar(15);not null" json:"marital status"`
+	Marital_Status Marital_Status `gorm:"type:varchar(15);not null" json:"marital_status"`
 	User           User           `gorm:"foreignKey:UserID"`
 	CreatedAt      time.Time
 	UpdatedAt      time.Time

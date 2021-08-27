@@ -24,8 +24,7 @@ func InitDb() {
 
 func InitDBTest() {
 	//connectionString := os.Getenv("CONNECTION_STRING")
-	//connectionString := "root:toor@tcp(34.101.101.64:3306)/ctrack_test?charset=utf8&parseTime=True&loc=Local"
-	connectionString := "root:02021996Doni*@tcp(localhost:3306)/ctrack_test?charset=utf8&parseTime=True&loc=Local"
+	connectionString := "root:toor@tcp(localhost:3306)/ctrack_test?charset=utf8&parseTime=True&loc=Local"
 	var err error
 	DB, err = gorm.Open(mysql.Open(connectionString), &gorm.Config{})
 	if err != nil {
