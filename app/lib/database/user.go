@@ -4,12 +4,14 @@ import (
 	"app/config"
 	"app/middlewares"
 	"app/models"
+	"errors"
+	"fmt"
 )
 
-func LoginUser(username, password string) (models.User, error) {
+func LoginUser(userId int, password string) (models.User, error) {
 	var err error
 	var user models.User
-	if err = config.DB.Where("username=? AND password=?", username, password).First(&user).Error; err != nil {
+	if err = config.DB.Where("user_id=? AND password=?", userId, password).First(&user).Error; err != nil {
 		return user, err
 	}
 
@@ -31,11 +33,45 @@ func GetOneUser(id int) (models.User, error) {
 	return user, nil
 }
 
-func CreateUser(user models.User) (models.User, error) {
-	if err := config.DB.Save(&user).Error; err != nil {
-		return user, err
+func CreateUser(user models.User) (models.User, error, error) {
+	userFromDb, err := GetOneUser(user.UserID)
+	if err != nil {
+		return userFromDb, err, nil
 	}
-	return user, nil
+	if userFromDb.UserID == 0 {
+		if err := config.DB.Save(&user).Error; err != nil {
+			fmt.Println("masuk kesini", err)
+			return user, err, nil
+		} else {
+			switch user.Role {
+			case "Patient":
+				var patient models.Patient
+				patient.UserID = user.UserID
+				_, errCreatePatient := CreatePatient(patient)
+				if errCreatePatient != nil {
+					return userFromDb, nil, errCreatePatient
+				}
+			case "Doctor":
+				var doctor models.Doctor
+				doctor.UserID = user.UserID
+				_, errCreateDoctor := CreateDoctor(doctor)
+				if errCreateDoctor != nil {
+					return userFromDb, nil, errCreateDoctor
+				}
+			case "Checker":
+				var checker models.Checker
+				checker.UserID = user.UserID
+				_, errCreateChecker := CreateChecker(checker)
+				if errCreateChecker != nil {
+					return userFromDb, nil, errCreateChecker
+				}
+			}
+		}
+	} else {
+		fmt.Println("masuk kesini2")
+		return userFromDb, errors.New(""), nil
+	}
+	return user, nil, nil
 }
 
 func UpdateUser(users models.User, id int) (models.User, error) {

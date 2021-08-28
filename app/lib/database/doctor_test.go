@@ -16,7 +16,7 @@ var (
 		MedicalFacilityAddress: "Jl. Tunjungan Kota Surabaya",
 		User: models.User{
 			UserID:   11111,
-			Username: "jan@gmail.com",
+			Fullname: "jan@gmail.com",
 			Password: "smartdoctor",
 			Role:     models.Role("Doctor"),
 			Token:    "1919191919kdaieiauen",

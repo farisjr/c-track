@@ -12,17 +12,22 @@ import (
 
 func RegisterUserController(c echo.Context) error {
 	addUser := models.User{}
-	addUser.Role = "user"
 	c.Bind(&addUser)
-	user, err := database.CreateUser(addUser)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "cannot insert data",
+	user, errUser, errInsertRelation := database.CreateUser(addUser)
+	if errUser != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "user already exist",
 		})
 	}
+
+	if errInsertRelation != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "failed add data user",
+		})
+	}
+
 	mapUserRegister := map[string]interface{}{
 		"ID":   user.UserID,
-		"Name": user.Username,
 		"Role": user.Role,
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
@@ -35,15 +40,14 @@ func RegisterUserController(c echo.Context) error {
 func LoginUserController(c echo.Context) error {
 	user := models.User{}
 	c.Bind(&user)
-	user, err := database.LoginUser(user.Username, user.Password)
+	user, err := database.LoginUser(user.UserID, user.Password)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "username or password is not correct",
+			"message": "user_id or password is not correct",
 		})
 	}
 	mapUserLogin := map[string]interface{}{
 		"ID":    user.UserID,
-		"Name":  user.Username,
 		"Role":  user.Role,
 		"Token": user.Token,
 	}
@@ -84,7 +88,7 @@ func LogoutUserController(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Thank you",
-		"data":    user.Username,
+		"data":    user.UserID,
 	})
 }
 
