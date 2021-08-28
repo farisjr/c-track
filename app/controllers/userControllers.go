@@ -43,7 +43,7 @@ func LoginUserController(c echo.Context) error {
 	user, err := database.LoginUser(user.UserID, user.Password)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "username or password is not correct",
+			"message": "user_id or password is not correct",
 		})
 	}
 	mapUserLogin := map[string]interface{}{

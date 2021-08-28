@@ -24,13 +24,14 @@ func GetPatientById(id int) (models.Patient, error) {
 	var patient models.Patient
 	var empty models.Patient
 
-	if err := config.DB.Find(&patient, "patient_id=?", id).Error; err != nil {
+	if err := config.DB.Find(&patient, "user_id=?", id).Error; err != nil {
 		return empty, err
 	}
 	return patient, nil
 }
 
 func UpdatePatient(patient models.Patient) (models.Patient, error) {
+	// db.Model(&User{}).Where("active = ?", true).Update("name", "hello")
 	if err := config.DB.Save(&patient).Error; err != nil {
 		return patient, err
 	}

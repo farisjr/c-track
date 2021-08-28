@@ -13,7 +13,7 @@ func New(e *echo.Echo) {
 	// e.POST("/register", controllers.UserRegister)
 	e.GET("/users/:id", controllers.GetUserById)
 
-	eJwt := e.Group("/tests")
+	eJwt := e.Group("")
 	eJwt.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
 
 	//------------------Non Authorized Test ----------------------//
@@ -34,7 +34,7 @@ func New(e *echo.Echo) {
 	eJwt.PUT("/doctors/:id", controllers.UpdateDoctorsController)
 
 	///------------------Non Authorized Patient ----------------------//
-	eJwt.POST("/patients", controllers.CreatePatientsController)
+	// eJwt.POST("/patients", controllers.CreatePatientsController)
 	eJwt.GET("/patients", controllers.GetPatientsController)
 	eJwt.GET("/patients/:id", controllers.GetPatientsIdController)
 	eJwt.PUT("/patients/:id", controllers.UpdatePatientsController)
