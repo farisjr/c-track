@@ -36,7 +36,7 @@ var (
 			Marital_Status: models.Marital_Status("Single"),
 			User: models.User{
 				UserID:   1010101010,
-				Username: "boruto@gmail.com",
+				Fullname: "boruto@gmail.com",
 				Password: "123456",
 				Role:     models.Role("Patient"),
 				Token:    "jafniaebfiajnfe",

@@ -16,7 +16,7 @@ var (
 		OfficeAddress: "Jl. Tunjungan Kota Surabaya",
 		User: models.User{
 			UserID:   10101010,
-			Username: "gun@gmail.com",
+			Fullname: "gun@gmail.com",
 			Password: "123456",
 			Role:     models.Role("Checker"),
 			Token:    "1919191919kdaieiauen",

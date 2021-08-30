@@ -12,7 +12,7 @@ import (
 var (
 	mockDBUser = models.User{
 		UserID:    1010101010,
-		Username:  "boruto@gmail.com",
+		Fullname:  "boruto@gmail.com",
 		Password:  "123456",
 		Role:      models.Role("Patient"),
 		Token:     "jafniaebfiajnfe",
@@ -29,7 +29,7 @@ func TestLoginUserSuccess(t *testing.T) {
 	createdUser, err := CreateUser(mockDBUser)
 	if assert.NoError(t, err) {
 		assert.Equal(t, mockDBUser.UserID, createdUser.UserID)
-		assert.Equal(t, mockDBUser.Username, createdUser.Username)
+		assert.Equal(t, mockDBUser.Fullname, createdUser.Username)
 		assert.Equal(t, mockDBUser.Password, createdUser.Password)
 		assert.Equal(t, mockDBUser.Role, createdUser.Role)
 		assert.Equal(t, mockDBUser.Token, createdUser.Token)
@@ -37,7 +37,7 @@ func TestLoginUserSuccess(t *testing.T) {
 	loggedUser, err := LoginUser(createdUser.Username, createdUser.Password)
 	if assert.NoError(t, err) {
 		assert.Equal(t, mockDBUser.UserID, loggedUser.UserID)
-		assert.Equal(t, mockDBUser.Username, loggedUser.Username)
+		assert.Equal(t, mockDBUser.Fullname, loggedUser.Fullname)
 		assert.Equal(t, mockDBUser.Password, loggedUser.Password)
 		assert.Equal(t, mockDBUser.Role, loggedUser.Role)
 		assert.Equal(t, mockDBUser.Token, loggedUser.Token)
@@ -63,7 +63,7 @@ func TestGetOneUserSuccess(t *testing.T) {
 	getUser, err := GetOneUser(int(createdUser.UserID))
 	if assert.NoError(t, err) {
 		assert.Equal(t, mockDBUser.UserID, getUser.UserID)
-		assert.Equal(t, mockDBUser.Username, getUser.Username)
+		assert.Equal(t, mockDBUser.Fullname, getUser.Fullname)
 		assert.Equal(t, mockDBUser.Password, getUser.Password)
 		assert.Equal(t, mockDBUser.Role, getUser.Role)
 		assert.Equal(t, mockDBUser.Token, getUser.Token)
@@ -89,7 +89,7 @@ func TestCreateUserSuccess(t *testing.T) {
 	// check and test User data, if data injection exist in User's table database, test will be pass
 	if assert.NoError(t, err) {
 		assert.Equal(t, mockDBUser.UserID, createdUser.UserID)
-		assert.Equal(t, mockDBUser.Username, createdUser.Username)
+		assert.Equal(t, mockDBUser.Fullname, createdUser.Username)
 		assert.Equal(t, mockDBUser.Password, createdUser.Password)
 		assert.Equal(t, mockDBUser.Role, createdUser.Role)
 		assert.Equal(t, mockDBUser.Token, createdUser.Token)
@@ -118,7 +118,7 @@ func TestUpdateUserSuccess(t *testing.T) {
 	updatedUser, err := UpdateUser(createdUser, createdUser.UserID)
 	if assert.NoError(t, err) {
 		assert.Equal(t, mockDBUser.UserID, updatedUser.UserID)
-		assert.Equal(t, "enakenak", updatedUser.Username)
+		assert.Equal(t, "enakenak", updatedUser.Fullname)
 		assert.Equal(t, "qwerrty", updatedUser.Password)
 		assert.Equal(t, mockDBUser.Role, updatedUser.Role)
 		assert.Equal(t, mockDBUser.Token, updatedUser.Token)
@@ -144,7 +144,7 @@ func TestGetUserSuccess(t *testing.T) {
 	detailUser, err := GetUser(createdUser.UserID)
 	if assert.NoError(t, err) {
 		assert.Equal(t, mockDBUser.UserID, detailUser.UserID)
-		assert.Equal(t, mockDBUser.Username, detailUser.Username)
+		assert.Equal(t, mockDBUser.Fullname, detailUser.Fullname)
 		assert.Equal(t, mockDBUser.Password, detailUser.Password)
 		assert.Equal(t, mockDBUser.Role, detailUser.Role)
 		assert.Equal(t, mockDBUser.Token, detailUser.Token)
@@ -171,7 +171,7 @@ func TestGetDetailUserSuccess(t *testing.T) {
 	detailUser, err := GetDetailUser(createdUser.UserID)
 	if assert.NoError(t, err) {
 		assert.Equal(t, mockDBUser.UserID, detailUser.UserID)
-		assert.Equal(t, mockDBUser.Username, detailUser.Username)
+		assert.Equal(t, mockDBUser.Fullname, detailUser.Fullname)
 		assert.Equal(t, mockDBUser.Password, detailUser.Password)
 		assert.Equal(t, mockDBUser.Role, detailUser.Role)
 		assert.Equal(t, mockDBUser.Token, detailUser.Token)
@@ -200,7 +200,7 @@ func TestEditUserSuccess(t *testing.T) {
 	updatedUser, err := EditUser(createdUser)
 	if assert.NoError(t, err) {
 		assert.Equal(t, mockDBUser.UserID, updatedUser.UserID)
-		assert.Equal(t, "enakenak", updatedUser.Username)
+		assert.Equal(t, "enakenak", updatedUser.Fullname)
 		assert.Equal(t, "qwerrty", updatedUser.Password)
 		assert.Equal(t, mockDBUser.Role, updatedUser.Role)
 		assert.Equal(t, mockDBUser.Token, updatedUser.Token)

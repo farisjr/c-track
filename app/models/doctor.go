@@ -6,7 +6,7 @@ import (
 )
 
 type Doctor struct {
-	DoctorID               int    `gorm:"primaryKey; unique; not null" json:"doctor_id"`
+	DoctorID               int    `gorm:"primaryKey; unique; not null" json:"doctor_id" form:"doctor_id"`
 	UserID                 int    `json:"user_id" form:"user_id"`
 	Name                   string `json:"name"`
 	MedicalFacilityName    string `json:"medical_facility_name"`
