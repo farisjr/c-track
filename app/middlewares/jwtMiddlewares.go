@@ -16,50 +16,50 @@ func LogMiddlewares(e *echo.Echo) {
 	}))
 }
 
-//create token with adding limit time
-func CreateToken(user_id int) (string, error) {
+// //create token with adding limit time
+// func CreateToken(user_id int) (string, error) {
+// 	claims := jwt.MapClaims{}
+// 	claims["authorized"] = true
+// 	claims["user_id"] = int(user_id)
+// 	claims["role"] = "user"
+// 	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
+
+// 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+// 	return token.SignedString([]byte(constants.SECRET_JWT))
+// }
+
+func CreatePatientToken(userId int) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
-	claims["user_id"] = int(user_id)
-	claims["role"] = "user"
+	claims["userId"] = int(userId)
+	claims["role"] = "Patient"
 	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(constants.SECRET_JWT))
 }
 
-// func CreatePatientToken(userId int) (string, error) {
-// 	claims := jwt.MapClaims{}
-// 	claims["authorized"] = true
-// 	claims["userId"] = int(userId)
-// 	claims["role"] = "patient"
-// 	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
+func CreateDoctorToken(userId int) (string, error) {
+	claims := jwt.MapClaims{}
+	claims["authorized"] = true
+	claims["userId"] = int(userId)
+	claims["role"] = "Doctor"
+	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
 
-// 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-// 	return token.SignedString([]byte(constants.SECRET_JWT))
-// }
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString([]byte(constants.SECRET_JWT))
+}
 
-// func CreateDoctorToken(userId int) (string, error) {
-// 	claims := jwt.MapClaims{}
-// 	claims["authorized"] = true
-// 	claims["userId"] = int(userId)
-// 	claims["role"] = "doctor"
-// 	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
+func CreateCheckerToken(userId int) (string, error) {
+	claims := jwt.MapClaims{}
+	claims["authorized"] = true
+	claims["userId"] = int(userId)
+	claims["role"] = "Checker"
+	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
 
-// 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-// 	return token.SignedString([]byte(constants.SECRET_JWT))
-// }
-
-// func CreateCheckerToken(userId int) (string, error) {
-// 	claims := jwt.MapClaims{}
-// 	claims["authorized"] = true
-// 	claims["userId"] = int(userId)
-// 	claims["role"] = "checker"
-// 	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
-
-// 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-// 	return token.SignedString([]byte(constants.SECRET_JWT))
-// }
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString([]byte(constants.SECRET_JWT))
+}
 
 func ExtractTokenUserId(e echo.Context) (int, string) {
 	user := e.Get("user").(*jwt.Token)
@@ -67,9 +67,9 @@ func ExtractTokenUserId(e echo.Context) (int, string) {
 	if user.Valid {
 		claims := user.Claims.(jwt.MapClaims)
 		fmt.Println(claims)
-		user_id := int(claims["user_id"].(float64))
+		userId := int(claims["userId"].(float64))
 		role := fmt.Sprintf("%v", claims["role"])
-		return user_id, role
+		return userId, role
 	}
 	return 0, "a"
 }

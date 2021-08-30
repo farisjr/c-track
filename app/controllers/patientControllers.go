@@ -11,58 +11,105 @@ import (
 )
 
 //Register patient controller for patient registration
-func RegisterPatientController(c echo.Context) error {
-	patient := models.User{}
-	patient.Role = "patient"
-	c.Bind(&patient)
-	addpatient, err := database.CreatePatient(models.Patient{})
+func PatientSignUp(c echo.Context) error {
+	input := models.User{}
+	c.Bind(&input)
+	if input.UserID == 0 || input.Password == "" {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "please fill userid and password correctly",
+		})
+	}
+	if same, _ := database.CheckSameId(input.UserID); same == true {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "userid already used",
+		})
+	}
+	addPatient := models.User{}
+	addPatient.UserID = input.UserID
+	addPatient.Password = ourEncrypt(input.Password)
+	addPatient.Role = "Patient"
+	c.Bind(&addPatient)
+	patient, err := database.CreatePatient(addPatient)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "cannot insert data",
 		})
 	}
+	mapPatient := map[string]interface{}{
+		"User ID": patient.UserID,
+	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "success create new patient",
-		"data":    addpatient,
+		"data":    mapPatient,
 	})
 }
 
-//Login for patient with matching username and password
-/*func LoginPatient(c echo.Context) error {
+//Login for patient with matching userid and password
+func PatientLogin(c echo.Context) error {
 	patient := models.User{}
 	c.Bind(&patient)
-	loginpatient, err := database.PatientLoginDB(patient.Username, patient.Password)
+	loginpatient, err := database.PatientLoginDB(patient.UserID, patient.Password)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 	mapLoginpatient := map[string]interface{}{
-		"UserID": loginpatient.UserID,
+		"User ID": loginpatient.UserID,
+		"Token":   loginpatient.Token,
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "success login",
-		"doctor":  mapLoginpatient,
+		"patient": mapLoginpatient,
 	})
-}*/
+}
 
 //Authorization patient
-func AuthorizationPatient(patientId int, c echo.Context) error {
-	authpatient, err := database.GetPatientById(patientId)
+func PatientAuthorize(userId int, c echo.Context) error {
+	patientAuth, err := database.GetOnePatient(userId)
 	loggedInPatientId, role := middlewares.ExtractTokenUserId(c)
-	if loggedInPatientId != patientId || string(authpatient.User.Role) != role || err != nil || authpatient.User.Role != "patient" {
-		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access")
+	if loggedInPatientId != userId || string(patientAuth.Role) != role || err != nil || patientAuth.Role != "Patient" {
+		return echo.NewHTTPError(http.StatusUnauthorized, "This account does not have access")
 	}
 	return nil
 }
-
-//Logout patient
-func LogoutPatient(c echo.Context) error {
-	id, err := strconv.Atoi(c.Param("patientId"))
+func ShowPatientTest(c echo.Context) error {
+	patientId, err := strconv.Atoi(c.Param("patient_id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"message": "invalid id",
 		})
 	}
-	logout, _ := database.GetPatientById(id)
+	if err = PatientAuthorize(patientId, c); err != nil {
+		return err
+	}
+	var test models.Tests
+	test, err = database.GetOneTestbyPatient(patientId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot find test data",
+		})
+	}
+	mapTest := map[string]interface{}{
+		"ID":              test.TestID,
+		"Test Categories": test.TestCategoriesID,
+		"Doctor ":         test.DoctorID,
+		"Result":          test.Result,
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success",
+		"data":    mapTest,
+	})
+}
+
+//Logout patient
+func LogoutPatient(c echo.Context) error {
+	userId, err := strconv.Atoi(c.Param("user_id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "invalid id",
+		})
+	}
+	logout, _ := database.GetOnePatient(userId)
+	logout.Token = ""
 	patient, err := database.UpdatePatient(logout)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -75,98 +122,42 @@ func LogoutPatient(c echo.Context) error {
 	})
 }
 
-func GetPatientsController(c echo.Context) error {
-	patients, err := database.GetPatient()
-	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success get patients data",
-		"data":    patients,
-	})
-}
+// func GetPatientsController(c echo.Context) error {
+// 	patients, err := database.GetPatient()
+// 	if err != nil {
+// 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+// 	}
+// 	return c.JSON(http.StatusOK, map[string]interface{}{
+// 		"message": "success get patients data",
+// 		"data":    patients,
+// 	})
+// }
 
-func GetPatientsIdController(c echo.Context) error {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"message": "invalid id",
-		})
-	}
-	patient, err := database.GetPatientById(id)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "cannot fetch data",
-		})
-	}
-
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success get patient by id",
-		"data":    patient,
-	})
-}
-
-func CreatePatientsController(c echo.Context) error {
-	//binding data
-	patient := models.Patient{}
-	c.Bind(&patient)
-	//Checking if id already exist
-	patients, err := database.CreatePatient(patient)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest)
-	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"messages": "Success Create Patient",
-		"patient":  patients,
-	})
-}
-
-func UpdatePatientsController(c echo.Context) error {
-	var patient models.Patient
-	// Validation of id
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"message": "invalid id",
-		})
-	}
-	// Getting Patient Data by id
-	GetPatient, err := database.GetPatientById(id)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest)
-	}
-	patient = GetPatient
-	// Updating Patient Data
-	c.Bind(&patient)
-	update_patient, err := database.UpdatePatient(patient)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "can not fetch data",
-		})
-	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"status":  "success update patient profile",
-		"patient": update_patient,
-	})
-}
-
-// func DeletePatientsController(c echo.Context) error {
-// 	//Validation of id
+// func UpdatePatientsController(c echo.Context) error {
+// 	var patient models.Patient
+// 	// Validation of id
 // 	id, err := strconv.Atoi(c.Param("id"))
 // 	if err != nil {
 // 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 // 			"message": "invalid id",
 // 		})
 // 	}
-// 	// Deleting Patient Data
-// 	delete_patient, err := database.DeletePatient(id)
+// 	// Getting Patient Data by id
+// 	GetPatient, err := database.GetPatientById(id)
+// 	if err != nil {
+// 		return echo.NewHTTPError(http.StatusBadRequest)
+// 	}
+// 	patient = GetPatient
+// 	// Updating Patient Data
+// 	c.Bind(&patient)
+// 	update_patient, err := database.UpdatePatient(patient)
 // 	if err != nil {
 // 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 // 			"message": "can not fetch data",
 // 		})
 // 	}
 // 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"status": "success",
-// 		"users":  delete_patient,
+// 		"status":  "success update patient profile",
+// 		"patient": update_patient,
 // 	})
 // }

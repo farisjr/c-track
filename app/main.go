@@ -15,7 +15,6 @@ func main() {
 	// config.InitDBTest()
 	config.InitPort()
 	middlewares.LogMiddlewares((e))
-	routes.InitAuth(e)
 	routes.New(e)
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", config.HTTP_PORT)))
 }
