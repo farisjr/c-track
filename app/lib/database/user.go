@@ -16,30 +16,6 @@ func CheckSameUserId(userid int) (bool, error) {
 	return false, nil
 }
 
-// func LoginUser(userId int, password string) (models.User, error) {
-// 	var err error
-// 	var user models.User
-// 	if err = config.DB.Where("user_id=? AND password=?", userId, password).First(&user).Error; err != nil {
-// 		return user, err
-// 	}
-
-// 	user.Token, err = middlewares.CreatePatientToken(int(user.UserID))
-// 	if err != nil {
-// 		return user, err
-// 	}
-// 	if err := config.DB.Save(user).Error; err != nil {
-// 		return user, err
-// 	}
-// 	return user, err
-// }
-
-// func GetOneUser(id int) (models.User, error) {
-// 	var user models.User
-// 	if err := config.DB.Find(&user, "user_id=?", id).Error; err != nil {
-// 		return user, err
-// 	}
-// 	return user, nil
-// }
 
 // func CreateUser(user models.User) (models.User, error, error) {
 // 	userFromDb, err := GetOneUser(user.UserID)
@@ -82,20 +58,14 @@ func CheckSameUserId(userid int) (bool, error) {
 // 	return user, nil, nil
 // }
 
-// func UpdateUser(users models.User, id int) (models.User, error) {
-// 	if err := config.DB.Find(&users, "user_id=?", id).Save(&users).Error; err != nil {
-// 		return users, err
-// 	}
-// 	return users, nil
-// }
+func UpdateUser(users models.User, id int) (models.User, error) {
+	if err := config.DB.Find(&users, "user_id=?", id).Save(&users).Error; err != nil {
+		return users, err
+	}
+	return users, nil
+}
 
-// func GetUser(id int) (models.User, error) {
-// 	var users models.User
-// 	if err := config.DB.Find(&users, "user_id=?", id).Error; err != nil {
-// 		return users, err
-// 	}
-// 	return users, nil
-// }
+
 // func GetDetailUser(userId int) (models.User, error) {
 // 	var user models.User
 // 	if err := config.DB.Find(&user, userId).Error; err != nil {
@@ -118,4 +88,12 @@ func GetToken(user_id int) (string, error) {
 		return user.Token, tx
 	}
 	return user.Token, nil
+}
+
+func GetOneUser(userId int) (models.User, error) {
+	var user models.User
+	if err := config.DB.Find(&user, "user_id=?", userId).Error; err != nil {
+		return user, err
+	}
+	return user, nil
 }

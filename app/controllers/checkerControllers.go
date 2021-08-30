@@ -5,6 +5,7 @@ import (
 	"app/middlewares"
 	"app/models"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo"
 )
@@ -71,28 +72,27 @@ func AuthorizationChecker(checkerId int, c echo.Context) error {
 	return nil
 }
 
-//func CheckerGetTestbyPatientId()
-
 //Logout checker
-// func LogoutChecker(c echo.Context) error {
-// 	id, err := strconv.Atoi(c.Param("checkerId"))
-// 	if err != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-// 			"message": "invalid id",
-// 		})
-// 	}
-// 	logout, err := database.GetCheckerById(id)
-// 	checker, err := database.UpdateChecker(logout)
-// 	if err != nil {
-// 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-// 			"message": "cannot logout",
-// 		})
-// 	}
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "Thank you",
-// 		"data":    checker.Name,
-// 	})
-// }
+func LogoutChecker(c echo.Context) error {
+	userId, err := strconv.Atoi(c.Param("user_id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "invalid id",
+		})
+	}
+	logout, _ := database.GetOneChecker(userId)
+	logout.Token = ""
+	checker, err := database.UpdateChecker(logout)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot logout",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "Thank you",
+		"data":    checker,
+	})
+}
 
 // func CreateCheckersController(c echo.Context) error {
 // 	checkers := models.Checker{}

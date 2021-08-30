@@ -40,8 +40,8 @@ func AuthorizedPatient(c echo.Context) bool {
 //Doctor create new test
 func DoctorCreateNewTest(c echo.Context) error {
 	auth := AuthorizedDoctor(c)
-	if auth == false {
-		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this page")
+	if !auth {
+		return echo.NewHTTPError(http.StatusUnauthorized, "This account does not have access to this route")
 	}
 	addTest := models.Tests{}
 	c.Bind(&addTest)
@@ -61,8 +61,8 @@ func DoctorCreateNewTest(c echo.Context) error {
 //Doctor get all test data
 func DoctorGetAllTest(c echo.Context) error {
 	auth := AuthorizedDoctor(c)
-	if auth == false {
-		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this page")
+	if !auth {
+		return echo.NewHTTPError(http.StatusUnauthorized, "This account does not have access to this route")
 	}
 	tests, _ := database.GetAllTests()
 	if len(tests) == 0 {
@@ -77,8 +77,8 @@ func DoctorGetAllTest(c echo.Context) error {
 //Doctor features for updating test result
 func DoctorUpdateTest(c echo.Context) error {
 	auth := AuthorizedDoctor(c)
-	if auth == false {
-		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
+	if !auth {
+		return echo.NewHTTPError(http.StatusUnauthorized, "This account does not have access to this route")
 	}
 	testId, err := strconv.Atoi(c.Param("test_id"))
 	if err != nil {
@@ -104,8 +104,8 @@ func DoctorUpdateTest(c echo.Context) error {
 //checker get test by patient id
 func CheckerGetTest(c echo.Context) error {
 	auth := AuthorizedChecker(c)
-	if auth == false {
-		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
+	if !auth {
+		return echo.NewHTTPError(http.StatusUnauthorized, "This account does not have access to this route")
 	}
 	patientId, err := strconv.Atoi(c.Param("patient_id"))
 	if err != nil {
@@ -128,8 +128,8 @@ func CheckerGetTest(c echo.Context) error {
 //patient get test
 func PatientGetTest(c echo.Context) error {
 	auth := AuthorizedPatient(c)
-	if auth == false {
-		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
+	if !auth {
+		return echo.NewHTTPError(http.StatusUnauthorized, "This account does not have access to this route")
 	}
 	patientId, err := strconv.Atoi(c.Param("patient_id"))
 	if err != nil {

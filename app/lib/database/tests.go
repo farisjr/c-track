@@ -22,7 +22,7 @@ func GetAllTests() ([]models.Tests, error) {
 
 func GetOneTest(testId int) (models.Tests, error) {
 	var test models.Tests
-	if err := config.DB.Find("test_id=?", testId).First(&test).Error; err != nil {
+	if err := config.DB.Where("test_id=?", testId).First(&test).Error; err != nil {
 		return test, err
 	}
 	return test, nil
@@ -30,7 +30,7 @@ func GetOneTest(testId int) (models.Tests, error) {
 
 func GetOneTestbyPatient(patientId int) (models.Tests, error) {
 	var test models.Tests
-	if err := config.DB.Find("patient_id=?", patientId).First(&test).Error; err != nil {
+	if err := config.DB.Where("patient_id=?", patientId).First(&test).Error; err != nil {
 		return test, err
 	}
 	return test, nil

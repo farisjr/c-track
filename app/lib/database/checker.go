@@ -29,12 +29,12 @@ func GetOneChecker(id int) (models.User, error) {
 	return checker, nil
 }
 
-// func UpdateChecker(checker models.Checker) (models.Checker, error) {
-// 	if err := config.DB.Save(&checker).Error; err != nil {
-// 		return checker, err
-// 	}
-// 	return checker, nil
-// }
+func UpdateChecker(checker models.User) (models.User, error) {
+	if err := config.DB.Save(&checker).Error; err != nil {
+		return checker, err
+	}
+	return checker, nil
+}
 
 //Login for checker with matching email and password
 func CheckerLoginDB(userid int, password string) (models.User, error) {

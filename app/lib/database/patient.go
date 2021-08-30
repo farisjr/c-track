@@ -49,14 +49,6 @@ func GetOnePatient(id int) (models.User, error) {
 // 	return patient, nil
 // }
 
-// func DeletePatient(id int) (models.Patient, error) {
-// 	var patient models.Patient
-// 	if err := config.DB.Find(&patient, "id=?", id).Delete(&patient).Error; err != nil {
-// 		return patient, err
-// 	}
-// 	return patient, nil
-// }
-
 //Login for patient with matching userid and password
 func PatientLoginDB(userId int, password string) (models.User, error) {
 	var patient models.User
@@ -74,7 +66,7 @@ func PatientLoginDB(userId int, password string) (models.User, error) {
 	return patient, err
 }
 
-func EditPatient(patient models.User) (models.User, error) {
+func UpdatePatient(patient models.User) (models.User, error) {
 	if err := config.DB.Save(&patient).Error; err != nil {
 		return patient, err
 	}

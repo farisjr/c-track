@@ -10,6 +10,15 @@ import (
 
 func New(e *echo.Echo) {
 
+	e.POST("/patient/login", controllers.PatientLogin)
+	e.POST("/patient/register", controllers.PatientSignUp)
+
+	e.POST("/doctor/login", controllers.DoctorLogin)
+	e.POST("/doctor/register", controllers.DoctorSignUp)
+
+	e.POST("/checker/login", controllers.CheckerLogin)
+	e.POST("/checker/register", controllers.CheckerSignUp)
+
 	eJwt := e.Group("")
 	eJwt.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
 
@@ -19,9 +28,11 @@ func New(e *echo.Echo) {
 
 	eJwt.GET("/checker/test/:patient_id", controllers.CheckerGetTest) // checker get test by patient id
 
+	eJwt.GET("/patient/test/:patient_id", controllers.ShowPatientTest) //get patient test only himself
+
 	//------------------ Logout Controllers ----------------------//
-	//eJwt.POST("/checkers/logout/:user_id", controllers.LogoutChecker)
-	eJwt.POST("/doctors/logout/:user_id", controllers.LogoutDoctor)
-	//eJwt.POST("/patients/logout/:user_id", controllers.LogoutPatient)
+	eJwt.POST("/checker/logout/:user_id", controllers.LogoutChecker)
+	eJwt.POST("/doctor/logout/:user_id", controllers.LogoutDoctor)
+	eJwt.POST("/patient/logout/:user_id", controllers.LogoutPatient)
 
 }

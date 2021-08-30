@@ -88,13 +88,14 @@ func DoctorAutorize(doctorId int, c echo.Context) error {
 
 //Logout doctor
 func LogoutDoctor(c echo.Context) error {
-	id, err := strconv.Atoi(c.Param("doctorId"))
+	userId, err := strconv.Atoi(c.Param("user_id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"message": "invalid id",
 		})
 	}
-	logout, _ := database.GetOneDoctor(id)
+	logout, _ := database.GetOneUser(userId)
+	logout.Token = ""
 	doctor, err := database.UpdateDoctor(logout)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{

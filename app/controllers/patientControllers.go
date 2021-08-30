@@ -5,6 +5,7 @@ import (
 	"app/middlewares"
 	"app/models"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo"
 )
@@ -62,36 +63,64 @@ func PatientLogin(c echo.Context) error {
 }
 
 //Authorization patient
-func AuthorizationPatient(patientId int, c echo.Context) error {
-	authpatient, err := database.GetOnePatient(patientId)
+func PatientAuthorize(userId int, c echo.Context) error {
+	patientAuth, err := database.GetOnePatient(userId)
 	loggedInPatientId, role := middlewares.ExtractTokenUserId(c)
-	if loggedInPatientId != patientId || string(authpatient.Role) != role || err != nil || authpatient.Role != "Patient" {
-		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access")
+	if loggedInPatientId != userId || string(patientAuth.Role) != role || err != nil || patientAuth.Role != "Patient" {
+		return echo.NewHTTPError(http.StatusUnauthorized, "This account does not have access")
 	}
 	return nil
 }
+func ShowPatientTest(c echo.Context) error {
+	patientId, err := strconv.Atoi(c.Param("patient_id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "invalid id",
+		})
+	}
+	if err = PatientAuthorize(patientId, c); err != nil {
+		return err
+	}
+	var test models.Tests
+	test, err = database.GetOneTestbyPatient(patientId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot find test data",
+		})
+	}
+	mapTest := map[string]interface{}{
+		"ID":              test.TestID,
+		"Test Categories": test.TestCategoriesID,
+		"Doctor ":         test.DoctorID,
+		"Result":          test.Result,
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success",
+		"data":    mapTest,
+	})
+}
 
 //Logout patient
-// func LogoutPatient(c echo.Context) error {
-// 	id, err := strconv.Atoi(c.Param("patientId"))
-// 	if err != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-// 			"message": "invalid id",
-// 		})
-// 	}
-// 	logout, _ := database.GetOnePatient(id)
-// 	logout.Token = ""
-// 	patient, err := database.UpdatePatient(logout)
-// 	if err != nil {
-// 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-// 			"message": "cannot logout",
-// 		})
-// 	}
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "Thank you",
-// 		"data":    patient,
-// 	})
-// }
+func LogoutPatient(c echo.Context) error {
+	userId, err := strconv.Atoi(c.Param("user_id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "invalid id",
+		})
+	}
+	logout, _ := database.GetOnePatient(userId)
+	logout.Token = ""
+	patient, err := database.UpdatePatient(logout)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot logout",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "Thank you",
+		"data":    patient,
+	})
+}
 
 // func GetPatientsController(c echo.Context) error {
 // 	patients, err := database.GetPatient()
@@ -101,41 +130,6 @@ func AuthorizationPatient(patientId int, c echo.Context) error {
 // 	return c.JSON(http.StatusOK, map[string]interface{}{
 // 		"message": "success get patients data",
 // 		"data":    patients,
-// 	})
-// }
-
-// func GetPatientsIdController(c echo.Context) error {
-// 	id, err := strconv.Atoi(c.Param("id"))
-// 	if err != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-// 			"message": "invalid id",
-// 		})
-// 	}
-// 	patient, err := database.GetPatientById(id)
-// 	if err != nil {
-// 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-// 			"message": "cannot fetch data",
-// 		})
-// 	}
-
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "success get patient by id",
-// 		"data":    patient,
-// 	})
-// }
-
-// func CreatePatientsController(c echo.Context) error {
-// 	//binding data
-// 	patient := models.Patient{}
-// 	c.Bind(&patient)
-// 	//Checking if id already exist
-// 	patients, err := database.CreatePatient(patient)
-// 	if err != nil {
-// 		return echo.NewHTTPError(http.StatusBadRequest)
-// 	}
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"messages": "Success Create Patient",
-// 		"patient":  patients,
 // 	})
 // }
 
@@ -165,26 +159,5 @@ func AuthorizationPatient(patientId int, c echo.Context) error {
 // 	return c.JSON(http.StatusOK, map[string]interface{}{
 // 		"status":  "success update patient profile",
 // 		"patient": update_patient,
-// 	})
-// }
-
-// func DeletePatientsController(c echo.Context) error {
-// 	//Validation of id
-// 	id, err := strconv.Atoi(c.Param("id"))
-// 	if err != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-// 			"message": "invalid id",
-// 		})
-// 	}
-// 	// Deleting Patient Data
-// 	delete_patient, err := database.DeletePatient(id)
-// 	if err != nil {
-// 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-// 			"message": "can not fetch data",
-// 		})
-// 	}
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"status": "success",
-// 		"users":  delete_patient,
 // 	})
 // }
