@@ -10,39 +10,29 @@ import (
 
 func New(e *echo.Echo) {
 
-	// e.POST("/register", controllers.UserRegister)
-	e.GET("/users/:id", controllers.GetUserById)
+	e.POST("/patient/login", controllers.PatientLogin)
+	e.POST("/patient/register", controllers.PatientSignUp)
+
+	e.POST("/doctor/login", controllers.DoctorLogin)
+	e.POST("/doctor/register", controllers.DoctorSignUp)
+
+	e.POST("/checker/login", controllers.CheckerLogin)
+	e.POST("/checker/register", controllers.CheckerSignUp)
 
 	eJwt := e.Group("")
 	eJwt.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
 
-	//------------------Non Authorized Test ----------------------//
-	eJwt.POST("/tests", controllers.CreateTestsController)
-	eJwt.GET("/tests", controllers.GetTestsController)
-	eJwt.GET("/tests/:id", controllers.GetOneTestController)
-	eJwt.PUT("/tests/:id", controllers.UpdateTestsController)
+	eJwt.POST("/doctor/test", controllers.DoctorCreateNewTest)      // doctor add new test routes
+	eJwt.PUT("/doctor/test/:test_id", controllers.DoctorUpdateTest) // doctor update test result routes
+	eJwt.GET("/doctor/tests", controllers.DoctorGetAllTest)         // doctor get all test
 
-	//------------------Non Authorized Checker ----------------------//
-	eJwt.GET("/checkers", controllers.GetCheckersController)
-	eJwt.GET("/checkers/:id", controllers.GetCheckerController)
-	eJwt.POST("/checkers", controllers.CreateCheckersController)
+	eJwt.GET("/checker/test/:patient_id", controllers.CheckerGetTest) // checker get test by patient id
 
-	//------------------Non Authorized Doctor ----------------------//
-	eJwt.GET("/doctors", controllers.GetDoctorsController)
-	eJwt.GET("/doctors/:id", controllers.GetDoctorsIdController)
-	eJwt.POST("/doctors", controllers.CreateDoctorsController)
-	eJwt.PUT("/doctors/:id", controllers.UpdateDoctorsController)
-
-	///------------------Non Authorized Patient ----------------------//
-	// eJwt.POST("/patients", controllers.CreatePatientsController)
-	eJwt.GET("/patients", controllers.GetPatientsController)
-	eJwt.GET("/patients/:id", controllers.GetPatientsIdController)
-	eJwt.PUT("/patients/:id", controllers.UpdatePatientsController)
+	eJwt.GET("/patient/test/:patient_id", controllers.ShowPatientTest) //get patient test only himself
 
 	//------------------ Logout Controllers ----------------------//
-	eJwt.POST("/checkers/logout/:id", controllers.LogoutChecker)
-	eJwt.POST("/doctors/logout/:id", controllers.LogoutDoctor)
-	eJwt.POST("/patients/logout/:id", controllers.LogoutPatient)
-	eJwt.POST("/users/logout/:id", controllers.LogoutUserController)
+	eJwt.POST("/checker/logout/:user_id", controllers.LogoutChecker)
+	eJwt.POST("/doctor/logout/:user_id", controllers.LogoutDoctor)
+	eJwt.POST("/patient/logout/:user_id", controllers.LogoutPatient)
 
 }
