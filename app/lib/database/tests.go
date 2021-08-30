@@ -12,20 +12,20 @@ func CreateTest(createTests models.Tests) (models.Tests, error) {
 	return createTests, nil
 }
 
-func GetAllTests() (interface{}, error) {
+func GetAllTests(patient_id int) ([]models.Tests, error) {
 	var tests []models.Tests
-	if err := config.DB.Find(&tests).Error; err != nil {
-		return nil, err
+	if err := config.DB.Find(&tests, "patient_id", patient_id).Error; err != nil {
+		return tests, err
 	}
 	return tests, nil
 }
 
-func GetOneTest(id int) (models.Tests, error) {
-	var tests models.Tests
-	if err := config.DB.Find(&tests, "test_id=?", id).Error; err != nil {
-		return tests, err
+func GetOneTest(testId int) (models.Tests, error) {
+	var test models.Tests
+	if err := config.DB.Find("test_id=?", testId).First(&test).Error; err != nil {
+		return test, err
 	}
-	return tests, nil
+	return test, nil
 }
 
 // func DeleteTest(deleteTest models.Tests) (models.Tests, error) {
@@ -36,9 +36,15 @@ func GetOneTest(id int) (models.Tests, error) {
 // }
 
 //update test info from database
-func UpdateTests(updateTests models.Tests) (models.Tests, error) {
-	if err := config.DB.Save(&updateTests).Error; err != nil {
-		return updateTests, err
+func UpdateTest(test models.Tests) (interface{}, error) {
+	if err := config.DB.Save(&test).Error; err != nil {
+		return nil, err
 	}
-	return updateTests, nil
+	return test, nil
+}
+
+func GetUpdateTest(testId int) models.Tests {
+	var test models.Tests
+	config.DB.Find(&test, "test_id=?", testId)
+	return test
 }

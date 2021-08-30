@@ -2,14 +2,15 @@ package database
 
 import (
 	"app/config"
+	"app/middlewares"
 	"app/models"
 )
 
-func CreateDoctor(addDoctor models.Doctor) (models.Doctor, error) {
-	if err := config.DB.Save(&addDoctor).Error; err != nil {
-		return addDoctor, err
+func CreateDoctor(doctor models.User) (models.User, error) {
+	if err := config.DB.Save(&doctor).Error; err != nil {
+		return doctor, err
 	}
-	return addDoctor, nil
+	return doctor, nil
 }
 
 func GetDoctor() (models.Doctor, error) {
@@ -20,48 +21,39 @@ func GetDoctor() (models.Doctor, error) {
 	return doctor, nil
 }
 
-func GetDoctorById(id int) (models.Doctor, error) {
-	var doctor models.Doctor
-	if err := config.DB.Find(&doctor, "doctor_id=?", id).Error; err != nil {
+func GetOneDoctor(id int) (models.User, error) {
+	var doctor models.User
+	// var count int64
+	// if err1 := config.DB.Model(&doctor).Where("user_id=?", id).Count(&count).Error; count == 0 {
+	// 	return doctor, err1
+	// }
+	if err := config.DB.Find(&doctor, "user_id=?", id).Error; err != nil {
 		return doctor, err
 	}
 	return doctor, nil
 }
 
-// func DeleteDoctorById(deleteDoctor models.Doctor) (models.Doctor, error) {
-
-// 	if err := config.DB.Delete(&deleteDoctor).Error; err != nil {
-// 		return deleteDoctor, err
+// //update doctor from database
+// func UpdateDoctor(doctor models.User) (models.User, error) {
+// 	if tx := config.DB.Save(&doctor).Error; tx != nil {
+// 		return doctor, tx
 // 	}
-// 	return deleteDoctor, nil
+// 	return doctor, nil
 // }
 
-//update test info from database
-func UpdateDoctor(updateDoctors models.Doctor) (models.Doctor, error) {
-	if tx := config.DB.Save(&updateDoctors).Error; tx != nil {
-		return updateDoctors, tx
-	}
-	return updateDoctors, nil
-}
-
-//get 1 specified test with test struct output
-func GetUpdateDoctor(id int) (models.Doctor, error) {
-	var doctor models.Doctor
-	if tx := config.DB.Find(&doctor, "doctor_id=?", id).Error; tx != nil {
-		return doctor, tx
-	}
-	return doctor, nil
-}
-
-//Login for doctor with matching username and password
-/*func LoginDoctorDB(username, password string) (models.Doctor, error) {
-	var doctor models.Doctor
+//Login for doctor with matching user id and password
+func DoctorLoginDB(userId int, password string) (models.User, error) {
+	var doctor models.User
 	var err error
-	if err = config.DB.Where("username=? AND password=?", username, password).First(&doctor).Error; err != nil {
+	if err = config.DB.Where("user_id=? AND password=?", userId, password).First(&doctor).Error; err != nil {
+		return doctor, err
+	}
+	doctor.Token, err = middlewares.CreateDoctorToken(int(doctor.UserID))
+	if err != nil {
 		return doctor, err
 	}
 	if err := config.DB.Save(doctor).Error; err != nil {
 		return doctor, err
 	}
 	return doctor, err
-}*/
+}
