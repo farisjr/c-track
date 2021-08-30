@@ -35,7 +35,7 @@ func PatientSignUp(c echo.Context) error {
 		})
 	}
 	mapPatient := map[string]interface{}{
-		"ID": patient.UserID,
+		"User ID": patient.UserID,
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "success create new patient",
@@ -53,6 +53,7 @@ func PatientLogin(c echo.Context) error {
 	}
 	mapLoginpatient := map[string]interface{}{
 		"User ID": loginpatient.UserID,
+		"Token":   loginpatient.Token,
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "success login",
@@ -64,7 +65,7 @@ func PatientLogin(c echo.Context) error {
 func AuthorizationPatient(patientId int, c echo.Context) error {
 	authpatient, err := database.GetOnePatient(patientId)
 	loggedInPatientId, role := middlewares.ExtractTokenUserId(c)
-	if loggedInPatientId != patientId || string(authpatient.Role) != role || err != nil || authpatient.Role != "patient" {
+	if loggedInPatientId != patientId || string(authpatient.Role) != role || err != nil || authpatient.Role != "Patient" {
 		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access")
 	}
 	return nil

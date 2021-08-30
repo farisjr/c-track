@@ -19,8 +19,26 @@ func AuthorizedDoctor(c echo.Context) bool {
 	return true
 }
 
-//Create new test
-func CreateTest(c echo.Context) error {
+func AuthorizedChecker(c echo.Context) bool {
+	_, role := middlewares.ExtractTokenUserId(c)
+
+	if role != "Checker" {
+		return false
+	}
+	return true
+}
+
+func AuthorizedPatient(c echo.Context) bool {
+	_, role := middlewares.ExtractTokenUserId(c)
+
+	if role != "Patient" {
+		return false
+	}
+	return true
+}
+
+//Doctor create new test
+func DoctorCreateNewTest(c echo.Context) error {
 	auth := AuthorizedDoctor(c)
 	if auth == false {
 		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this page")
@@ -40,69 +58,28 @@ func CreateTest(c echo.Context) error {
 	})
 }
 
-//get all test data
-// func GetAllTests(c echo.Context) error {
-// 	loggedInPatient := middlewares.ExtractTokenUserId(c)
-// 	tests, err := database.GetAllTests(loggedInPatient)
-// 	if err != nil {
-// 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-// 	}
-// 	if len(tests) == 0 {
-// 		return echo.NewHTTPError(http.StatusBadRequest, "No test data")
-// 	}
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "success get all test data",
-// 		"data":    tests,
-// 	})
-// }
-
-func GetOneTestController(c echo.Context) error {
-	testId, err := strconv.Atoi(c.Param("test_id"))
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"message": "invalid id",
-		})
+//Doctor get all test data
+func DoctorGetAllTest(c echo.Context) error {
+	auth := AuthorizedDoctor(c)
+	if auth == false {
+		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this page")
 	}
-	tests, err := database.GetOneTest(testId)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "cannot fetch data",
-		})
+	tests, _ := database.GetAllTests()
+	if len(tests) == 0 {
+		return echo.NewHTTPError(http.StatusBadRequest, "No test data")
 	}
-
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success get test  by id",
+		"message": "success get all test data",
 		"data":    tests,
 	})
 }
 
-// func DeleteTestsController(c echo.Context) error {
-// 	id, err := strconv.Atoi(c.Param("id"))
-// 	if err != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-// 			"message": "invalid id",
-// 		})
-// 	}
-// 	tests, _ := database.GetOneTest(id)
-// 	c.Bind(&tests)
-// 	testsDeleted, err := database.DeleteTest(tests)
-// 	if err != nil {
-// 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-// 			"message": "cannot delete data",
-// 		})
-// 	}
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "success delete selected test",
-// 		"data":    testsDeleted,
-// 	})
-// }
-
-func UpdateTest(c echo.Context) error {
+//Doctor features for updating test result
+func DoctorUpdateTest(c echo.Context) error {
 	auth := AuthorizedDoctor(c)
 	if auth == false {
 		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
 	}
-
 	testId, err := strconv.Atoi(c.Param("test_id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -111,7 +88,6 @@ func UpdateTest(c echo.Context) error {
 	}
 	//get test by id
 	test := database.GetUpdateTest(testId)
-
 	c.Bind(&test)
 	updatedTest, err := database.UpdateTest(test)
 	if err != nil {
@@ -119,9 +95,56 @@ func UpdateTest(c echo.Context) error {
 			"message": "cannot edit test",
 		})
 	}
-
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message":          "success update test ",
 		"update test data": updatedTest,
+	})
+}
+
+//checker get test by patient id
+func CheckerGetTest(c echo.Context) error {
+	auth := AuthorizedChecker(c)
+	if auth == false {
+		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
+	}
+	patientId, err := strconv.Atoi(c.Param("patient_id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "invalid id",
+		})
+	}
+	tests, err := database.GetOneTestbyPatient(patientId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot fetch data",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success get test by patient id",
+		"data":    tests,
+	})
+}
+
+//patient get test
+func PatientGetTest(c echo.Context) error {
+	auth := AuthorizedPatient(c)
+	if auth == false {
+		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
+	}
+	patientId, err := strconv.Atoi(c.Param("patient_id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "invalid id",
+		})
+	}
+	tests, err := database.GetOneTest(patientId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot fetch data",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success get test  by patient id",
+		"data":    tests,
 	})
 }

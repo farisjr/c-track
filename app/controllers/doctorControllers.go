@@ -5,6 +5,7 @@ import (
 	"app/middlewares"
 	"app/models"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo"
 )
@@ -67,6 +68,7 @@ func DoctorLogin(c echo.Context) error {
 	}
 	mapLogindoctor := map[string]interface{}{
 		"UserID": logindoctor.UserID,
+		"Token":  logindoctor.Token,
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "succes login",
@@ -85,40 +87,25 @@ func DoctorAutorize(doctorId int, c echo.Context) error {
 }
 
 //Logout doctor
-// func LogoutDoctor(c echo.Context) error {
-// 	id, err := strconv.Atoi(c.Param("doctorId"))
-// 	if err != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-// 			"message": "invalid id",
-// 		})
-// 	}
-// 	logout, _ := database.GetDoctorId(id)
-// 	doctor, err := database.UpdateDoctor(logout)
-// 	if err != nil {
-// 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-// 			"message": "cannot logout",
-// 		})
-// 	}
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "Thank you",
-// 		"data":    doctor,
-// 	})
-// }
-
-// func CreateDoctorsController(c echo.Context) error {
-// 	doctors := models.Doctor{}
-// 	c.Bind(&doctors)
-
-// 	doctorsAdd, err := database.CreateDoctor(doctors)
-// 	if err != nil {
-// 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-// 	}
-
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "success add new doctor",
-// 		"data":    doctorsAdd,
-// 	})
-// }
+func LogoutDoctor(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("doctorId"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "invalid id",
+		})
+	}
+	logout, _ := database.GetOneDoctor(id)
+	doctor, err := database.UpdateDoctor(logout)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot logout",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "Thank you",
+		"data":    doctor,
+	})
+}
 
 // func GetDoctorsController(c echo.Context) error {
 // 	doctors, err := database.GetDoctor()

@@ -21,7 +21,7 @@ func InitAuth(e *echo.Echo) {
 	e.POST("/checker/login", controllers.CheckerLogin)
 	e.POST("/checker/register", controllers.CheckerSignUp)
 
-	e.GET("/tests/:id", controllers.GetOneTestController)
+	//e.GET("/tests/:id", controllers.GetOneTestController)
 
 	eJwt := e.Group("")
 	eJwt.Use(middleware.JWT([]byte(constants.SECRET_JWT)))

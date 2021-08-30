@@ -33,13 +33,13 @@ func GetOneDoctor(id int) (models.User, error) {
 	return doctor, nil
 }
 
-// //update doctor from database
-// func UpdateDoctor(doctor models.User) (models.User, error) {
-// 	if tx := config.DB.Save(&doctor).Error; tx != nil {
-// 		return doctor, tx
-// 	}
-// 	return doctor, nil
-// }
+//update doctor from database
+func UpdateDoctor(doctor models.User) (models.User, error) {
+	if tx := config.DB.Save(&doctor).Error; tx != nil {
+		return doctor, tx
+	}
+	return doctor, nil
+}
 
 //Login for doctor with matching user id and password
 func DoctorLoginDB(userId int, password string) (models.User, error) {

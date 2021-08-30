@@ -53,6 +53,7 @@ func CheckerLogin(c echo.Context) error {
 	}
 	mapLoginchecker := map[string]interface{}{
 		"User ID": loginchecker.UserID,
+		"Token":   loginchecker.Token,
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "succes login",
@@ -64,13 +65,13 @@ func CheckerLogin(c echo.Context) error {
 func AuthorizationChecker(checkerId int, c echo.Context) error {
 	authchecker, err := database.GetOneChecker(checkerId)
 	loggedInCheckerId, role := middlewares.ExtractTokenUserId(c)
-	if loggedInCheckerId != checkerId || string(authchecker.Role) != role || err != nil || authchecker.Role != "checker" {
+	if loggedInCheckerId != checkerId || string(authchecker.Role) != role || err != nil || authchecker.Role != "Checker" {
 		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access")
 	}
 	return nil
 }
 
-func CheckerGetTestbyPatientId()
+//func CheckerGetTestbyPatientId()
 
 //Logout checker
 // func LogoutChecker(c echo.Context) error {
