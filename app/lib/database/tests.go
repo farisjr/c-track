@@ -28,9 +28,9 @@ func GetOneTest(testId int) (models.Tests, error) {
 	return test, nil
 }
 
-func GetOneTestbyPatient(patientId int) (models.Tests, error) {
-	var test models.Tests
-	if err := config.DB.Where("patient_id=?", patientId).First(&test).Error; err != nil {
+func GetTestbyPatient(patientId int) ([]models.Tests, error) {
+	var test []models.Tests
+	if err := config.DB.Where("patient_id=?", patientId).Find(&test).Error; err != nil {
 		return test, err
 	}
 	return test, nil

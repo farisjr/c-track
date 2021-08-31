@@ -12,7 +12,6 @@ import (
 
 func AuthorizedDoctor(c echo.Context) bool {
 	_, role := middlewares.ExtractTokenUserId(c)
-
 	if role != "Doctor" {
 		return false
 	}
@@ -21,7 +20,6 @@ func AuthorizedDoctor(c echo.Context) bool {
 
 func AuthorizedChecker(c echo.Context) bool {
 	_, role := middlewares.ExtractTokenUserId(c)
-
 	if role != "Checker" {
 		return false
 	}
@@ -30,14 +28,13 @@ func AuthorizedChecker(c echo.Context) bool {
 
 func AuthorizedPatient(c echo.Context) bool {
 	_, role := middlewares.ExtractTokenUserId(c)
-
 	if role != "Patient" {
 		return false
 	}
 	return true
 }
 
-//Doctor create new test
+//Doctor feature for create new test
 func DoctorCreateNewTest(c echo.Context) error {
 	auth := AuthorizedDoctor(c)
 	if !auth {
@@ -58,7 +55,7 @@ func DoctorCreateNewTest(c echo.Context) error {
 	})
 }
 
-//Doctor get all test data
+//Doctor feature for get all test data
 func DoctorGetAllTest(c echo.Context) error {
 	auth := AuthorizedDoctor(c)
 	if !auth {
@@ -74,7 +71,7 @@ func DoctorGetAllTest(c echo.Context) error {
 	})
 }
 
-//Doctor features for updating test result
+//Doctor feature for updating test result
 func DoctorUpdateTest(c echo.Context) error {
 	auth := AuthorizedDoctor(c)
 	if !auth {
@@ -101,7 +98,7 @@ func DoctorUpdateTest(c echo.Context) error {
 	})
 }
 
-//checker get test by patient id
+//Checker feature for get test by patient id
 func CheckerGetTest(c echo.Context) error {
 	auth := AuthorizedChecker(c)
 	if !auth {
@@ -113,7 +110,7 @@ func CheckerGetTest(c echo.Context) error {
 			"message": "invalid id",
 		})
 	}
-	tests, err := database.GetOneTestbyPatient(patientId)
+	tests, err := database.GetTestbyPatient(patientId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "cannot fetch data",
@@ -125,7 +122,7 @@ func CheckerGetTest(c echo.Context) error {
 	})
 }
 
-//patient get test
+//Patient feature for get all test
 func PatientGetTest(c echo.Context) error {
 	auth := AuthorizedPatient(c)
 	if !auth {
@@ -134,17 +131,17 @@ func PatientGetTest(c echo.Context) error {
 	patientId, err := strconv.Atoi(c.Param("patient_id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"message": "invalid id",
+			"message": "Record not found",
 		})
 	}
-	tests, err := database.GetOneTest(patientId)
+	tests, err := database.GetTestbyPatient(patientId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "cannot fetch data",
 		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success get test  by patient id",
+		"message": "success get all patient test  result",
 		"data":    tests,
 	})
 }

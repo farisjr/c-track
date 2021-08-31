@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/echo"
 )
 
-//Register patient controller for patient registration
+//Register patient feature for patient registration
 func PatientSignUp(c echo.Context) error {
 	input := models.User{}
 	c.Bind(&input)
@@ -71,34 +71,6 @@ func PatientAuthorize(userId int, c echo.Context) error {
 	}
 	return nil
 }
-func ShowPatientTest(c echo.Context) error {
-	patientId, err := strconv.Atoi(c.Param("patient_id"))
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"message": "invalid id",
-		})
-	}
-	if err = PatientAuthorize(patientId, c); err != nil {
-		return err
-	}
-	var test models.Tests
-	test, err = database.GetOneTestbyPatient(patientId)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "cannot find test data",
-		})
-	}
-	mapTest := map[string]interface{}{
-		"ID":              test.TestID,
-		"Test Categories": test.TestCategoriesID,
-		"Doctor ":         test.DoctorID,
-		"Result":          test.Result,
-	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success",
-		"data":    mapTest,
-	})
-}
 
 //Logout patient
 func LogoutPatient(c echo.Context) error {
@@ -121,43 +93,3 @@ func LogoutPatient(c echo.Context) error {
 		"data":    patient,
 	})
 }
-
-// func GetPatientsController(c echo.Context) error {
-// 	patients, err := database.GetPatient()
-// 	if err != nil {
-// 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-// 	}
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "success get patients data",
-// 		"data":    patients,
-// 	})
-// }
-
-// func UpdatePatientsController(c echo.Context) error {
-// 	var patient models.Patient
-// 	// Validation of id
-// 	id, err := strconv.Atoi(c.Param("id"))
-// 	if err != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-// 			"message": "invalid id",
-// 		})
-// 	}
-// 	// Getting Patient Data by id
-// 	GetPatient, err := database.GetPatientById(id)
-// 	if err != nil {
-// 		return echo.NewHTTPError(http.StatusBadRequest)
-// 	}
-// 	patient = GetPatient
-// 	// Updating Patient Data
-// 	c.Bind(&patient)
-// 	update_patient, err := database.UpdatePatient(patient)
-// 	if err != nil {
-// 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-// 			"message": "can not fetch data",
-// 		})
-// 	}
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"status":  "success update patient profile",
-// 		"patient": update_patient,
-// 	})
-// }
