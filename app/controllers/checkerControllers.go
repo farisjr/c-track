@@ -93,4 +93,3 @@ func LogoutChecker(c echo.Context) error {
 		"data":    checker,
 	})
 }
-

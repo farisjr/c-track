@@ -36,6 +36,14 @@ func GetTestbyPatient(patientId int) ([]models.Tests, error) {
 	return test, nil
 }
 
+func GetTestbyDoctor(doctorId int) ([]models.Tests, error) {
+	var test []models.Tests
+	if err := config.DB.Where("doctor_id=?", doctorId).Find(&test).Error; err != nil {
+		return test, err
+	}
+	return test, nil
+}
+
 //update test info from database
 func UpdateTest(test models.Tests) (interface{}, error) {
 	if err := config.DB.Save(&test).Error; err != nil {

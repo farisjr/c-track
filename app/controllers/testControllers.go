@@ -124,17 +124,49 @@ func CheckerGetTest(c echo.Context) error {
 
 //Patient feature for get all test
 func PatientGetTest(c echo.Context) error {
-	auth := AuthorizedPatient(c)
-	if !auth {
-		return echo.NewHTTPError(http.StatusUnauthorized, "This account does not have access to this route")
-	}
 	patientId, err := strconv.Atoi(c.Param("patient_id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "invalid id",
+		})
+	}
+	if err = PatientAuthorize(patientId, c); err != nil {
+		return err
+	}
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"message": "Record not found",
 		})
 	}
 	tests, err := database.GetTestbyPatient(patientId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot fetch data",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success get all patient test  result",
+		"data":    tests,
+	})
+}
+
+//Doctor get test by doctor id
+func DoctorGetTest(c echo.Context) error {
+	doctorId, err := strconv.Atoi(c.Param("doctor_id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "invalid id",
+		})
+	}
+	if err = DoctorAutorize(doctorId, c); err != nil {
+		return err
+	}
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "Record not found",
+		})
+	}
+	tests, err := database.GetTestbyDoctor(doctorId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "cannot fetch data",
