@@ -58,7 +58,7 @@ func PatientLogin(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "success login",
-		"patient": mapLoginpatient,
+		"data":    mapLoginpatient,
 	})
 }
 

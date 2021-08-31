@@ -39,13 +39,13 @@ func DoctorSignUp(c echo.Context) error {
 		})
 	}
 	mapDoctor := map[string]interface{}{
-		"ID": doctor.UserID,
+		"User ID": doctor.UserID,
 		// "Name":  doctorAdd.Nama,
 		// "Email": doctorAdd.Email,
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message":  "success create new doctor",
-		"customer": mapDoctor,
+		"message": "success create new doctor",
+		"data":    mapDoctor,
 	})
 	// if err != nil {
 	// 	return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -72,7 +72,7 @@ func DoctorLogin(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "succes login",
-		"doctor":  mapLogindoctor,
+		"data":    mapLogindoctor,
 	})
 }
 
@@ -81,7 +81,7 @@ func DoctorAutorize(doctorId int, c echo.Context) error {
 	authDoctor, err := database.GetOneDoctor(doctorId)
 	LoggedInDoctorId, role := middlewares.ExtractTokenUserId(c)
 	if LoggedInDoctorId != doctorId || string(authDoctor.Role) != role || err != nil || authDoctor.Role != "Doctor" {
-		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access")
+		return echo.NewHTTPError(http.StatusUnauthorized, "This user does not have access")
 	}
 	return nil
 }
