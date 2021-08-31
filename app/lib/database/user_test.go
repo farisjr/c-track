@@ -12,7 +12,6 @@ import (
 var (
 	mockDBUser = models.User{
 		UserID:    1010101010,
-		Fullname:  "boruto@gmail.com",
 		Password:  "123456",
 		Role:      models.Role("Patient"),
 		Token:     "jafniaebfiajnfe",
