@@ -28,7 +28,7 @@ func New(e *echo.Echo) {
 
 	eJwt.GET("/checker/test/:patient_id", controllers.CheckerGetTest) // checker get test by patient id
 
-	eJwt.GET("/patient/test/:patient_id", controllers.ShowPatientTest) //get patient test only himself
+	eJwt.GET("/patient/test/:patient_id", controllers.PatientGetTest) //get patient test only himself
 
 	//------------------ Logout Controllers ----------------------//
 	eJwt.POST("/checker/logout/:user_id", controllers.LogoutChecker)

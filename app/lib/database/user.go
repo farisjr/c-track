@@ -16,7 +16,6 @@ func CheckSameUserId(userid int) (bool, error) {
 	return false, nil
 }
 
-
 // func CreateUser(user models.User) (models.User, error, error) {
 // 	userFromDb, err := GetOneUser(user.UserID)
 // 	if err != nil {
@@ -64,22 +63,6 @@ func UpdateUser(users models.User, id int) (models.User, error) {
 	}
 	return users, nil
 }
-
-
-// func GetDetailUser(userId int) (models.User, error) {
-// 	var user models.User
-// 	if err := config.DB.Find(&user, userId).Error; err != nil {
-// 		return user, err
-// 	}
-// 	return user, nil
-// }
-
-// func EditUser(user models.User) (models.User, error) {
-// 	if err := config.DB.Save(&user).Error; err != nil {
-// 		return user, err
-// 	}
-// 	return user, nil
-// }
 
 //get token user
 func GetToken(user_id int) (string, error) {
