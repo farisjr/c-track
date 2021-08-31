@@ -13,9 +13,7 @@ import (
 //Register doctor controller for doctor registration
 func DoctorSignUp(c echo.Context) error {
 	input := models.User{}
-	//doctor.Role = "doctor"
 	c.Bind(&input)
-	//adddoctor, err := database.CreateDoctor(models.Doctor{})
 	if input.UserID == 0 || input.Password == "" {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"message": "please fill userid and password correctly",
@@ -28,7 +26,6 @@ func DoctorSignUp(c echo.Context) error {
 	}
 	addDoctor := models.User{}
 	addDoctor.UserID = input.UserID
-	//doctor.Email = input.Email
 	addDoctor.Password = ourEncrypt(input.Password)
 	addDoctor.Role = "Doctor"
 	c.Bind(&addDoctor)
@@ -40,22 +37,11 @@ func DoctorSignUp(c echo.Context) error {
 	}
 	mapDoctor := map[string]interface{}{
 		"User ID": doctor.UserID,
-		// "Name":  doctorAdd.Nama,
-		// "Email": doctorAdd.Email,
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "success create new doctor",
 		"data":    mapDoctor,
 	})
-	// if err != nil {
-	// 	return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-	// 		"message": "cannot insert data",
-	// 	})
-	// }
-	// return c.JSON(http.StatusOK, map[string]interface{}{
-	// 	"message": "success create new doctor",
-	// 	"data":    adddoctor,
-	// })
 }
 
 //Login for doctor with matching userid and password
@@ -107,80 +93,3 @@ func LogoutDoctor(c echo.Context) error {
 		"data":    doctor,
 	})
 }
-
-// func GetDoctorsController(c echo.Context) error {
-// 	doctors, err := database.GetDoctor()
-// 	if err != nil {
-// 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-// 	}
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "success get doctors data",
-// 		"data":    doctors,
-// 	})
-// }
-
-// func GetDoctorsIdController(c echo.Context) error {
-// 	id, err := strconv.Atoi(c.Param("id"))
-// 	if err != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-// 			"message": "invalid id",
-// 		})
-// 	}
-// 	doctors, err := database.GetDoctorById(id)
-// 	if err != nil {
-// 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-// 			"message": "cannot fetch data",
-// 		})
-// 	}
-
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "success get doctor  by id",
-// 		"data":    doctors,
-// 	})
-// }
-
-// func DeleteDoctorsController(c echo.Context) error {
-// 	id, err := strconv.Atoi(c.Param("id"))
-// 	if err != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-// 			"message": "invalid id",
-// 		})
-// 	}
-// 	doctors, _ := database.GetDoctorById(id)
-// 	c.Bind(&doctors)
-// 	doctorsDeleted, err := database.DeleteDoctorById(doctors)
-// 	if err != nil {
-// 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-// 			"message": "cannot delete data",
-// 		})
-// 	}
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "success delete selected doctor",
-// 		"data":    doctorsDeleted,
-// 	})
-// }
-
-// func UpdateDoctorsController(c echo.Context) error {
-// 	id, err := strconv.Atoi(c.Param("id"))
-// 	if err != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-// 			"message": "invalid id",
-// 		})
-// 	}
-// 	if err = DoctorAutorize(id, c); err != nil {
-// 		return err
-// 	}
-// 	updateDoctors, _ := database.GetUpdateDoctor(id)
-// 	c.Bind(&updateDoctors)
-// 	testsId, err1 := database.UpdateDoctor(updateDoctors)
-// 	if err1 != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-// 			"message": "invalid id",
-// 		})
-// 	}
-
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "success update doctor ",
-// 		" data":   testsId,
-// 	})
-// }
