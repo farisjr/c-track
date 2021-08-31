@@ -30,7 +30,7 @@ func GetAllTestCategoriesController(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		  "data" : testCategories,
+		"data": testCategories,
 	})
 }
 
@@ -54,26 +54,6 @@ func GetOneTestCategoriesController(c echo.Context) error {
 	})
 }
 
-// func DeleteTestCategoriesByIdController(c echo.Context) error {
-// 	id, err := strconv.Atoi(c.Param("id"))
-// 	if err != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-// 			"message": "invalid id",
-// 		})
-// 	}
-
-// 	testCategoriesDeleted, err := database.DeleteTestCategory(id)
-// 	if err != nil {
-// 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-// 			"message": "cannot delete data",
-// 		})
-// 	}
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "delete success ",
-// 		"data":    testCategoriesDeleted,
-// 	})
-// }
-
 func UpdateTestCategoriesController(c echo.Context) error {
 	var testCategories models.TestCategories
 	id, err := strconv.Atoi(c.Param("id"))
@@ -96,7 +76,6 @@ func UpdateTestCategoriesController(c echo.Context) error {
 			"message": "cannot post data",
 		})
 	}
-
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message":                "success update test categories",
 		"update test categories": updatedTestCategories,

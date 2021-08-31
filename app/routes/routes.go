@@ -10,12 +10,15 @@ import (
 
 func New(e *echo.Echo) {
 
+	//------------------ Patient Login & Register Routes ----------------------//
 	e.POST("/patient/login", controllers.PatientLogin)
 	e.POST("/patient/register", controllers.PatientSignUp)
 
+	//------------------ Doctor Login & Register Routes ----------------------//
 	e.POST("/doctor/login", controllers.DoctorLogin)
 	e.POST("/doctor/register", controllers.DoctorSignUp)
 
+	//------------------ Checker Login & Register Routes ----------------------//
 	e.POST("/checker/login", controllers.CheckerLogin)
 	e.POST("/checker/register", controllers.CheckerSignUp)
 
@@ -24,13 +27,13 @@ func New(e *echo.Echo) {
 
 	eJwt.POST("/doctor/test", controllers.DoctorCreateNewTest)      // doctor add new test routes
 	eJwt.PUT("/doctor/test/:test_id", controllers.DoctorUpdateTest) // doctor update test result routes
-	eJwt.GET("/doctor/tests", controllers.DoctorGetAllTest)         // doctor get all test
+	eJwt.GET("/doctor/tests/:doctor_id", controllers.DoctorGetTest) // doctor get all test
 
 	eJwt.GET("/checker/test/:patient_id", controllers.CheckerGetTest) // checker get test by patient id
 
 	eJwt.GET("/patient/test/:patient_id", controllers.PatientGetTest) //get patient test only himself
 
-	//------------------ Logout Controllers ----------------------//
+	//------------------ Logout Routes ----------------------//
 	eJwt.POST("/checker/logout/:user_id", controllers.LogoutChecker)
 	eJwt.POST("/doctor/logout/:user_id", controllers.LogoutDoctor)
 	eJwt.POST("/patient/logout/:user_id", controllers.LogoutPatient)
