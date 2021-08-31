@@ -67,7 +67,7 @@ func AuthorizationChecker(checkerId int, c echo.Context) error {
 	authchecker, err := database.GetOneChecker(checkerId)
 	loggedInCheckerId, role := middlewares.ExtractTokenUserId(c)
 	if loggedInCheckerId != checkerId || string(authchecker.Role) != role || err != nil || authchecker.Role != "Checker" {
-		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access")
+		return echo.NewHTTPError(http.StatusUnauthorized, "This user does not have access")
 	}
 	return nil
 }
